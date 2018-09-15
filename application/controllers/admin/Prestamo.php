@@ -6,7 +6,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 class Prestamo extends MY_Controller {
 
-  public function __construct(){
+  public function __construct()
+  {
     parent::__construct();
   }
 
@@ -23,19 +24,19 @@ class Prestamo extends MY_Controller {
     $data['pagedescription'] = "Todos los Prestamos";
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamos', 'admin/prestamo')));
 
-    $short = $this->input->get('short') ?: 'DESC';
-    $orderby = $this->input->get('orderby') ?: 'registerdate';
-    $limit = $this->input->get('limit') ?: '10';
-
-    if ($this->session->userdata('level') > 2) {
+    if ($this->session->userdata('user')['level'] > 2) {
       $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND loans.id_prestamista = '.$this->session->userdata('user')['id']);
     }else{
     $data['prestamos'] = $this->Loan_model->get_prestamos_extended();
 
     }
 
-    $data['head_includes'] = ['data-table-css' => '<link rel="stylesheet" href="/public/datatables.net-bs/css/dataTables.bootstrap.min.css">'];
-    $data['footer_includes'] = ['data-tabe-js' => '<script src="/public/datatables.net/js/jquery.dataTables.min.js"></script>', 'data-tabe-js-bootstrap' => '<script src="/public/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>', 'datatableini' => '<script src="/public/dist/js/datatableini.js"></script>'];
+    $data['head_includes'] = ['data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css')];
+    $data['footer_includes'] = [
+      'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
+      'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
+      'datatableini' => fnAddScript(JSPATH.'datatableini.js')];
+
     //Load the views
     $data['page'] = $this->load->view('admin/prestamo/all_loan_page', $data, TRUE);
     $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
@@ -48,21 +49,21 @@ class Prestamo extends MY_Controller {
    * route admin/prestamo/clientes
    * @return void
    */
-  public function clients(){ 
+  public function clients()
+  { 
     //Pages head tags 
     $data['title'] = "Clientes";
     $data['h1'] = "Clientes";
     $data['pagedescription'] = "Todos los Clientes";
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Clientes', 'admin/prestamo/clientes')));
-
-    $short = $this->input->get('short') ?: 'DESC';
-    $orderby = $this->input->get('orderby') ?: 'registerdate';
-    $limit = $this->input->get('limit') ?: '10';
     
-    $data['head_includes'] = ['data-table-css' => '<link rel="stylesheet" href="/public/datatables.net-bs/css/dataTables.bootstrap.min.css">'];
-    $data['footer_includes'] = ['data-tabe-js' => '<script src="/public/datatables.net/js/jquery.dataTables.min.js"></script>', 'data-tabe-js-bootstrap' => '<script src="/public/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>', 'datatableini' => '<script src="/public/dist/js/datatableini.js"></script>'];
+    $data['head_includes'] = ['data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css')];
+    $data['footer_includes'] = [
+      'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
+      'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
+      'datatableini' => fnAddScript(JSPATH.'datatableini.js')];
 
-    if ($this->session->userdata('level') < 3) {
+    if ($this->session->userdata('user')['level'] < 3) {
       $data['clientes'] = $this->Loan_model->get_cliente_prestamista();
     }else{
       $data['clientes'] = $this->Loan_model->get_cliente_extended('AND user.id='.$this->session->userdata('user')['id']);
@@ -80,7 +81,8 @@ class Prestamo extends MY_Controller {
    * @param  int $id ID del cliente a visualizar en la base de datos
    * @return void
    */
-  public function client($id = false){
+  public function client($id = false)
+  {
     //The data
     $data['cliente'] = $this->Loan_model->get_cliente(array('id' => $id, 'status' => 1))[0];
     if ($data['cliente']) {
@@ -92,10 +94,17 @@ class Prestamo extends MY_Controller {
       $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Clientes', 'admin/prestamo/clientes'), array('Resumen', 'admin/prestamo/cliente/'.$id)));
       
       //Includes
-      $data['head_includes'] = ['morris-chart' => '<link rel="stylesheet" href="/public/morris.js/morris.css">'];
-      $data['footer_includes'] = ['data-tabe-js' => '<script src="/public/datatables.net/js/jquery.dataTables.min.js"></script>', 'data-tabe-js-bootstrap' => '<script src="/public/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>', 'datatableini' => '<script src="/public/dist/js/datatableini.js"></script>'];
+      $data['head_includes'] = [
+        'data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css'),
+        'morris-chart' => link_tag(JSPATH."morris.js/morris.css")
+      ];
+      $data['footer_includes'] = [
+        'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
+        'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
+        'datatableini' => fnAddScript(JSPATH.'datatableini.js')
+      ];
       
-      if ($this->session->userdata('level') < 3) {
+      if ($this->session->userdata('user')['level'] < 3) {
         $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 1"); 
         $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 0"); 
       }else{
@@ -118,7 +127,8 @@ class Prestamo extends MY_Controller {
    * route admin/prestamo/clientes/nuevo
    * @return void
    */
-  public function form_new_client(){
+  public function form_new_client()
+  {
     // Loads 
     $this->load->helper('form');
     $this->load->helper('array');
@@ -257,12 +267,19 @@ class Prestamo extends MY_Controller {
         // Page Info 
         $data['title'] = "Registrar un nuevo Prestamo";
         $data['h1'] = "Registrar Prestamo";
-        $data['pagedescription'] = "Asiganar un prestamo";
+        $data['pagedescription'] = "Asignar un prestamo";
         $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamos', 'admin/prestamo'), array('Nuevo', 'admin/prestamo/nuevo')));
         
         // Page Includes and data
-        $data['head_includes'] = array('date-picker-css' => '  <link rel="stylesheet" href="/public/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">');
-        $data['footer_includes'] = array('date-picker-js' => '<script src="/public/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>', 'date-picker-js-ini' => '<script src="/public/dist/js/datepickerini.js"></script>');
+        $data['head_includes'] = array(
+          'date-picker-css' => link_tag(JSPATH.'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')
+        );
+
+        $data['footer_includes'] = array(
+          'date-picker-js' => fnAddScript(JSPATH.'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'),
+          'date-picker-js-ini' => fnAddScript(JSPATH.'datepickerini.js')
+        );
+
         $data['action'] = 'admin/prestamo/nuevo/guardar';
         $data['prestamo'] = array();
         $data['id_cliente'] = false;
@@ -294,12 +311,19 @@ class Prestamo extends MY_Controller {
       // Page Info 
       $data['title'] = "Registrar un nuevo Prestamo";
       $data['h1'] = "Registrar Prestamo";
-      $data['pagedescription'] = "Asiganar un prestamo";
+      $data['pagedescription'] = "Asignar un prestamo";
       $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamos', 'admin/prestamo'), array('Nuevo', 'admin/prestamo/nuevo')));
       
       // Page Includes and data
-      $data['head_includes'] = array('date-picker-css' => '  <link rel="stylesheet" href="/public/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">');
-      $data['footer_includes'] = array('date-picker-js' => '<script src="/public/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>', 'date-picker-js-ini' => '<script src="/public/dist/js/datepickerini.js"></script>');
+      $data['head_includes'] = array(
+        'date-picker-css' => link_tag(JSPATH.'bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css')
+      );
+
+      $data['footer_includes'] = array(
+        'date-picker-js' => fnAddScript(JSPATH.'bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js'),
+        'date-picker-js-ini' => fnAddScript(JSPATH.'datepickerini.js')
+      );
+      
       $data['action'] = 'admin/prestamo/nuevo/guardar';
       $data['prestamo'] = array();
       $data['id_cliente'] = $id_cliente;
@@ -357,17 +381,22 @@ class Prestamo extends MY_Controller {
 
       $data['prestamo'] = $this->Loan_model->get_prestamos_extended('AND loans.id = '.$id_prestamo)[0];
 
-      $data['cuotas'] = $this->MY_model->get_data(array('id_prestamo' => $id_prestamo, 'status' => '1'), 'prestamos_cuotas');
+      $data['cuotas'] = $this->MY_model->get_data(array('id_prestamo' => $id_prestamo, 'status' => '1'), 'loans_dues');
 
-      $data['head_includes'] = ['data-table-css' => '<link rel="stylesheet" href="/public/datatables.net-bs/css/dataTables.bootstrap.min.css">', 'calendar-css' => '<link rel="stylesheet" href="/public/fullcalendar/dist/fullcalendar.min.css">'];
-      $data['footer_includes'] = ['jqeryui' => '<script src="/public/jquery-ui/jquery-ui.min.js"></script>',
-      'data-tabe-js' => '<script src="/public/datatables.net/js/jquery.dataTables.min.js"></script>', 
-      'data-tabe-js-bootstrap' => '<script src="/public/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>', 
-      'datatableini' => '<script src="/public/dist/js/datatableini.js"></script>',
-      'fullcalendar-moment' => '<script src="/public/moment/moment.js"></script>',
-      'fullcalendar-js' => '<script src="/public/fullcalendar/dist/fullcalendar.min.js"></script>',
-      'fullcalendarini' => '<script src="/public/dist/js/calendarini.js"></script>'
+      $data['head_includes'] = [
+        'calendar-css' => link_tag(JSPATH.'fullcalendar/dist/fullcalendar.min.css'),
+        'data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css')
       ];
+
+      $data['footer_includes'] = [
+      'jqeryui' => fnAddScript(JSPATH.'jquery-ui/jquery-ui.min.js'), 
+      'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
+      'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
+      'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
+      'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
+      //'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
+    ];
+
       //Load the views
       $data['page'] = $this->load->view('admin/prestamo/all_dues_page', $data, TRUE);
       $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);

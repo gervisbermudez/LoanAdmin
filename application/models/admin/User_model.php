@@ -23,12 +23,12 @@ class User_model extends MY_model {
 
 	public function map($id)
 	{
-		$user = $this->get_data(array('id' => $id), $this->table_name)[0];
-        
+		$user = $this->get_data(array('id' => $id), $this->table_name);
+        $user = $user[0];
         if (!$user) {
 			return FALSE;
         }
-        $this->id               = $user['id'];
+        $this->id = $user['id'];
 
         // Set User data
         $query = $this->get_data(array('id_user' => $this->id), 'user_data');
@@ -57,27 +57,27 @@ class User_model extends MY_model {
         $this->load->model('admin/User_Group_model');
         $user_group = new User_Group_model();
         $this->user_group = $user_group->map($this->id_user_group);
-        $this->level            = $this->user_group->level;
+        $this->level = $this->user_group->level;
 
         return $this;
 	}
 
-	public function create($password, $insert = false)
+	public function create($insert = false)
 	{
         $date = new DateTime();
         if ($insert && is_array($insert)) {
 		    return $this->set_data($insert, $this->table_name) ? $this : false;            
         }
         $insert = array(
-            'username' => $this->username,
-            'password' => $password,
-            'email' => $this->email,
-            'lastseen' => $date->format('Y-m-d H:i:s'),
-            'id_user_group' => 1,
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
+            'username'              => $this->username,
+            'password'              => $this->password,
+            'email'                 => $this->email,
+            'lastseen'              => $date->format('Y-m-d H:i:s'),
+            'id_user_group'         => 1,
+            'created_from_ip'       => $this->input->ip_address(),
+            'updated_from_ip'       => $this->input->ip_address(),
+            'date_created'          => $date->format('Y-m-d H:i:s'),
+            'date_updated'          => $date->format('Y-m-d H:i:s')
         );
         if($this->set_data($insert, $this->table_name)){
           $this->id = $this->get_data($insert , $this->table_name)[0]['id'];
@@ -135,7 +135,7 @@ class User_model extends MY_model {
     
     public function login($username, $password)
     {
-		$query = $this->get_data(array('username' => $username), $this->table_name);
+		$query = $this->get_data(array('status' => 1, 'username' => $username), $this->table_name);
         if (!is_array($query)) {
            return false; 
         }

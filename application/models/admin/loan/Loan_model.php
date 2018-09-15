@@ -43,7 +43,7 @@ class Loan_model extends MY_model {
         $this->id_prestamista = $loan['id_prestamista'];
 
         // Map the client
-        $this->load->model('admin/prestamo/Client_model');
+        $this->load->model('admin/loan/Client_model');
         $client = new Client_model();
         $client->map($loan['id_cliente']);
         $this->cliente = $client;
@@ -52,7 +52,7 @@ class Loan_model extends MY_model {
         $cuotas = $this->get_data(array('id_prestamo' => $id), 'loans_dues');
         
         if ($cuotas) {
-            $this->load->model('admin/prestamo/Due_model');
+            $this->load->model('admin/loan/Due_model');
             foreach ($cuotas as $key => $cuota) {
                 $Due = new Due_model();
                 $Due->map_from_array($cuota);
@@ -99,7 +99,7 @@ class Loan_model extends MY_model {
                         'registerdate' => $registerdate->format('Y-m-d H:i:s'),
                         'status' => $this->status);
 
-        $this->load->model('admin/prestamo/Client_model');
+        $this->load->model('admin/loan/Client_model');
         $client = new Client_model();
         $client->map($this->id_cliente);
         $this->cliente = $client;
@@ -110,7 +110,7 @@ class Loan_model extends MY_model {
             $monto_cuotas = $this->monto_total / $this->cant_cuotas;
             $cuota_numero = 1;
 
-            $this->load->model('admin/prestamo/Due_model');
+            $this->load->model('admin/loan/Due_model');
             $Cuota = new Due_model();
 
             $fecha_pago = DateTime::createFromFormat('Y-m-d', $this->fecha_inicio->format('Y-m-d'));
@@ -231,7 +231,8 @@ class Loan_model extends MY_model {
         }   
     }
 
-    public function update(){
+    public function update()
+    {
         if (!$this->id) {
             return FALSE;
         }
@@ -486,7 +487,8 @@ class Loan_model extends MY_model {
 		}
 	}
 
-	public function get_prestamos_extended($where = '', $limit = '', $order = array('id', 'ASC')){
+    public function get_prestamos_extended($where = '', $limit = '', $order = array('id', 'ASC'))
+    {
 		$this->db->select('`user`.`username`, `loans`.*, `clients`.`nombre`, `clients`.`apellido`');
 		$this->db->from('`user`, `loans`, `clients`');
 		$this->db->where("`user`.`id`=loans.id_prestamista AND `loans`.`id_cliente`=`clients`.`id` $where");
@@ -505,11 +507,13 @@ class Loan_model extends MY_model {
 		return false; 
 	}
 
-	public function set_cuota($data){
+    public function set_cuota($data)
+    {
 		return $this->db->insert_batch('loans_dues', $data);
 	}
 
-	public function get_cuota_prestamo($where = '', $limit = '', $order = array('`loans_dues`.`id`', 'ASC')){
+    public function get_cuota_prestamo($where = '', $limit = '', $order = array('`loans_dues`.`id`', 'ASC'))
+    {
 		$this->db->limit($limit);
 		if ($order!=='') {
 			$this->db->order_by($order[0], $order[1]);

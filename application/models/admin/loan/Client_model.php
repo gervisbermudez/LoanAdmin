@@ -10,7 +10,7 @@ class Client_model extends MY_model {
 	public $telefono;
 	public $registerdate;
 	public $status;
-	public static $table_name = 'prestamos_clientes';
+	public $table = 'clients';
 
 	public function __construct()
 	{
@@ -19,7 +19,7 @@ class Client_model extends MY_model {
 
 	public function map($id)
 	{
-		$client = $this->get_data(array('id' => $id), $this->table_name)[0];
+		$client = $this->get_data(array('id' => $id), $this->table)[0];
 		if (!$client) {
 			return FALSE;
 		}
@@ -45,10 +45,10 @@ class Client_model extends MY_model {
 						'identificacion' => $this->dni,
 						'registerdate' => $registerdate->format('Y-m-d H:i:s'),
 						'status' => $this->status);
-		if ($this->get_is_exist_value($this->table_name, 'identificacion', $this->dni)) {
+		if ($this->get_is_exist_value($this->table, 'identificacion', $this->dni)) {
 			return FALSE;
 		}
-		return $this->set_data($insert, $this->table_name);	
+		return $this->set_data($insert, $this->table);	
 	}
 
 	public function update()
@@ -65,7 +65,7 @@ class Client_model extends MY_model {
 						'registerdate' => $this->registerdate->format('Y-m-d H:i:s'),
 						'status' => $this->status);
 		$where = array('id' => $this->id);
-		return $this->update_data($where, $update, $this->table_name);
+		return $this->update_data($where, $update, $this->table);
 	}
 
 	public function set_status($status = FALSE)
@@ -86,7 +86,7 @@ class Client_model extends MY_model {
 				$this->status = '1';
 			}
 		}
-		return $this->update_data($where, $update, $this->table_name);
+		return $this->update_data($where, $update, $this->table);
 	}
 
 	public function delete()
@@ -95,7 +95,7 @@ class Client_model extends MY_model {
 			return FALSE;
 		}
 		$where = array('id' => $this->id);
-		$this->delete_data($where, $this->table_name);
+		$this->delete_data($where, $this->table);
 	}
 }
 ?>

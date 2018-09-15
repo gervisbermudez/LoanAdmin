@@ -64,10 +64,10 @@ class User extends MY_Controller {
   public function index()
   {
     //Pages head tags 
-    $data['title'] = "Prestamistas";
-    $data['h1'] = "Prestamistas";
-    $data['pagedescription'] = "Todos los Prestamistas";
-    $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamistas', 'admin/user')));
+    $data['title'] = "Cobradores";
+    $data['h1'] = "Cobradores";
+    $data['pagedescription'] = "Todos los Cobradores";
+    $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Cobradores', 'admin/user')));
 
     $short = $this->input->get('short') ?: 'ASC';
     $orderby = $this->input->get('orderby') ?: 'date_created';
@@ -110,13 +110,10 @@ class User extends MY_Controller {
       $this->load->model('admin/loan/Expenses_model');
       $gastos = new Expenses_model();
       $data['gastos'] = $gastos->get_data(array('id_user' => $id), $gastos->table);
-      /* echo '<pre>';
-      var_dump($data['gastos']);
-      echo '</pre>'; */ /**/
-      
+    
       $data['title'] = $user->username;
       $data['h1'] = $user->username;
-      $data['pagedescription'] = "Perfil del usuario";
+      $data['pagedescription'] = "Perfil del cobrador";
       $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Usuarios', 'admin/user'), array($user->username, 'admin/user/'.$user->id)));
 
       $this->load->model('Loan_model');
@@ -128,13 +125,18 @@ class User extends MY_Controller {
       $data['timeline'] = $this->load->view('/admin/user/timeline', $data, TRUE);
       $data['page'] = $this->load->view('/admin/user/profile_page', $data, TRUE);
       $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
-      $this->load->view('admin/master_template', $data); /**/
+      $this->load->view('admin/master_template', $data);
 
     }else{
       $this->showError();
     }
   }
 
+  /**
+   * This method show an form to create a new user into the database 
+   * @route admin/user/add
+   * @return void 
+   */
   public function add()
   {
     // Loads 
@@ -142,9 +144,9 @@ class User extends MY_Controller {
     $this->load->helper('functions');
 
     // Page Info 
-    $data['title'] = "Nuevo prestamista";
-    $data['h1'] = "Nuevo prestamista";
-    $data['pagedescription'] = "Agregar un nuevo prestamista";
+    $data['title'] = "Nuevo Cobrador";
+    $data['h1'] = "Nuevo Cobrador";
+    $data['pagedescription'] = "Agregar un nuevo Cobrador";
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Usuarios', 'admin/user'), array('Nuevo', 'admin/user/add')));
 
     $data['action'] = 'admin/user/save/';
@@ -165,6 +167,11 @@ class User extends MY_Controller {
     $this->load->view('admin/master_template', $data);
   }
 
+  /**
+   * This method handle the insert user into the database 
+   * @route admin/user/save
+   * @return void
+   */
   public function save()
   {
     $user = new User_model();
@@ -172,17 +179,18 @@ class User extends MY_Controller {
     $user->username = url_title($this->input->post('username'), 'underscore', TRUE);
     $user->email = $this->input->post('email');
     $user->id_user_group = $this->input->post('usergroup');
+    $user->password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
 
-    if($user->create(password_hash($this->input->post('password'), PASSWORD_DEFAULT))){
+    if($user->create()){
       $curuser = $this->session->userdata('user');
       $user_data = array(
-        'nombre' => $this->input->post('nombre'),
-        'apellido' => $this->input->post('apellido'),
-        'direccion' => $this->input->post('direccion'), 
-        'telefono' => $this->input->post('telefono'),
-        'identificacion' => $this->input->post('identificacion'),
-        'create by' => $curuser['nombre'].' '.$curuser['apellido'],
-        'avatar' => 'avatar.png'
+        'nombre'          => $this->input->post('nombre'),
+        'apellido'        => $this->input->post('apellido'),
+        'direccion'       => $this->input->post('direccion'), 
+        'telefono'        => $this->input->post('telefono'),
+        'identificacion'  => $this->input->post('identificacion'),
+        'create by'       => $curuser['nombre'].' '.$curuser['apellido'],
+        'avatar'          => 'avatar.png'
       );
       if($user->set_userdata($user_data)){
           if ($this->input->post('usergroup') === '1') {
@@ -221,28 +229,27 @@ class User extends MY_Controller {
     }
   }
 
+  /**
+   * This method handle an edit user with a form 
+   */
   public function edit($id)
   {
       //Get de user data 
       $user = $this->User_model->map($id);
       
       if ($user) {
-        $data['user'] = $user;
+        $data['user'] = (array) $user;
         //Load helpers
-        $this->load->helper('array');
-        $this->load->helper('functions');
-
         $data['title'] = "Admin | Editar";
-        $data['h1'] = "Editar Usuario";
+        $data['h1'] = "Editar cobrador";
         $data['action'] = 'admin/user/update/';
-        $data['pagedescription'] = "Editar un usuario";
+        $data['pagedescription'] = "Editar un cobrador";
         $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Usuarios', 'admin/user'), array('Editar', 'admin/user/view/'.$user->id), array($user->username, 'admin/user/view/'.$user->id)));
         if ($this->session->userdata('user')['level'] <= 2) {
           $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >'=>1));
         }else{
           $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >'=>$this->session->userdata('user')['level']));
         }
-
         // The views
         $data['page'] = $this->load->view('/admin/user/form_add_page', $data, TRUE);
         $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
@@ -250,6 +257,69 @@ class User extends MY_Controller {
       }else{
         $this->showError();
       } 
+  }
+
+  /**
+   * This method handle the insert user into the database 
+   * @route admin/user/update
+   * @return void
+   */
+  public function update()
+  {
+    $id = $this->input->post('id');
+    $user = new User_model();
+    $user->map($id);
+    $user->username = url_title($this->input->post('username'), 'underscore', TRUE);
+    $user->email = $this->input->post('email');
+    $user->id_user_group = $this->input->post('usergroup');
+    $user->password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+
+    if($user->create()){
+      $curuser = $this->session->userdata('user');
+      $user_data = array(
+        'nombre'          => $this->input->post('nombre'),
+        'apellido'        => $this->input->post('apellido'),
+        'direccion'       => $this->input->post('direccion'), 
+        'telefono'        => $this->input->post('telefono'),
+        'identificacion'  => $this->input->post('identificacion'),
+        'create by'       => $curuser['nombre'].' '.$curuser['apellido'],
+        'avatar'          => 'avatar.png'
+      );
+      if($user->set_userdata($user_data)){
+          if ($this->input->post('usergroup') === '1') {
+          $datauserpermisions = array(
+            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'create_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_status_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'delete_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
+          );
+        }else{
+          $datauserpermisions = array(
+            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'create_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'update_status_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
+            array('permision' => 'delete_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
+          );
+        }
+        $user->set_user_permisions($datauserpermisions);
+        $this->load->model('ModRelations');
+        $relations = array('id_user' => $curuser['id'], 'tablename' => 'user', 'id_row' => $user->id, 'action' => 'crear');
+        $this->ModRelations->set_relation($relations);
+        redirect('admin/user/view/'.$user->id);
+      }else {
+        $this->showError();        
+      }
+    }else {
+      $this->showError();
+    }
   }
 
 }

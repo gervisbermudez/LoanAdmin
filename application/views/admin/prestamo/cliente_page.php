@@ -26,7 +26,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url('admin/prestamo/nuevo/user/'.$cliente['id']); ?>">Registrar Prestamo</a></li>
-                  <?php if ($this->session->userdata('level') < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
                   <li role="presentation" class="divider"></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url('admin/prestamo/cliente/editar/'.$cliente['id']); ?>">Editar</a></li>
                   <li role="presentation"><a role="menuitem" data-toggle="modal" data-target="<?php echo '#'.$modalid ?>" tabindex="-1" href="#!" data-table-reference="prestamos_clientes" data-value-id="<?php echo $cliente['id']; ?>" data-target="" data-delete-redirect="true" data-delete-redirectto="admin/prestamo/clientes" class="delete-data">Eliminar</a></li>
@@ -43,7 +43,7 @@
               <table id="example2" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <?php if ($this->session->userdata('level') < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
                   <th>Prestamista</th>
                   <?php endif ?>
                   <th>Prestamo</th>
@@ -58,7 +58,7 @@
                 <tbody>
                  <?php foreach ($historial_prestamo as $key => $prestamo): ?>
                    <tr>
-                    <?php if ($this->session->userdata('level') < 3): ?>
+                    <?php if ($this->session->userdata('user')['level'] < 3): ?>
                     <td><a href="<?php echo base_url('admin/user/view/'.$prestamo['id_prestamista']); ?>"><?php echo $prestamo['username'] ?></a></td>
                   <?php endif ?>
                      <td><?php echo $prestamo['monto'] ?> $&nbsp;<a title='Ver Cuotas' href="<?php echo base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
@@ -73,7 +73,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <?php if ($this->session->userdata('level') < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
                   <th>Prestamista</th>
                   <?php endif ?>
                   <th>Prestamo</th>
@@ -99,7 +99,7 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <?php if ($this->session->userdata('level') < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
                   <th>Prestamista</th>
                   <?php endif ?>
                   <th>Prestamo</th>
@@ -113,7 +113,7 @@
                 <tbody>
                  <?php foreach ($prestamos as $key => $prestamo): ?>
                    <tr>
-                    <?php if ($this->session->userdata('level') < 3): ?>
+                    <?php if ($this->session->userdata('user')['level'] < 3): ?>
                     <td><a href="<?php echo base_url('admin/user/view/'.$prestamo['id_prestamista']); ?>"><?php echo $prestamo['username'] ?></a></td>
                     <?php endif ?>
                      <td><?php echo $prestamo['monto'] ?> $&nbsp;<a title='Ver Cuotas' href="<?php echo base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
@@ -127,7 +127,7 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <?php if ($this->session->userdata('level') < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
                   <th>Prestamista</th>
                   <?php endif ?>
                   <th>Prestamo</th>

@@ -5,7 +5,6 @@ $route['default_controller'] = 'admin/admin';
 $route['404_override'] = 'Error404';
 $route['translate_uri_dashes'] = FALSE;
 $route['admin'] = 'admin/admin';
-$route['test'] = 'admin/admin/test';
 $route['admin/ajax_get_dashboard_data'] = 'admin/admin/ajax_get_dashboard_data';
 
 // System routes

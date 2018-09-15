@@ -61,7 +61,7 @@
 </div>
 <?php endforeach ?>
 <?php else: ?>
-No hay más usuarios registrados
+No hay más cobradores registrados
 <?php endif ?>
 <div class="modal fade" id="<?php echo $modalid; ?>" style="display: none;">
 	<div class="modal-dialog">
@@ -69,10 +69,10 @@ No hay más usuarios registrados
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				<span aria-hidden="true">×</span></button>
-				<h4 class="modal-title">Eliminar Prestamista</h4>
+				<h4 class="modal-title">Eliminar cobradores</h4>
 			</div>
 			<div class="modal-body">
-				<p>Esta accion eliminará el Prestamista y todos los datos relacionados con éste</p>
+				<p>Esta accion eliminará el cobradores y todos los datos relacionados con éste</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>

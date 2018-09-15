@@ -301,7 +301,7 @@ if ( ! is_php('5.4'))
  * LOAD THE COMPOSER AUTOLOAD FILE
  * --
  */
-include_once './vendor/autoload.php';
+//include_once './vendor/autoload.php';
 
 /*
  * ------------------------------------------------------

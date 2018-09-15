@@ -10,7 +10,7 @@ class Due_model extends MY_model {
 	public $estado;
 	public $fecha_pagado;
 	public $status = '1';
-	private $table_name = 'prestamos_cuotas';
+	private $table_name = 'loans_dues';
 
 	function __construct()
 	{

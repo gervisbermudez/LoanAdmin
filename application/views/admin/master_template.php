@@ -10,16 +10,16 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="<?php echo base_url(JSPATH.'bootstrap/dist/css/bootstrap.min.css'); ?>">
+    <?= link_tag(JSPATH.'bootstrap/dist/css/bootstrap.min.css'); ?>
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?php echo base_url(FONTSPATH.'font-awesome/css/font-awesome.min.css');?>">
+    <?= link_tag(FONTSPATH.'font-awesome/css/font-awesome.min.css'); ?>
     <!-- Ionicons -->
-    <link rel="stylesheet" href="<?php echo base_url(FONTSPATH.'Ionicons/css/ionicons.min.css');?>">
+    <?= link_tag(FONTSPATH.'Ionicons/css/ionicons.min.css'); ?>
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?php echo base_url(CSSPATH.'AdminLTE.min.css');?>">
+    <?= link_tag(CSSPATH.'AdminLTE.min.css'); ?>
     <!-- AdminLTE Skins. Choose a skin from the css/skins
     folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="<?php echo base_url(CSSPATH.'_all-skins.min.css');?>">
+    <?= link_tag(CSSPATH.'_all-skins.min.css'); ?>
     <?php
     if (isset($head_includes)) {
     foreach ($head_includes as $value) {
@@ -132,7 +132,7 @@
               <li class="header">MAIN NAVIGATION</li>
               <li class="treeview">
                 <a href="#">
-                  <i class="fa fa-users"></i> <span>Prestamistas</span>
+                  <i class="fa fa-users"></i> <span>Cobradores</span>
                   <span class="pull-right-container">
                     <i class="fa fa-angle-left pull-right"></i>
                   </span>

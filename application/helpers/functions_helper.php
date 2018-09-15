@@ -7,8 +7,15 @@ if ( ! function_exists('fnAddScript'))
 	 * @param  [type] $strFilePath [description]
 	 * @return [type]              [description]
 	 */
-	function fnAddScript($strFilePath)
+	function fnAddScript($strFilePath, $attr = array())
 	{
-		return '<script src="'.base_url($strFilePath).'"></script>';
+		if(strpos($strFilePath, 'http') === false){
+			$strFilePath = base_url($strFilePath);
+		}
+		$linkattr = '';
+		foreach ($attr as $key => $value) {
+			$linkattr .= $key.'="'.$value.'" '; 
+		}
+		return '<script src="'.$strFilePath.'" '.$linkattr.'></script>';			
 	}
 }
