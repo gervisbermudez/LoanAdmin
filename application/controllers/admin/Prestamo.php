@@ -494,4 +494,29 @@ class Prestamo extends MY_Controller {
     }
   }
 
+  public function save_new_incoming($id_user)
+  {
+    $this->load->model('admin/loan/Income_model');
+    $ingreso = new Income_model;
+    $monto = (float) $this->input->post('monto');
+    $descripcion = (string) $this->input->post('descripcion');
+    if($ingreso->set_income($monto, $descripcion, $this->session->userdata('user')['id'])){
+      redirect('/admin/user/view/'.$id_user);
+    }else{
+      $this->showError();
+    }
+  }
+
+  public function delete_incoming($id_user, $id)
+  {
+    $this->load->model('admin/loan/Income_model');
+    $ingreso = new Income_model;
+    $where = array('id' => $id);
+    if($ingreso->delete_data($where, Income_model::$table)){
+      redirect('/admin/user/view/'.$id_user);
+    }else{
+      $this->showError();
+    }
+  }
+
 }

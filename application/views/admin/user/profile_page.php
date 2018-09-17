@@ -1,5 +1,7 @@
 <?php
-  $modalid = random_string('alnum', 16);
+  $modalid_eliminar = random_string('alnum', 16);
+  $modalid_gastos = random_string('alnum', 16);
+  $modalid_ingresos = random_string('alnum', 16);
 ?>
 <div class="row">
   <div class="col-md-3">
@@ -57,12 +59,13 @@
   <div class="col-md-9">
     <div class="nav-tabs-custom">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#settings" data-toggle="tab">Prestamos</a></li>
+        <li class="active"><a href="#home" data-toggle="tab">Prestamos</a></li>
+        <li><a href="#ingresos" data-toggle="tab">Ingresos</a></li>
         <li><a href="#gastos" data-toggle="tab">Gastos</a></li>
         <li><a href="#timeline" data-toggle="tab">Historial</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="settings">
+        <div class="tab-pane active" id="home">
           <div class="box-body">
             <?php if ($prestamos): ?>
             <table id="example1" class="table table-bordered table-striped">
@@ -98,6 +101,31 @@
             <?php endif ?>
           </div>
         </div>
+        <div class="tab-pane" id="ingresos">
+          <?php if ($ingresos): ?>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Monto</th>
+                <th>Descripcion</th>
+                <th>Fecha</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php foreach ($ingresos as $key => $ingreso): ?>
+              <tr id="#row<?= $gasto['id']; ?>">
+                <td><?= $ingreso['monto'] ?></td>
+                <td><?= $ingreso['descripcion'] ?></td>
+                <td><?= $ingreso['fecha'] ?></td>
+                <td><a data-toggle="modal" href="<?= '#'.$modalid_eliminar ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $gasto['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
+              </tr>
+              <?php endforeach ?>
+            </tbody>
+          </table>
+          <?php endif ?>
+          <a href="#<?= $modalid_ingresos; ?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar ingreso</a>
+        </div>
         <div class="tab-pane" id="gastos">
           <?php if ($gastos): ?>
           <table class="table table-hover">
@@ -115,13 +143,13 @@
                 <td><?= $gasto['monto'] ?></td>
                 <td><?= $gasto['descripcion'] ?></td>
                 <td><?= $gasto['fecha'] ?></td>
-                <td><a data-toggle="modal" href="<?= '#'.$modalid ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $gasto['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
+                <td><a data-toggle="modal" href="<?= '#'.$modalid_eliminar ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $gasto['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
               </tr>
               <?php endforeach ?>
             </tbody>
           </table>
           <?php endif ?>
-          <a href="#modal-id" data-toggle="modal" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar gasto</a>
+          <a href="#<?= $modalid_gastos; ?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar gasto</a>
         </div>
         <div class="tab-pane" id="timeline">
           <?= $timeline ?>
@@ -130,7 +158,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="modal-id">
+<div class="modal fade" id="<?php echo $modalid_gastos; ?>">
   <div class="modal-dialog">
     <div class="modal-content">
       <?= form_open('admin/prestamo/gastos/registrar/'.$user->id); ?>
@@ -156,7 +184,33 @@
   </div>
 </div>
 </div>
-<div class="modal fade" id="<?php echo $modalid; ?>" style="display: none;">
+<div class="modal fade" id="<?php echo $modalid_ingresos; ?>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <?= form_open('admin/prestamo/ingresos/registrar/'.$user->id); ?>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Agregar ingresos</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="">Monto</label>
+          <input type="number" class="form-control" name="monto" id="inputMonto" placeholder="Monto" min="0" required="required" title="Monto">
+        </div>
+        <div class="form-group">
+          <label for="descripcion">Descripcion</label>
+          <input type="text" class="form-control" name="descripcion" id="descripcion" placeholder="Descripcion" required="required" title="Descripcion">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="<?php echo $modalid_eliminar; ?>" style="display: none;">
 <div class="modal-dialog">
   <div class="modal-content">
     <div class="modal-header">

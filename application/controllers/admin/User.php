@@ -38,25 +38,6 @@ class User extends MY_Controller {
   public function __construct()
   {
     parent::__construct();
-    /* if (!$this->UserPermisions->get_access('access_user_module')) {
-          redirect('admin/');
-        }
-    switch ($this->uri->uri_string()) {
-      case 'admin/user':
-        if (!$this->UserPermisions->get_access('view_list_user')) {
-          redirect('admin/');
-        }
-        break;
-      case 'admin/user/add':
-        if (!$this->UserPermisions->get_access('create_any_user')) {
-          redirect('admin/');
-        }
-        break;
-      default:
-        
-      break;
-    } */
-
     $this->load->model('User_model');
     
   }
@@ -110,6 +91,10 @@ class User extends MY_Controller {
       $this->load->model('admin/loan/Expenses_model');
       $gastos = new Expenses_model();
       $data['gastos'] = $gastos->get_data(array('id_user' => $id), $gastos->table);
+      
+      $this->load->model('admin/loan/Income_model');
+      $ingresos = new Income_model();
+      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id), $ingresos->table);
     
       $data['title'] = $user->username;
       $data['h1'] = $user->username;
@@ -266,60 +251,27 @@ class User extends MY_Controller {
    */
   public function update()
   {
-    $id = $this->input->post('id');
+    
     $user = new User_model();
-    $user->map($id);
-    $user->username = url_title($this->input->post('username'), 'underscore', TRUE);
-    $user->email = $this->input->post('email');
-    $user->id_user_group = $this->input->post('usergroup');
-    $user->password = password_hash($this->input->post('password'), PASSWORD_DEFAULT);
+    $user->map($this->input->post('id'));
 
-    if($user->create()){
-      $curuser = $this->session->userdata('user');
-      $user_data = array(
-        'nombre'          => $this->input->post('nombre'),
-        'apellido'        => $this->input->post('apellido'),
-        'direccion'       => $this->input->post('direccion'), 
-        'telefono'        => $this->input->post('telefono'),
-        'identificacion'  => $this->input->post('identificacion'),
-        'create by'       => $curuser['nombre'].' '.$curuser['apellido'],
-        'avatar'          => 'avatar.png'
-      );
-      if($user->set_userdata($user_data)){
-          if ($this->input->post('usergroup') === '1') {
-          $datauserpermisions = array(
-            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'create_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_status_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'delete_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
-          );
-        }else{
-          $datauserpermisions = array(
-            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'create_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_status_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'delete_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
-          );
-        }
-        $user->set_user_permisions($datauserpermisions);
-        $this->load->model('ModRelations');
-        $relations = array('id_user' => $curuser['id'], 'tablename' => 'user', 'id_row' => $user->id, 'action' => 'crear');
-        $this->ModRelations->set_relation($relations);
-        redirect('admin/user/view/'.$user->id);
-      }else {
-        $this->showError();        
-      }
-    }else {
+    $user->username         = url_title($this->input->post('username'), 'underscore', TRUE);
+    $user->email            = $this->input->post('email');
+    $user->id_user_group    = $this->input->post('usergroup');
+    $user->password         = password_hash($this->input->post('password'), PASSWORD_DEFAULT);    
+    
+    $user->nombre                 = $this->input->post('nombre');
+    $user->apellido               = $this->input->post('apellido');
+    $user->direccion              = $this->input->post('direccion');
+    $user->telefono               = $this->input->post('telefono');
+    $user->identificacion         = $this->input->post('identificacion');
+    
+    if($user->update()){
+      redirect('admin/user/view/'.$user->id);
+    }else{
       $this->showError();
     }
+
   }
 
 }

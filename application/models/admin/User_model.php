@@ -73,7 +73,7 @@ class User_model extends MY_model {
             'password'              => $this->password,
             'email'                 => $this->email,
             'lastseen'              => $date->format('Y-m-d H:i:s'),
-            'id_user_group'         => 1,
+            'id_user_group'         => $this->id_user_group,
             'created_from_ip'       => $this->input->ip_address(),
             'updated_from_ip'       => $this->input->ip_address(),
             'date_created'          => $date->format('Y-m-d H:i:s'),
@@ -88,21 +88,51 @@ class User_model extends MY_model {
 
 	public function update()
 	{
-		if (!$this->id) {
-			return FALSE;
-		}
-		$update = array('id_user_register' => $this->id_user_register,
-						'nombre' => $this->nombre,
-						'apellido' => $this->apellido,
-						'direccion' => $this->direccion,
-						'telefono' => $this->telefono,
-						'identificacion' => $this->dni,
-						'registerdate' => $this->registerdate->format('Y-m-d H:i:s'),
-						'status' => $this->status);
-		$where = array('id' => $this->id);
-		return $this->update_data($where, $update, $this->table_name);
-	}
+        $update = array(
+            'username'              => $this->username,
+            'password'              => $this->password,
+            'email'                 => $this->email,
+            'id_user_group'         => $this->id_user_group
+        );
 
+        $where = array('id' => $this->id);
+
+        if($this->update_data($where, $update, $this->table_name)){
+            $user_data = array(
+                'nombre'          => $this->nombre,
+                'apellido'        => $this->apellido,
+                'direccion'       => $this->direccion,
+                'telefono'        => $this->telefono,
+                'identificacion'  => $this->identificacion
+            );
+             
+            return $this->update_userdata($user_data) ? $this : false;
+        }
+        return false;
+    }
+    
+    public function update_userdata($data = false, $table_name = 'user_data')
+    {
+        if (!is_array($data)) {
+            return false;
+        }
+
+        foreach ($data as $key => $value) {
+            $where = array(
+                '_key' => $key,
+                'id_user' => $this->id 
+            );
+            $update = array(
+                '_key' => $key,
+                '_value' => $value,
+                'id_user' => $this->id
+            );
+            if(!$this->update_data($where, $update, $table_name)){
+                return false;
+            }
+        }
+        return true;
+    }
 	public function set_status($status = FALSE)
 	{
 		if (!$this->id) {
@@ -244,21 +274,6 @@ class User_model extends MY_model {
         }
         return false;
     }
-    
-    public function update_datauserstorage($data, $where)
-    {
-        $this->db->where($where);
-        return $this->db->update('user_data', $data);
-    }
-
-    public function delete_datauserstorage($data)
-    {
-        if (!$data) {
-            return false;
-        }
-        $this->db->where($data);
-        return $this->db->delete('user_data');
-    }
 
     public function get_is_user_exist($id = false)
     {
@@ -287,12 +302,6 @@ class User_model extends MY_model {
             //Borrar permisos
             $this->db->where(array('id_user' => $id_user));
             $this->db->delete('user_permisions');
-            //Borrar File Avatar
-            if (is_file('./img/profile/'.$id_user.'_thumb.jpg')) {
-                unlink('./img/profile/'.$id_user.'_thumb.jpg');
-            }elseif (is_file('./img/profile/'.$id_user.'_thumb.png')) {
-                unlink('./img/profile/'.$id_user.'_thumb.png');
-            }
             return true;
         }
         return false;

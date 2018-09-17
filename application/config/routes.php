@@ -47,3 +47,7 @@ $route['admin/prestamo/clientes/editar/guardar'] = 'admin/prestamo/save_update_c
 //Gastos Submodule route
 $route['admin/prestamo/gastos/registrar/(:num)'] = 'admin/prestamo/save_new_expense/$1';
 $route['admin/prestamo/gastos/borrar/(:num)/(:num)'] = 'admin/prestamo/delete_expense/$1/$2';
+
+//Ingreso Submodule route
+$route['admin/prestamo/ingresos/registrar/(:num)'] = 'admin/prestamo/save_new_incoming/$1';
+$route['admin/prestamo/ingresos/borrar/(:num)/(:num)'] = 'admin/prestamo/delete_incoming/$1/$2';
