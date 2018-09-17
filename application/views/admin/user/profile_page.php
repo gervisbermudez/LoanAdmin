@@ -113,17 +113,25 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($ingresos as $key => $ingreso): ?>
-              <tr id="#row<?= $gasto['id']; ?>">
-                <td><?= $ingreso['monto'] ?></td>
+              
+              <?php 
+              $total = 0;
+              foreach ($ingresos as $key => $ingreso): ?>
+              <tr id="#row<?= $ingreso['id']; ?>">
+                <td><?= $ingreso['monto'] ?> $</td>
                 <td><?= $ingreso['descripcion'] ?></td>
                 <td><?= $ingreso['fecha'] ?></td>
-                <td><a data-toggle="modal" href="<?= '#'.$modalid_eliminar ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $gasto['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
+                <td><a data-toggle="modal" href="<?= '#'.$modalid_eliminar ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $ingreso['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
               </tr>
-              <?php endforeach ?>
+              <?php
+              $total += $ingreso['monto'];
+              endforeach ?>
             </tbody>
           </table>
           <?php endif ?>
+          <br>
+          <span><b >Total: <?php echo $total; ?> $</b></span>
+          <hr>
           <a href="#<?= $modalid_ingresos; ?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar ingreso</a>
         </div>
         <div class="tab-pane" id="gastos">
@@ -138,17 +146,20 @@
               </tr>
             </thead>
             <tbody>
-              <?php foreach ($gastos as $key => $gasto): ?>
+              <?php $total = 0; foreach ($gastos as $key => $gasto): ?>
               <tr id="#row<?= $gasto['id']; ?>">
                 <td><?= $gasto['monto'] ?></td>
                 <td><?= $gasto['descripcion'] ?></td>
                 <td><?= $gasto['fecha'] ?></td>
                 <td><a data-toggle="modal" href="<?= '#'.$modalid_eliminar ?>" class="delete-data" data-table-reference="expenses" data-value-id="<?= $gasto['id']; ?>" data-delete-redirect="true" data-delete-redirectto="admin/user/view/<?= $user->id ?>"><i class="fa fa-remove"></i></a></td>
               </tr>
-              <?php endforeach ?>
+              <?php $total += $gasto['monto']; endforeach ?>
             </tbody>
           </table>
           <?php endif ?>
+          <br>
+          <span><b >Total: <?php echo $total; ?> $</b></span>
+          <hr>
           <a href="#<?= $modalid_gastos; ?>" data-toggle="modal" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar gasto</a>
         </div>
         <div class="tab-pane" id="timeline">

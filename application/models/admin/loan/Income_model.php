@@ -1,4 +1,4 @@
-Income_model<?php
+<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Income_model extends MY_model {
