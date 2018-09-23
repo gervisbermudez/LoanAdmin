@@ -258,7 +258,12 @@ class Prestamo extends MY_Controller {
    */
   public function form_new_loan()
   { 
+    if($this->session->userdata('user')['level'] < 2 ){
+      $data['clientes'] = $this->Loan_model->get_cliente_extended();
+    } else {
       $data['clientes'] = $this->Loan_model->get_cliente_extended('AND user.id='.$this->session->userdata('user')['id']);
+    }
+   
       if ($data['clientes']) {
         // Helpers and Librarys 
         $this->load->helper('array');
@@ -383,17 +388,22 @@ class Prestamo extends MY_Controller {
 
       $data['cuotas'] = $this->MY_model->get_data(array('id_prestamo' => $id_prestamo, 'status' => '1'), 'loans_dues');
 
+      //Includes Pages
       $data['head_includes'] = [
-        'calendar-css' => link_tag(JSPATH.'fullcalendar/dist/fullcalendar.min.css'),
-        'data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css')
+        'calendar-css'    => link_tag(JSPATH.'fullcalendar/dist/fullcalendar.min.css'),
+        'data-table-css'  => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css'),
+        'morris-css'      => link_tag(JSPATH.'morris.js/morris.css')
       ];
 
       $data['footer_includes'] = [
+        'moment-js'       => fnAddScript(JSPATH.'moment/min/moment.min.js'),
+        'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
+        'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js'),
         'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
         'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
         'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
-        'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
-        'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
+        'raphael' => fnAddScript(JSPATH.'raphael/raphael.min.js'),
+        'morris' => fnAddScript(JSPATH.'morris.js/morris.min.js')
       ];
 
       //Load the views

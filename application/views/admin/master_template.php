@@ -191,7 +191,7 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
           <div class="pull-right hidden-xs">
-            <b>Version</b> <?= VERSION ?>
+            <b>Version</b> <?= SITEVERSION ?>
           </div>
           <strong>Copyright &copy; 2018 - <?= date('Y') ?> <a href="<?php echo base_url(); ?>"><?php echo $this->config->item('sitename'); ?></a>.</strong> All rights
           reserved.
@@ -385,6 +385,6 @@
           }
         }
       ?>
-      <script src="<?php echo base_url().JSPATH.'app.min.js'; ?>"></script>
+      <script src="<?php echo base_url().JSPATH.'app.min.js?v='.SITEVERSION; ?>"></script>
     </body>
   </html>

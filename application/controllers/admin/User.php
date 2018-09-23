@@ -229,10 +229,11 @@ class User extends MY_Controller {
         $data['action'] = 'admin/user/update/';
         $data['pagedescription'] = "Editar un cobrador";
         $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Usuarios', 'admin/user'), array('Editar', 'admin/user/view/'.$user->id), array($user->username, 'admin/user/view/'.$user->id)));
-        if ($this->session->userdata('user')['level'] <= 2) {
-          $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >'=>1));
+        
+        if ($this->session->userdata('user')['level'] == 0) {
+          $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1'));
         }else{
-          $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >'=>$this->session->userdata('user')['level']));
+          $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >='=>$this->session->userdata('user')['level']));
         }
         // The views
         $data['page'] = $this->load->view('/admin/user/form_add_page', $data, TRUE);
@@ -266,7 +267,7 @@ class User extends MY_Controller {
     $user->identificacion         = $this->input->post('identificacion');
     
     if($user->update()){
-      redirect('admin/user/view/'.$user->id);
+      redirect('admin/user/view/'.$user->id.'?alert=update_profile');
     }else{
       $this->showError();
     }
@@ -282,7 +283,12 @@ class User extends MY_Controller {
     //Params data
     $user = $this->session->get_userdata('user')['user'];
 
-    $data['cuotas'] = $this->MY_model->get_query('SELECT * FROM `loans_dues`, loans, `clients` WHERE `loans`.`id_cliente`=`clients`.`id` AND `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`id_prestamista`= '.$user['id']);
+    if ($user['level'] < 2) {
+      $data['cuotas'] = $this->MY_model->get_query('SELECT * FROM `loans_dues`, loans, `clients` WHERE `loans`.`id_cliente`=`clients`.`id` AND `loans_dues`.`id_prestamo`=`loans`.`id`');      
+    }else{
+      $data['cuotas'] = $this->MY_model->get_query('SELECT * FROM `loans_dues`, loans, `clients` WHERE `loans`.`id_cliente`=`clients`.`id` AND `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`id_prestamista`= '.$user['id']);
+    }
+
     
     //Includes Pages
     $data['head_includes'] = [

@@ -1,3 +1,7 @@
+<?php
+  $this->load->helper('string');
+  $modalid = random_string('alnum', 16);
+?>
 <div class="box">
   <div class="box-header with-border">
     <h3 class="box-title">Herramientas</h3>
@@ -37,10 +41,14 @@
                   Opciones <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li role="presentation"><a href="<?php echo base_url('admin/prestamo/cuotas/pagar/'.$prestamo['id']) ?>" role="menuitem" tabindex="-1" title="Registrar pago"><i class="fa fa-fw fa-plus-circle"></i> Realizar un pago</a></li>
+                  <li role="presentation"><a href="<?php echo base_url('admin/prestamo/cuotas/pagar/'.$prestamo['id']) ?>" role="menuitem" tabindex="-1" title="Registrar pago"><i class="fa fa-fw fa-plus-circle"></i> Registrar un pago</a></li>
+                  <?php if ($this->session->userdata('user')['level'] < 2): ?>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url('admin/prestamo/prestamo/editar/'.$prestamo['id']); ?>">Editar</a></li>
+                  <li role="presentation"><a role="menuitem" data-toggle="modal" data-target="<?php echo '#'.$modalid ?>" tabindex="-1" href="#!" data-table-reference="loans" data-value-id="<?php echo $prestamo['id']; ?>" data-target="" data-delete-redirect="true" data-delete-redirectto="admin/prestamo/cliente<?= $prestamo['id_cliente'] ?>" class="delete-data">Eliminar</a></li>
+                  <?php endif ?>
                 </ul>
               </li>
-              <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="tab_1">
@@ -108,19 +116,39 @@
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_3">
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                It has survived not only five centuries, but also the leap into electronic typesetting,
-                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-                sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                like Aldus PageMaker including versions of Lorem Ipsum.
-              </div>
+              
               <!-- /.tab-pane -->
             </div>
             <!-- /.tab-content -->
           </div>
     </div>
+</div>
+
+<div class="row" id="dues_chart"> 
+<div class="col-sm-12">
+  <div class="chart" id="revenue-chart" style="position: relative; height: 300px;"></div>
+</div>
+</div>
+                
+<div class="modal fade" id="<?php echo $modalid; ?>" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span></button>
+        <h4 class="modal-title">Eliminar Prestamo</h4>
+      </div>
+      <div class="modal-body">
+        <p>Esta accion eliminará el Prestamo y todos los datos relacionados con éste</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" data-delete-data="run" data-dismiss="modal">Continuar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
 
 <script>
@@ -143,9 +171,22 @@
         title          : 'Cuota de <?php echo $cuota["monto_total"] ?>',
         start          : new Date(<?php echo $fecha_pago->format('Y').', '.((int)($fecha_pago->format('m'))-1).', '.$fecha_pago->format('d').',08,00,00' ?>),
         backgroundColor: '<?php echo $Eventcolor ?>', //red
-        borderColor    : '<?php echo $Eventcolor ?>' //red
+        borderColor    : '<?php echo $Eventcolor ?>', //red
+        url            : '<?= base_url().'admin/prestamo/cuotas/'.$cuota["id_prestamo"] ?>',
       },
     <?php endforeach ?>
     {}
-  ]
+  ];
+  /** 
+  var MorrisArea = [
+    <?php foreach ($cuotas as $key => $cuota): ?>
+		  { y: '<?= $cuota['fecha_pago'] ?>', item1: <?= $cuota['monto_total'] ?>},
+    <?php endforeach ?>
+    {}
+    ];*/
+    var MorrisArea = [
+      <?php foreach ($cuotas as $key => $cuota): ?>
+        { y: '<?= $cuota['fecha_pago'] ?>', item1: <?= $cuota['monto_pagado'] ?> },
+      <?php endforeach ?>
+		]
 </script>

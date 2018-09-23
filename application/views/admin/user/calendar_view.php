@@ -37,7 +37,7 @@
           $Eventcolor = '#f39c12'; // Amarillo
         }
         if ($cuota['estado'] == 'Caida') {
-          $Eventcolor = '#f56954'; // Rojo
+          $Eventcolor = '#dd4b39'; // Rojo
         }
         if ($cuota['estado'] == 'Pagado') {
           $Eventcolor = '#00a65a'; // Verde
@@ -47,7 +47,8 @@
         title          : 'Cuota de <?php echo $cuota["monto_total"] ?>',
         start          : new Date(<?php echo $fecha_pago->format('Y').', '.((int)($fecha_pago->format('m'))-1).', '.$fecha_pago->format('d').',08,00,00' ?>),
         backgroundColor: '<?php echo $Eventcolor ?>', //red
-        borderColor    : '<?php echo $Eventcolor ?>' //red
+        borderColor    : '<?php echo $Eventcolor ?>', //red
+        url            : '<?= base_url().'admin/prestamo/cuotas/'.$cuota["id_prestamo"] ?>',
       },
     <?php endforeach ?>
     {}

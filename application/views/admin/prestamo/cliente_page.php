@@ -26,10 +26,10 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url('admin/prestamo/nuevo/user/'.$cliente['id']); ?>">Registrar Prestamo</a></li>
-                  <?php if ($this->session->userdata('user')['level'] < 3): ?>
+                  <?php if ($this->session->userdata('user')['level'] < 2): ?>
                   <li role="presentation" class="divider"></li>
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo base_url('admin/prestamo/cliente/editar/'.$cliente['id']); ?>">Editar</a></li>
-                  <li role="presentation"><a role="menuitem" data-toggle="modal" data-target="<?php echo '#'.$modalid ?>" tabindex="-1" href="#!" data-table-reference="prestamos_clientes" data-value-id="<?php echo $cliente['id']; ?>" data-target="" data-delete-redirect="true" data-delete-redirectto="admin/prestamo/clientes" class="delete-data">Eliminar</a></li>
+                  <li role="presentation"><a role="menuitem" data-toggle="modal" data-target="<?php echo '#'.$modalid ?>" tabindex="-1" href="#!" data-table-reference="clients" data-value-id="<?php echo $cliente['id']; ?>" data-target="" data-delete-redirect="true" data-delete-redirectto="admin/prestamo/clientes" class="delete-data">Eliminar</a></li>
                   <?php endif ?>
                 </ul>
               </li>

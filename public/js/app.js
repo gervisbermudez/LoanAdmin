@@ -88,7 +88,31 @@ jQuery(document).ready(function($) {
 		loadScript(element);
 	});
 
-	setTimeout(function(){ preloader.off(); }, 2000);
+	let params = getQueryParams(window.location.search);
+	if(params){
+		switch (params['alert']) {
+			case 'update_avatar':
+			objAlert.strAlertTipe = 'alert-success';
+			objAlert.fnGenerate('Foto de perfil actualizado con exito!');
+			case 'update_profile':
+			objAlert.strAlertTipe = 'alert-success';
+			objAlert.fnGenerate('Perfil actualizado con exito!');
+			break;
+		}
+	}
+	setTimeout(function(){ preloader.off(); }, 3000);
+	
+	var area = new Morris.Area({
+		element   : 'revenue-chart',
+		resize    : true,
+		data      : MorrisArea,
+		xkey      : 'y',
+		ykeys     : ['item1'],
+		labels    : ['Pagado'],
+		lineColors: ['#a0d0e0'],
+		hideHover : 'auto'
+	  });
+	  $('#tab_3').html($('#dues_chart'));
 });
 
 var fn_dasboard_run = function() {
