@@ -190,9 +190,9 @@
         <!-- /.content-wrapper -->
         <footer class="main-footer">
           <div class="pull-right hidden-xs">
-            <b>Version</b> 2.4.0
+            <b>Version</b> <?= VERSION ?>
           </div>
-          <strong>Copyright &copy; 2014-2016 <a href="<?php echo base_url(); ?>"><?php echo $this->config->item('sitename'); ?></a>.</strong> All rights
+          <strong>Copyright &copy; 2018 - <?= date('Y') ?> <a href="<?php echo base_url(); ?>"><?php echo $this->config->item('sitename'); ?></a>.</strong> All rights
           reserved.
         </footer>
         <!-- Control Sidebar -->
