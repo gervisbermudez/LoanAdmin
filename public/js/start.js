@@ -1,10 +1,79 @@
+(function($) {
+	var defaults = {
+		position: 'bottom',
+		height: '5px',
+		col_1: '#159756',
+		col_2: '#da4733',
+		col_3: '#3b78e7',
+		col_4: '#fdba2c',
+		fadeIn: 200,
+		fadeOut: 200
+	}
+
+	$.materialPreloader = function(options) {
+		var settings = $.extend({}, defaults, options);
+		$template =
+			"<div id='materialPreloader' class='load-bar' style='height:" +
+			settings.height + ";display:none;" + settings.position +
+			":0px'><div class='load-bar-container'><div class='load-bar-base base1' style='background:" +
+			settings.col_1 +
+			"'><div class='color red' style='background:" + settings.col_2 +
+			"'></div><div class='color blue' style='background:" +
+			settings.col_3 +
+			"'></div><div class='color yellow' style='background:" +
+			settings.col_4 +
+			"'></div><div class='color green' style='background:" +
+			settings.col_1 +
+			"'></div></div></div> <div class='load-bar-container'><div class='load-bar-base base2' style='background:" +
+			settings.col_1 +
+			"'><div class='color red' style='background:" + settings.col_2 +
+			"'></div><div class='color blue' style='background:" +
+			settings.col_3 +
+			"'></div><div class='color yellow' style='background:" +
+			settings.col_4 +
+			"'></div> <div class='color green' style='background:" +
+			settings.col_1 + "'></div> </div> </div> </div>";
+		$('body').prepend($template);
+		this.on = function() {
+			$('#materialPreloader').fadeIn(settings.fadeIn);
+		}
+		this.off = function() {
+			$('#materialPreloader').fadeOut(settings.fadeOut);
+		}
+	}
+}(jQuery));
+preloader = new $.materialPreloader({
+        position: 'top',
+        height: '5px',
+        col_1: '#159756',
+        col_2: '#da4733',
+        col_3: '#3b78e7',
+        col_4: '#fdba2c',
+        fadeIn: 200,
+        fadeOut: 200
+    });
+preloader.on();
+
 jQuery(document).ready(function($) {
-    fnCheckValue();
+	
+	$('.sidebar-menu').tree();
+	//$.widget.bridge('uibutton', $.ui.button);
+	fnCheckValue();
     objDeleteData.fnIni();
     fnChangeUserStatus();
     if ($('[data-run-dashboard]').length) {
     	fn_dasboard_run();
-    };
+	};
+
+	$.each(arrCSSload, function(index, element) {
+		loadCSS(element);
+	});
+
+	$.each(arrJavaScriptload, function(index, element) {
+		loadScript(element);
+	});
+
+	setTimeout(function(){ preloader.off(); }, 1000);
 });
 
 var fn_dasboard_run = function() {
@@ -358,6 +427,59 @@ var fnChangeUserStatus = function () {
 	});
 };
 
-var fnDeleteDataAndRedirect = function () {
-	
+var loadScript = function loadScript(url, callback){
+
+    var script = document.createElement("script")
+    script.type = "text/javascript";
+
+    if (script.readyState){  //IE
+        script.onreadystatechange = function(){
+            if (script.readyState == "loaded" ||
+                    script.readyState == "complete"){
+                script.onreadystatechange = null;
+               typeof callback === 'function' ? callback() : false ;
+            }
+        };
+    } else {  //Others
+        script.onload = function(){
+			typeof callback === 'function' ? callback() : false ;
+        };
+    }
+
+    script.src = url;
+    document.getElementsByTagName("head")[0].appendChild(script);
 }
+
+var loadCSS = function loadCSS(href){
+		var head  	= document.getElementsByTagName('head')[0];
+		var link  	= document.createElement('link');
+		link.id   	= strRandom();
+		link.rel  	= 'stylesheet';
+		link.type 	= 'text/css';
+		link.href 	= href;
+		link.media 	= 'all';
+		head.appendChild(link);
+}
+
+var strRandom = function strRandom(length) {
+	var text = "";
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+	for (var i = 0; i < length; i++)
+	  text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+	return text;
+}
+
+var arrCSSload = [
+	BASEURL + FONTSPATH + 'font-awesome/css/font-awesome.min.css',
+	BASEURL + FONTSPATH + 'Ionicons/css/ionicons.min.css',
+	BASEURL + CSSPATH + 'skin-blue-light.min.css'
+];
+
+var arrJavaScriptload = [
+	BASEURL + JSPATH + 'jquery-ui/jquery-ui.min.js',
+	BASEURL + JSPATH + 'jquery-slimscroll/jquery.slimscroll.min.js',
+	BASEURL + JSPATH + 'fastclick/lib/fastclick.js',
+	BASEURL + JSPATH + 'fastclick/lib/fastclick.js',
+];

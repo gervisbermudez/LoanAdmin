@@ -9,23 +9,19 @@
     <title><?php echo $this->config->item('sitename'); ?> | <?php echo $title ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="shortcut icon" href="<?= IMGPATH ?>favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?= IMGPATH ?>favicon.ico" type="image/x-icon">
+    <style>
+    </style>
     <!-- Bootstrap 3.3.7 -->
     <?= link_tag(JSPATH.'bootstrap/dist/css/bootstrap.min.css'); ?>
-    <!-- Font Awesome -->
-    <?= link_tag(FONTSPATH.'font-awesome/css/font-awesome.min.css'); ?>
-    <!-- Ionicons -->
-    <?= link_tag(FONTSPATH.'Ionicons/css/ionicons.min.css'); ?>
-    <!-- Theme style -->
     <?= link_tag(CSSPATH.'AdminLTE.min.css'); ?>
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-    folder instead of downloading all of them to reduce the load. -->
-    <?= link_tag(CSSPATH.'_all-skins.min.css'); ?>
     <?php
-    if (isset($head_includes)) {
-    foreach ($head_includes as $value) {
-    echo $value;
-    }
-    }
+      if (isset($head_includes)) {
+        foreach ($head_includes as $value) {
+          echo $value;
+        }
+      }
     ?>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -367,43 +363,29 @@
       </div>
       <!-- ./wrapper -->
       <div class="alert-zone"></div>
+      <script>
+        const JSPATH  = '<?= JSPATH ?>';
+        const CSSPATH = '<?= CSSPATH ?>';
+        const FONTSPATH = '<?= FONTSPATH ?>';
+        const BASEURL = '<?= base_url() ?>';
+      </script>
       <!-- jQuery 3 -->
       <script src="<?php echo base_url().JSPATH.'jquery/dist/jquery.min.js'; ?>"></script>
-      <!-- jQuery UI 1.11.4 -->
-      <script src="<?php echo base_url().JSPATH.'jquery-ui/jquery-ui.min.js'; ?>"></script>
-      <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-      <script>
-      $.widget.bridge('uibutton', $.ui.button);
-      </script>
       <!-- Bootstrap 3.3.7 -->
       <script src="<?php echo base_url().JSPATH.'bootstrap/dist/js/bootstrap.min.js'; ?>"></script>
       <!-- Morris.js charts -->
       <script src="<?php echo base_url().JSPATH.'raphael/raphael.min.js'; ?>"></script>
       <script src="<?php echo base_url().JSPATH.'morris.js/morris.min.js'; ?>"></script>
-      <!-- Sparkline -->
-      <script src="<?php echo base_url().JSPATH.'jquery-sparkline/dist/jquery.sparkline.min.js'; ?>"></script>
       <!-- jQuery Knob Chart -->
       <script src="<?php echo base_url().JSPATH.'jquery-knob/dist/jquery.knob.min.js'; ?>"></script>
-      <!-- Slimscroll -->
-      <script src="<?php echo base_url().JSPATH.'jquery-slimscroll/jquery.slimscroll.min.js'; ?>"></script>
-      <!-- FastClick -->
-      <script src="<?php echo base_url().JSPATH.'fastclick/lib/fastclick.js'; ?>"></script>
       <!-- AdminLTE App -->
       <script src="<?php echo base_url().JSPATH.'adminlte.min.js'; ?>"></script>
-      <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-      <!-- AdminLTE for demo purposes -->
-      <script src="<?php echo base_url().JSPATH.'demo.js'; ?>"></script>
-      <script>
-      $(document).ready(function () {
-      $('.sidebar-menu').tree()
-      })
-      </script>
       <?php
-      if (isset($footer_includes)) {
-      foreach ($footer_includes as $key => $value) {
-      echo "$value";
-      }
-      }
+        if (isset($footer_includes)) {
+          foreach ($footer_includes as $key => $value) {
+            echo $value;
+          }
+        }
       ?>
       <script src="<?php echo base_url().JSPATH.'start.js'; ?>"></script>
     </body>
