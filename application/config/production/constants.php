@@ -92,5 +92,3 @@ defined('FONTSPATH')           OR define('FONTSPATH', PUBLICPATH.'fonts/');
 defined('IMGPATH')             OR define('IMGPATH', PUBLICPATH.'img/');
 defined('IMGPROFILEPATH')      OR define('IMGPROFILEPATH', IMGPATH.'profile/');
 
-//Define the currente site version 
-defined('VERSION')      OR define('VERSION', '1.0');
