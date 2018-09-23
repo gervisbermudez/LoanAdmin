@@ -52,6 +52,7 @@
 		</div>
 		<div class="box-footer no-padding">
 			<ul class="nav nav-stacked">
+				<li><a href="<?php echo $user->user_group->name ?>">Nivel <span class="pull-right"><?php echo $user->user_group->name ?></span></a></li>
 				<li><a href="mailto:<?php echo $user->email ?>">Email <span class="pull-right"><?php echo $user->email ?></span></a></li>
 				<li><a href="tel:<?php echo $user->telefono; ?>">Teléfono <span class="pull-right"><?php echo $user->telefono; ?></span></a></li>
 				<li><a href="#">Ultima vez <span class="pull-right"><?php echo $user->lastseen->format('d M Y H:i'); ?></span></a></li>

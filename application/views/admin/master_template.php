@@ -9,8 +9,8 @@
     <title><?php echo $this->config->item('sitename'); ?> | <?php echo $title ?></title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="shortcut icon" href="<?= IMGPATH ?>favicon.ico" type="image/x-icon">
-    <link rel="icon" href="<?= IMGPATH ?>favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= base_url(IMGPATH); ?>favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?= base_url(IMGPATH); ?>favicon.ico" type="image/x-icon">
     <style>
     </style>
     <!-- Bootstrap 3.3.7 -->
@@ -139,6 +139,11 @@
                   Nuevo</a></li>
                 </ul>
               </li>
+              <li>
+              <a href="<?php echo base_url('admin/user/calendar'); ?>">
+                <i class="fa fa-calendar"></i> <span>Calendario</span>
+              </a>
+            </li>
               <li class="treeview">
                 <a href="#">
                   <i class="fa fa-user"></i> <span>Clientes</span>
@@ -387,6 +392,6 @@
           }
         }
       ?>
-      <script src="<?php echo base_url().JSPATH.'start.js'; ?>"></script>
+      <script src="<?php echo base_url().JSPATH.'app.js'; ?>"></script>
     </body>
   </html>
