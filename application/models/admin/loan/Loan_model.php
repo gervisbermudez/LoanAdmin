@@ -537,7 +537,7 @@ class Loan_model extends MY_model {
 
 	public function get_simple_next_dues($whereportion = '', $order_by = 'ORDER BY `loans_dues`.`fecha_pago` ASC', $limit = 'LIMIT 10')
 	{
-		$sql = "SELECT `loans`.`id` AS 'prestamo_id', `id_prestamista`, `id_cliente`, `loans_dues`.`monto_total`, `loans_dues`.`id`, `loans_dues`.`fecha_pago` FROM `loans`, `loans_dues` WHERE `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`estado` != 'Pagado' AND `loans_dues`.`fecha_pago`>CURRENT_DATE() $whereportion $order_by $limit";
+		$sql = "SELECT `loans`.`id` AS 'prestamo_id', `id_prestamista`, `id_cliente`, `loans_dues`.`monto_total`, `loans_dues`.`id`, `loans_dues`.`fecha_pago`, CONCAT(`clients`.`nombre`, ' ', `clients`.`apellido`) AS `cliente` FROM `loans`, `loans_dues`, `clients` WHERE `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`estado` != 'Pagado' AND `loans_dues`.`fecha_pago`>CURRENT_DATE() AND `loans`.`id_cliente`=`clients`.`id` $whereportion $order_by $limit";
 		$query = $this->db->query($sql);
 		if ($query->num_rows() > 0){
 			return $query->result_array(); 

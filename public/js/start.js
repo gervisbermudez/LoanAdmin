@@ -21,8 +21,9 @@ var fn_dasboard_run = function() {
 		$('#duescount').html(response['cuotas_count']);
 		$('#client_this_month b').html(response['clientes_count_this_month']);
 		$('#prestamos_count_this_month b').html(response['prestamos_count_this_month']);
+		$('#count_dues_down b').html(response['count_dues_down']);
 		$('#user_count_month b').html(response['user_count_month']);
-		if(response['prestamos_por_mes'].length){	
+		if(response['prestamos_por_mes']){	
 		meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 		response_meses = Object.keys(response['prestamos_por_mes']);
 		meses_a_grafica = [];

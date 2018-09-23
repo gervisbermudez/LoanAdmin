@@ -15,12 +15,12 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <b>Cliente:</b> <a href="<?php echo base_url('admin/prestamo/cliente/'.$prestamo['id_cliente']); ?>"><?php echo $prestamo['nombre'].' '.$prestamo['apellido'] ?></a><br/>
-                <b>Monto prestado:</b> <?php echo $prestamo['monto'] ?>$<br/>
+                <b>Monto prestado:</b> <?php echo number_format ($prestamo['monto'], 2, ',', '.'); ?> $<br/>
                 <b>Porcentaje:</b> <?php echo $prestamo['porcentaje'] ?>%<br/>
-                <b>Monto total:</b> <?php echo $prestamo['monto_total'] ?>$<br/>
+                <b>Monto total:</b> <?php echo number_format ($prestamo['monto_total'], 2, ',', '.'); ?> $<br/>
                 <b>Ciclo de pago:</b> <?php echo $prestamo['ciclo_pago'] ?><br/>
-                <b>Cantidad de cuotas:</b> <?php echo $prestamo['cant_cuotas'] ?><br/>
-                <b>Cuotas a pagar:</b> <?php echo ((int)$prestamo['monto_total'])/((int)$prestamo['cant_cuotas']); ?>$
+                <b>Cantidad de cuotas:</b> <?php echo $prestamo['cant_cuotas']; ?><br/>
+                <b>Cuota a pagar:</b> <?php echo number_format (((int)$prestamo['monto_total'])/((int)$prestamo['cant_cuotas']), 2, ',', '.'); ?> $
               </ul>
             </div>
             <!-- /.box-body -->
@@ -58,6 +58,9 @@
                 </tr>
                 </thead>
                 <tbody>
+                <?php
+                  $monto_total_pagado = 0;
+                ?>
                  <?php foreach ($cuotas as $key => $cuota): ?>
                  <?php 
                   $badge = 'label-danger'; 
@@ -73,11 +76,14 @@
                 ?>
                 <tr>
                      <td><?php echo $cuota['fecha_pago'] ?></td>
-                     <td><?php echo $cuota['monto_total'] ?>$</td>
-                     <td><?php echo $cuota['monto_pagado'] ?>$</td>
+                     <td><?php echo number_format ($cuota['monto_total'], 2, ',', '.'); ?> $</td>
+                     <td><?php echo number_format ($cuota['monto_pagado'], 2, ',', '.'); ?> $</td>
                      <td class="hidden-xs"><?php echo $cuota['fecha_pagado'] ?></td>
                      <td class="hidden-xs"><span class="label <?php echo $badge ?>"><?php echo $cuota['estado'] ?></span></td>
                    </tr>
+                <?php
+                  $monto_total_pagado = $cuota['monto_pagado'] + $monto_total_pagado;
+                ?>
                  <?php endforeach ?>
                 </tbody>
                 <tfoot>
@@ -90,9 +96,11 @@
                 </tr>
                 </tfoot>
               </table>
+
               <?php else: ?>
               No hay cuotas para este prestamo
               <?php endif ?>
+              <b>Monto total pagado hasta el momento: </b> <?php echo number_format ($monto_total_pagado, 2, ',', '.'); ?> $
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">

@@ -39,7 +39,6 @@ class User extends MY_Controller {
   {
     parent::__construct();
     $this->load->model('User_model');
-    
   }
 
   public function index()
@@ -90,11 +89,11 @@ class User extends MY_Controller {
 
       $this->load->model('admin/loan/Expenses_model');
       $gastos = new Expenses_model();
-      $data['gastos'] = $gastos->get_data(array('id_user' => $id), $gastos->table);
+      $data['gastos'] = $gastos->get_data(array('id_user' => $id, 'DATE(fecha)' => 'DATE(CURRENT_DATE)'), $gastos->table);
       
       $this->load->model('admin/loan/Income_model');
       $ingresos = new Income_model();
-      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id), $ingresos->table);
+      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id, 'DATE(fecha)' => 'DATE(CURRENT_DATE)'), $ingresos->table);
     
       $data['title'] = $user->username;
       $data['h1'] = $user->username;
@@ -104,7 +103,7 @@ class User extends MY_Controller {
       $this->load->model('Loan_model');
 
       $data['user'] = $user;
-      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND user.id ='.$id);
+      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND user.id ='.$id.' ');
 
       // Load the views
       $data['timeline'] = $this->load->view('/admin/user/timeline', $data, TRUE);

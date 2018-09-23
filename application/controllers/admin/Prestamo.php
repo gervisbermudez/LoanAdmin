@@ -389,13 +389,12 @@ class Prestamo extends MY_Controller {
       ];
 
       $data['footer_includes'] = [
-      'jqeryui' => fnAddScript(JSPATH.'jquery-ui/jquery-ui.min.js'), 
-      'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
-      'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
-      'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
-      'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
-      //'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
-    ];
+        'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
+        'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
+        'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
+        'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
+        'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
+      ];
 
       //Load the views
       $data['page'] = $this->load->view('admin/prestamo/all_dues_page', $data, TRUE);

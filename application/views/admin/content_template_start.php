@@ -54,7 +54,7 @@
     </div>
     <div class="row">
       <!-- Left col -->
-      <div class="col-md-8">
+      <div class="col-md-7">
         <!-- TABLE: LATEST ORDERS -->
         <div class="box box-info">
           <div class="box-header with-border">
@@ -95,9 +95,9 @@
                   }
                   ?>
                   <tr>
-                    <td><?= $prestamo['monto'] ?></td>
+                    <td><?= number_format ($prestamo['monto'], 2, ',', '.'); ?> $</td>
                     <td class="hidden-xs"><?= $prestamo['cant_cuotas'] ?>&nbsp;<a title='Ver Cuotas' href="<?= base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
-                    <td class="hidden-xs"><?= $prestamo['monto_total'] ?></td>
+                    <td class="hidden-xs"><?= number_format ($prestamo['monto_total'], 2, ',', '.'); ?> $</td>
                     <td><span class="badge <?= $badge ?>"><?= $progreso ?>%</span></td>
                   </tr>
                   <?php endforeach ?>
@@ -117,7 +117,7 @@
         <!-- /.box -->
       </div>
       <!-- /.col -->
-      <div class="col-md-4">
+      <div class="col-md-5">
         <div class="box box-info">
           <div class="box-header with-border">
             <h3 class="box-title">Próximas cuotas a cobrar</h3>
@@ -133,8 +133,8 @@
               <table class="table no-margin">
                 <thead>
                   <tr>
-                    <th class="hidden-xs">Prestamo</th>
-                    <th class="hidden-xs">Cuotas</th>
+                    <th class="hidden-xs">Cuota</th>
+                    <th class="hidden-xs">Fecha</th>
                     <th>Cliente</th>
                   </tr>
                 </thead>
@@ -155,9 +155,9 @@
                   }
                   ?>
                   <tr>
-                    <td><?= $cuota['monto_total'] ?></td>
+                    <td><?= number_format ($cuota['monto_total'], 2, ',', '.') ?> $</td>
                     <td class="hidden-xs"><?= $cuota['fecha_pago'] ?>&nbsp;<a title='Ver Cuotas' href="<?= base_url('admin/prestamo/cuotas/'.$cuota['prestamo_id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
-                    <td class="hidden-xs"><?= $cuota['id_cliente'] ?></td>
+                    <td class="hidden-xs"><?= $cuota['cliente'] ?></td>
                   </tr>
                   <?php endforeach ?>
                 </tbody>
@@ -229,7 +229,7 @@
                 <!-- /.progress-group -->
                 <div class="progress-group">
                   <span class="progress-text">Cuotas caidas:</span>
-                  <span class="progress-number"><b>250</b>/500</span>
+                  <span class="progress-number" id="count_dues_down"><b></b></span>
                   <div class="progress sm">
                     <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
                   </div>
