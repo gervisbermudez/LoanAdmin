@@ -378,13 +378,6 @@
       <script src="<?php echo base_url().JSPATH.'jquery/dist/jquery.min.js'; ?>"></script>
       <!-- Bootstrap 3.3.7 -->
       <script src="<?php echo base_url().JSPATH.'bootstrap/dist/js/bootstrap.min.js'; ?>"></script>
-      <!-- Morris.js charts -->
-      <script src="<?php echo base_url().JSPATH.'raphael/raphael.min.js'; ?>"></script>
-      <script src="<?php echo base_url().JSPATH.'morris.js/morris.min.js'; ?>"></script>
-      <!-- jQuery Knob Chart -->
-      <script src="<?php echo base_url().JSPATH.'jquery-knob/dist/jquery.knob.min.js'; ?>"></script>
-      <!-- AdminLTE App -->
-      <script src="<?php echo base_url().JSPATH.'adminlte.min.js'; ?>"></script>
       <?php
         if (isset($footer_includes)) {
           foreach ($footer_includes as $key => $value) {
@@ -392,6 +385,6 @@
           }
         }
       ?>
-      <script src="<?php echo base_url().JSPATH.'app.js'; ?>"></script>
+      <script src="<?php echo base_url().JSPATH.'app.min.js'; ?>"></script>
     </body>
   </html>
