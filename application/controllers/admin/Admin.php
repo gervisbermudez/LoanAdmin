@@ -86,14 +86,4 @@ class Admin extends MY_Controller {
 		$dashboard['count_dues_down'] = $loans_dues ? count($loans_dues) : 0 ;
 		$this->output->set_content_type('application/json')->set_output(json_encode($dashboard));
 	}
-
-	public function test()
-	{
-		$this->load->model('admin/loan/Expenses_model');
-		$gastos = new Expenses_model();
-		$data['gastos'] = $gastos->get_data(array('id' => 1), $gastos->table);
-		echo '<pre>';
-		var_dump($data['gastos']);
-		echo '</pre>';
-	}
 }
