@@ -273,4 +273,29 @@ class User extends MY_Controller {
 
   }
 
+  public function calendar(){
+    $data['title'] = "Admin | Calendario";
+		$data['h1'] = "Calendario";
+		$data['pagedescription'] = "Mi Calendario";
+		$data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Calendario', 'admin/user/calendar')));
+    
+    //Params data
+    $data['cuotas'] = $this->MY_model->get_data(array('status' => '1'), 'loans_dues');
+    
+    //Includes Pages
+    $data['head_includes'] = [
+      'calendar-css' => link_tag(JSPATH.'fullcalendar/dist/fullcalendar.min.css')
+    ];
+
+    $data['footer_includes'] = [
+      'moment-js'       => fnAddScript(JSPATH.'moment/min/moment.min.js'),
+      'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
+      'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
+    ];
+
+    //Load the Views
+		$data['page'] = $this->load->view('admin/user/calendar_view', $data, TRUE);
+		$data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
+		$this->load->view('admin/master_template', $data);
+  }
 }

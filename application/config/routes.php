@@ -9,6 +9,7 @@ $route['admin/ajax_get_dashboard_data'] = 'admin/admin/ajax_get_dashboard_data';
 
 // System routes
 $route['admin/notificaciones'] = 'admin/admin/notifications';
+$route['admin/user/calendar'] = 'admin/user/calendar';
 $route['admin/fnChangeState'] = 'admin/admin/fnChangeState';
 $route['admin/fn_ajax_check_value'] = 'admin/admin/fn_ajax_check_value';
 $route['admin/fn_ajax_delete_data'] = 'admin/admin/fn_ajax_delete_data';
