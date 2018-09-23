@@ -1,15 +1,4 @@
-/*!
- *   AdminLTE v2.4.0
- *   Author: Almsaeed Studio
- *	 Website: Almsaeed Studio <https://adminlte.io>
- *   License: Open source - MIT
- *           Please visit http://opensource.org/licenses/MIT for more information
- */
-/*
- * Core: General Layout Style
- * -------------------------
- */
- .layout-boxed body,.layout-boxed html,.wrapper,body,html {
+.layout-boxed body,.layout-boxed html,.wrapper,body,html {
   height: 100%
 }
 
@@ -33,6 +22,13 @@
 body {
   font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
   font-weight: 400
+}
+
+hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  border-top: 1px solid #eee;
 }
 
 .wrapper {
@@ -82,7 +78,8 @@ body {
 .content-wrapper {
   min-height: 100%;
   background-color: #ecf0f5;
-  z-index: 800
+  z-index: 800;
+  overflow: hidden;
 }
 
 .main-footer {
