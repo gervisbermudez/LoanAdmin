@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url']	= 'http://dev.myloanadmin.io/';
-$config['sitename'] = 'My Loan Admin';
+$config['sitename'] = 'My Loan Admin | Development';
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +77,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'english';
+$config['language']	= 'espanish';
 
 /*
 |--------------------------------------------------------------------------
@@ -476,7 +476,7 @@ $config['csrf_exclude_uris'] = array();
 | by the output class.  Do not 'echo' any values with compression enabled.
 |
 */
-$config['compress_output'] = FALSE;
+$config['compress_output'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

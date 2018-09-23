@@ -53,8 +53,11 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	$hostanames = array(
+		'dev.myloanadmin.io' => 'development'
+	);
 
+	define('ENVIRONMENT', $hostanames[$_SERVER['SERVER_NAME']]);
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
