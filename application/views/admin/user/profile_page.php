@@ -2,14 +2,15 @@
 $modalid_eliminar = random_string('alnum', 16);
 $modalid_gastos = random_string('alnum', 16);
 $modalid_ingresos = random_string('alnum', 16);
+$modalid_avatar = random_string('alnum', 16);
 ?>
 <div class="row">
   <div class="col-md-3">
     <div class="box box-primary">
       <div class="box-body box-profile">
         <?php if (is_file(IMGPROFILEPATH . $user->avatar)) : ?>
-        <img class="profile-user-img img-responsive img-circle" src="<?= base_url(IMGPROFILEPATH . $user->avatar); ?>" alt="User profile picture">
-        <?php endif ?>
+        <a data-toggle="modal" href="<?= '#' . $modalid_avatar ?>"><img class="profile-user-img img-responsive img-circle" src="<?= base_url(IMGPROFILEPATH . $user->avatar); ?>" alt="User profile picture">
+        </a> <?php endif ?>
         <h3 class="profile-username text-center"><?= $user->nombre ?> <?= $user->apellido ?></h3>
         <p class="text-muted text-center"><?= $user->nombre ?></p>
         <ul class="list-group list-group-unbordered">
@@ -276,6 +277,25 @@ $modalid_ingresos = random_string('alnum', 16);
       <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
       <button type="button" class="btn btn-danger" data-delete-data="run" data-dismiss="modal">Continuar</button>
     </div>
+  </div>
+</div>
+</div>
+<div class="modal fade" id="<?php echo $modalid_avatar; ?>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <?php echo form_open_multipart('upload/do_upload/avatar/'.$user->id);?>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Seleccione foto de perfil</h4>
+      </div>
+      <div class="modal-body">
+        <input type="file" name="userfile" size="20" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
   </div>
 </div>
 </div>

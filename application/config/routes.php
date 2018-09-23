@@ -27,6 +27,7 @@ $route['admin/user/add'] = 'admin/user/add';
 $route['admin/user/save'] = 'admin/user/save';
 $route['admin/user/edit/(:num)'] = 'admin/user/edit/$1';
 $route['admin/user/update'] = 'admin/user/update';
+$route['upload/do_upload/avatar/(:num)'] = 'upload/do_upload_user_avatar/$1';
 
 //Prestamos Module Routes
 $route['admin/prestamo'] = 'admin/prestamo';

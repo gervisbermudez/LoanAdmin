@@ -73,7 +73,7 @@ jQuery(document).ready(function($) {
 		loadScript(element);
 	});
 
-	setTimeout(function(){ preloader.off(); }, 1000);
+	setTimeout(function(){ preloader.off(); }, 2000);
 });
 
 var fn_dasboard_run = function() {
@@ -473,13 +473,25 @@ var strRandom = function strRandom(length) {
 
 var arrCSSload = [
 	BASEURL + FONTSPATH + 'font-awesome/css/font-awesome.min.css',
-	BASEURL + FONTSPATH + 'Ionicons/css/ionicons.min.css',
-	BASEURL + CSSPATH + 'skin-blue-light.min.css'
+	BASEURL + FONTSPATH + 'Ionicons/css/ionicons.min.css'
 ];
 
 var arrJavaScriptload = [
 	BASEURL + JSPATH + 'jquery-ui/jquery-ui.min.js',
 	BASEURL + JSPATH + 'jquery-slimscroll/jquery.slimscroll.min.js',
-	BASEURL + JSPATH + 'fastclick/lib/fastclick.js',
-	BASEURL + JSPATH + 'fastclick/lib/fastclick.js',
+	BASEURL + JSPATH + 'fastclick/lib/fastclick.js'
 ];
+
+var getQueryParams = function getQueryParams(qs) {
+    qs = qs.split('+').join(' ');
+
+    let params = [],
+        tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+
+    while (tokens = re.exec(qs)) {
+        params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+	}
+
+	return params;
+}

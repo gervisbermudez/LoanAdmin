@@ -7,9 +7,11 @@ class Test extends CI_Controller {
 	{
 		parent::__construct();
 	}
-	
+
 	public function index(){
-        $this->faker = Faker\Factory::create();
-        echo $this->faker->firstName;
+		$user = $this->session->get_userdata('user');
+		echo '<pre>';
+		print_r($user['user']);
+		echo '</pre>';
 	}
 }

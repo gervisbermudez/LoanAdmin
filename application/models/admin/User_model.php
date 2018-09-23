@@ -3,6 +3,7 @@ class User_model extends MY_model {
 
     public $id = FALSE;
     public $username;
+    public $password;
     public $lastseen;
     public $email;
     public $status;
@@ -47,6 +48,7 @@ class User_model extends MY_model {
         }
 
         $this->username         = $user['username'];
+        $this->password         = $user['password'];
         $this->lastseen         = DateTime::createFromFormat('Y-m-d H:i:s',$user['lastseen']);
         $this->email            = $user['email'];
         $this->id_user_group    = $user['id_user_group'];
@@ -103,7 +105,8 @@ class User_model extends MY_model {
                 'apellido'        => $this->apellido,
                 'direccion'       => $this->direccion,
                 'telefono'        => $this->telefono,
-                'identificacion'  => $this->identificacion
+                'identificacion'  => $this->identificacion,
+                'avatar'          => $this->avatar,
             );
              
             return $this->update_userdata($user_data) ? $this : false;

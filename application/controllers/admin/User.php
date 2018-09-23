@@ -280,7 +280,9 @@ class User extends MY_Controller {
 		$data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Calendario', 'admin/user/calendar')));
     
     //Params data
-    $data['cuotas'] = $this->MY_model->get_data(array('status' => '1'), 'loans_dues');
+    $user = $this->session->get_userdata('user')['user'];
+
+    $data['cuotas'] = $this->MY_model->get_query('SELECT * FROM `loans_dues`, loans, `clients` WHERE `loans`.`id_cliente`=`clients`.`id` AND `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`id_prestamista`= '.$user['id']);
     
     //Includes Pages
     $data['head_includes'] = [
