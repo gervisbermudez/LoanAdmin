@@ -13,4 +13,12 @@ class Test extends CI_Controller {
 		var_dump($this->session->get_userdata('user'));
 		echo '</pre>';
 	}
+
+	public function SeedDatabase(){
+		echo '<pre>';
+		require_once APPPATH.'database/Seeder.php';
+		require_once APPPATH.'database/seeds/UserSeeder.php';
+		$seeder = new UserSeeder();
+		$seeder->run();
+	}
 }

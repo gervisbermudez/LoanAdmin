@@ -5,16 +5,9 @@ class UserSeeder extends Seeder {
     private $table = 'user';
 
     public function run() {
+        
+        $this->db->query('ALTER TABLE user_group AUTO_INCREMENT=1;');
 
-        $this->db->truncate('user_group');
-        $this->db->truncate('user');
-        $this->db->truncate('user_permisions');
-        $this->db->truncate('user_data');
-
-        $this->db->query('ALTER TABLE `user` ADD CONSTRAINT `fk_id_user_group` FOREIGN KEY (`id_user_group`) REFERENCES `user_group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE');
-        $this->db->query('ALTER TABLE `user_permisions` ADD CONSTRAINT `fk_id_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE');
-        $this->db->query('ALTER TABLE `user_data` ADD CONSTRAINT `fk_id_user_on_user_data` FOREIGN KEY (`id_user`) REFERENCES `user`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-        ');
         $date = new DateTime();
         $data = array(
         array(
@@ -45,10 +38,12 @@ class UserSeeder extends Seeder {
             'date_updated' => $date->format('Y-m-d H:i:s')
         )
         );
-        $result = '\n';
+        $result = '<br>';
         if($this->db->insert_batch('user_group', $data)){
             $result .= "Seed user_group success\n";
         }
+
+        $this->db->query('ALTER TABLE user AUTO_INCREMENT=1;');
         //Create users 
         $date = new DateTime();
         $data = array(
@@ -86,48 +81,63 @@ class UserSeeder extends Seeder {
                 'date_updated' => $date->format('Y-m-d H:i:s')
             )
         );
-        $result .= '';
+        $result .= '<br/>';
         if($this->db->insert_batch('user', $data)){
             $result .= 'Seed user success';
         }
+
+        $this->db->query('ALTER TABLE user_permisions AUTO_INCREMENT=1;');
+
         $date = new DateTime();
-
         $this->load->model('User_Group_model');
-	
+        
+        $ARR_LEVEL_ROOT = array();
+
         $LEVEL_ROOT = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_ROOT];
-        $LEVEL_ROOT['id_user'] = 1;
-        $LEVEL_ROOT['module'] = 'User';
-        $LEVEL_ROOT['created_from_ip'] = $this->input->ip_address();
-        $LEVEL_ROOT['updated_from_ip'] = $this->input->ip_address();
-        $LEVEL_ROOT['date_created'] = $date->format('Y-m-d H:i:s');
-        $LEVEL_ROOT['date_updated'] = $date->format('Y-m-d H:i:s');
+        foreach($LEVEL_ROOT as $key => $element){
+            $LEVEL_ROOT[$key]['id_user'] = 1;
+            $LEVEL_ROOT[$key]['module'] = 'User';
+            $LEVEL_ROOT[$key]['created_from_ip'] = $this->input->ip_address();
+            $LEVEL_ROOT[$key]['updated_from_ip'] = $this->input->ip_address();
+            $LEVEL_ROOT[$key]['date_created'] = $date->format('Y-m-d H:i:s');
+            $LEVEL_ROOT[$key]['date_updated'] = $date->format('Y-m-d H:i:s');
+        }
 
-        $LEVEL_ADMIN = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_ADMIN];
-        $LEVEL_ADMIN['id_user'] = 2;
-        $LEVEL_ADMIN['module'] = 'User';
-        $LEVEL_ADMIN['created_from_ip'] = $this->input->ip_address();
-        $LEVEL_ADMIN['updated_from_ip'] = $this->input->ip_address();
-        $LEVEL_ADMIN['date_created'] = $date->format('Y-m-d H:i:s');
-        $LEVEL_ADMIN['date_updated'] = $date->format('Y-m-d H:i:s');
-
-        $LEVEL_STANDAR = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_STANDAR];
-        $LEVEL_STANDAR['id_user'] = 3;
-        $LEVEL_STANDAR['module'] = 'User';
-        $LEVEL_STANDAR['created_from_ip'] = $this->input->ip_address();
-        $LEVEL_STANDAR['updated_from_ip'] = $this->input->ip_address();
-        $LEVEL_STANDAR['date_created'] = $date->format('Y-m-d H:i:s');
-        $LEVEL_STANDAR['date_updated'] = $date->format('Y-m-d H:i:s');
-
-        $data = array(
-            $LEVEL_ROOT,
-            $LEVEL_ADMIN,
-            $LEVEL_STANDAR
-        );
-
-        $result .= '';
-        if($this->db->insert_batch('user_permisions', $data)){
+        $result .= '<br/>';
+        if($this->db->insert_batch('user_permisions', $LEVEL_ROOT)){
             $result .= 'Seed user_permisions success';
         }
+        
+        $LEVEL_ADMIN = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_ADMIN];
+        foreach($LEVEL_ADMIN as $key => $element){
+            $LEVEL_ADMIN[$key]['id_user'] = 2;
+            $LEVEL_ADMIN[$key]['module'] = 'User';
+            $LEVEL_ADMIN[$key]['created_from_ip'] = $this->input->ip_address();
+            $LEVEL_ADMIN[$key]['updated_from_ip'] = $this->input->ip_address();
+            $LEVEL_ADMIN[$key]['date_created'] = $date->format('Y-m-d H:i:s');
+            $LEVEL_ADMIN[$key]['date_updated'] = $date->format('Y-m-d H:i:s');
+        }
+        $result .= '<br/>';
+        if($this->db->insert_batch('user_permisions', $LEVEL_ADMIN)){
+            $result .= 'Seed user_permisions success';
+        }
+
+        $LEVEL_STANDAR = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_STANDAR];
+        foreach($LEVEL_STANDAR as $key => $element){
+            $LEVEL_STANDAR[$key]['id_user'] = 3;
+            $LEVEL_STANDAR[$key]['module'] = 'User';
+            $LEVEL_STANDAR[$key]['created_from_ip'] = $this->input->ip_address();
+            $LEVEL_STANDAR[$key]['updated_from_ip'] = $this->input->ip_address();
+            $LEVEL_STANDAR[$key]['date_created'] = $date->format('Y-m-d H:i:s');
+            $LEVEL_STANDAR[$key]['date_updated'] = $date->format('Y-m-d H:i:s');
+        }
+
+        $result .= '<br/>';
+        if($this->db->insert_batch('user_permisions', $LEVEL_STANDAR)){
+            $result .= 'Seed user_permisions success';
+        }
+
+        $this->db->query('ALTER TABLE user_data AUTO_INCREMENT=1;');
 
         //User Data Root
         $data = array(
@@ -157,7 +167,7 @@ class UserSeeder extends Seeder {
             ),
             array('id_user' => 1,
                 '_key' => 'telefono',
-                '_value' => $this->faker->e164PhoneNumber,
+                '_value' => $this->faker->phoneNumber,
                 'created_from_ip' => $this->input->ip_address(),
                 'updated_from_ip' => $this->input->ip_address(),
                 'date_created' => $date->format('Y-m-d H:i:s'),
@@ -188,7 +198,7 @@ class UserSeeder extends Seeder {
                 'date_updated' => $date->format('Y-m-d H:i:s')
             )
         );
-        $result .= '';
+        $result .= '<br/>';
         if($this->db->insert_batch('user_data', $data)){
             $result .= 'Seed user_data success';
         }
@@ -221,7 +231,7 @@ class UserSeeder extends Seeder {
             ),
             array('id_user' => 2,
                 '_key' => 'telefono',
-                '_value' => $this->faker->e164PhoneNumber,
+                '_value' => $this->faker->phoneNumber,
                 'created_from_ip' => $this->input->ip_address(),
                 'updated_from_ip' => $this->input->ip_address(),
                 'date_created' => $date->format('Y-m-d H:i:s'),
@@ -245,14 +255,14 @@ class UserSeeder extends Seeder {
             ),
             array('id_user' => 2,
                 '_key' => 'avatar',
-                '_value' => 'avatar.png',
+                '_value' => 'avatar2.png',
                 'created_from_ip' => $this->input->ip_address(),
                 'updated_from_ip' => $this->input->ip_address(),
                 'date_created' => $date->format('Y-m-d H:i:s'),
                 'date_updated' => $date->format('Y-m-d H:i:s')
             )
         );
-        $result .= '';
+        $result .= '<br/>';
         if($this->db->insert_batch('user_data', $data)){
             $result .= 'Seed user_data success';
         }
@@ -285,7 +295,7 @@ class UserSeeder extends Seeder {
             ),
             array('id_user' => 3,
                 '_key' => 'telefono',
-                '_value' => $this->faker->e164PhoneNumber,
+                '_value' => $this->faker->phoneNumber,
                 'created_from_ip' => $this->input->ip_address(),
                 'updated_from_ip' => $this->input->ip_address(),
                 'date_created' => $date->format('Y-m-d H:i:s'),
@@ -309,14 +319,14 @@ class UserSeeder extends Seeder {
             ),
             array('id_user' => 3,
                 '_key' => 'avatar',
-                '_value' => 'avatar.png',
+                '_value' => 'avatar3.png',
                 'created_from_ip' => $this->input->ip_address(),
                 'updated_from_ip' => $this->input->ip_address(),
                 'date_created' => $date->format('Y-m-d H:i:s'),
                 'date_updated' => $date->format('Y-m-d H:i:s')
             )
         );
-        $result .= '';
+        $result .= '<br/>';
         if($this->db->insert_batch('user_data', $data)){
             $result .= 'Seed user_data success';
         }

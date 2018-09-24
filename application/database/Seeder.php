@@ -13,6 +13,7 @@ class Seeder
 	private $CI;
 	protected $db;
 	protected $dbforge;
+	protected $faker;
 
 	public function __construct()
 	{
@@ -21,6 +22,8 @@ class Seeder
 		$this->CI->load->dbforge();
 		$this->db = $this->CI->db;
 		$this->dbforge = $this->CI->dbforge;
+		require_once './vendor/fzaninotto/faker/src/autoload.php';
+		$this->faker = Faker\Factory::create();
 	}
 
 	/**
