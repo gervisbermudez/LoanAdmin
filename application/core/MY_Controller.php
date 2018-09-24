@@ -33,9 +33,12 @@ class MY_Controller extends CI_Controller {
     foreach ($array_id as $key => $id) {
       switch ($strTable) {
       case 'user':
-        $this->load->model('User_model');
-        if ($this->User_model->delete_user($id)) {
-          $json = array('result' => TRUE, 'message'=> 'Datos eliminados con exito!');
+        $curuser = $this->session->userdata('user');
+        if($curuser['delete_any_user']){
+          $this->load->model('User_model');
+          if ($this->User_model->delete_user($id)) {
+            $json = array('result' => TRUE, 'message'=> 'Datos eliminados con exito!');
+          }
         }
         break;
       

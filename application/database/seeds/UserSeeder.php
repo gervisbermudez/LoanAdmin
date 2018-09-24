@@ -52,76 +52,78 @@ class UserSeeder extends Seeder {
         //Create users 
         $date = new DateTime();
         $data = array(
-        array(
-            'username' => 'root',
-            'password' => password_hash("1234", PASSWORD_DEFAULT),
-            'email' => "root@email.com",
-            'lastseen' => $date->format('Y-m-d H:i:s'),
-            'id_user_group' => 1,
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        ),
-        array(
-            'username' => 'admin',
-            'password' => password_hash("1234", PASSWORD_DEFAULT),
-            'email' => "admin@email.com",
-            'lastseen' => $date->format('Y-m-d H:i:s'),
-            'id_user_group' => 2,
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        ),
-        array(
-            'username' => 'user',
-            'password' => password_hash("1234", PASSWORD_DEFAULT),
-            'email' => "user@email.com",
-            'lastseen' => $date->format('Y-m-d H:i:s'),
-            'id_user_group' => 3,
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        )
+            array(
+                'username' => 'root',
+                'password' => password_hash("1234", PASSWORD_DEFAULT),
+                'email' => "root@email.com",
+                'lastseen' => $date->format('Y-m-d H:i:s'),
+                'id_user_group' => 1,
+                'created_from_ip' => $this->input->ip_address(),
+                'updated_from_ip' => $this->input->ip_address(),
+                'date_created' => $date->format('Y-m-d H:i:s'),
+                'date_updated' => $date->format('Y-m-d H:i:s')
+            ),
+            array(
+                'username' => 'admin',
+                'password' => password_hash("1234", PASSWORD_DEFAULT),
+                'email' => "admin@email.com",
+                'lastseen' => $date->format('Y-m-d H:i:s'),
+                'id_user_group' => 2,
+                'created_from_ip' => $this->input->ip_address(),
+                'updated_from_ip' => $this->input->ip_address(),
+                'date_created' => $date->format('Y-m-d H:i:s'),
+                'date_updated' => $date->format('Y-m-d H:i:s')
+            ),
+            array(
+                'username' => 'user',
+                'password' => password_hash("1234", PASSWORD_DEFAULT),
+                'email' => "user@email.com",
+                'lastseen' => $date->format('Y-m-d H:i:s'),
+                'id_user_group' => 3,
+                'created_from_ip' => $this->input->ip_address(),
+                'updated_from_ip' => $this->input->ip_address(),
+                'date_created' => $date->format('Y-m-d H:i:s'),
+                'date_updated' => $date->format('Y-m-d H:i:s')
+            )
         );
         $result .= '';
         if($this->db->insert_batch('user', $data)){
             $result .= 'Seed user success';
         }
         $date = new DateTime();
-        $data = array(array(
-            'id_user' => 1,
-            'permision' => 'access_user_module',
-            'value' => 1,
-            'module' => 'User',
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        ),
-        array(
-            'id_user' => 2,
-            'permision' => 'access_user_module',
-            'value' => 1,
-            'module' => 'User',
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        ),
-        array(
-            'id_user' => 3,
-            'permision' => 'access_user_module',
-            'value' => 1,
-            'module' => 'User',
-            'created_from_ip' => $this->input->ip_address(),
-            'updated_from_ip' => $this->input->ip_address(),
-            'date_created' => $date->format('Y-m-d H:i:s'),
-            'date_updated' => $date->format('Y-m-d H:i:s')
-        )
+
+        $this->load->model('User_Group_model');
+	
+        $LEVEL_ROOT = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_ROOT];
+        $LEVEL_ROOT['id_user'] = 1;
+        $LEVEL_ROOT['module'] = 'User';
+        $LEVEL_ROOT['created_from_ip'] = $this->input->ip_address();
+        $LEVEL_ROOT['updated_from_ip'] = $this->input->ip_address();
+        $LEVEL_ROOT['date_created'] = $date->format('Y-m-d H:i:s');
+        $LEVEL_ROOT['date_updated'] = $date->format('Y-m-d H:i:s');
+
+        $LEVEL_ADMIN = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_ADMIN];
+        $LEVEL_ADMIN['id_user'] = 2;
+        $LEVEL_ADMIN['module'] = 'User';
+        $LEVEL_ADMIN['created_from_ip'] = $this->input->ip_address();
+        $LEVEL_ADMIN['updated_from_ip'] = $this->input->ip_address();
+        $LEVEL_ADMIN['date_created'] = $date->format('Y-m-d H:i:s');
+        $LEVEL_ADMIN['date_updated'] = $date->format('Y-m-d H:i:s');
+
+        $LEVEL_STANDAR = $this->User_Group_model::$user_roles[$this->User_Group_model::LEVEL_STANDAR];
+        $LEVEL_STANDAR['id_user'] = 3;
+        $LEVEL_STANDAR['module'] = 'User';
+        $LEVEL_STANDAR['created_from_ip'] = $this->input->ip_address();
+        $LEVEL_STANDAR['updated_from_ip'] = $this->input->ip_address();
+        $LEVEL_STANDAR['date_created'] = $date->format('Y-m-d H:i:s');
+        $LEVEL_STANDAR['date_updated'] = $date->format('Y-m-d H:i:s');
+
+        $data = array(
+            $LEVEL_ROOT,
+            $LEVEL_ADMIN,
+            $LEVEL_STANDAR
         );
+
         $result .= '';
         if($this->db->insert_batch('user_permisions', $data)){
             $result .= 'Seed user_permisions success';

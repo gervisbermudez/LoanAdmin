@@ -135,8 +135,10 @@
                 </a>
                 <ul class="treeview-menu">
                   <li><a href="<?php echo base_url('admin/user'); ?>"><i class="fa fa-circle-o"></i> Todos</a></li>
+                  <?php if($user['create_any_user']): ?>
                   <li><a href="<?php echo base_url('admin/user/add'); ?>"><i class="fa fa-plus-circle"></i>
                   Nuevo</a></li>
+                  <?php endif; ?>
                 </ul>
               </li>
               <li>

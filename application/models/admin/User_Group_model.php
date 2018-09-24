@@ -7,11 +7,69 @@ class User_Group_model extends MY_model {
     public $description;
 	public $status;
 	public $table_name = 'user_group';
-    public $unique_colunms = array('name');
-    
+	public $unique_colunms = array('name');
+	
+	static $user_roles = array(
+        0 =>
+            array(
+                array('permision' => 'access_user_module',      'value' => '1'),
+                array('permision' => 'view_list_user',          'value' => '1'),
+                array('permision' => 'view_specific_user',      'value' => '1'),
+                array('permision' => 'create_any_user',         'value' => '1'),
+                array('permision' => 'update_any_user',         'value' => '1'),
+                array('permision' => 'update_current_user',     'value' => '1'),
+                array('permision' => 'update_status_user',      'value' => '1'),
+                array('permision' => 'delete_any_user',         'value' => '1'),
+                array('permision' => 'update_user_permision',   'value' => '1'),
+            ),
+        1 => 
+            array(
+                array('permision' => 'access_user_module',      'value' => '1'),
+                array('permision' => 'view_list_user',          'value' => '1'),
+                array('permision' => 'view_specific_user',      'value' => '1'),
+                array('permision' => 'create_any_user',         'value' => '1'),
+                array('permision' => 'update_any_user',         'value' => '1'),
+                array('permision' => 'update_current_user',     'value' => '1'),
+                array('permision' => 'update_status_user',      'value' => '1'),
+                array('permision' => 'delete_any_user',         'value' => '1'),
+                array('permision' => 'update_user_permision',   'value' => '0'),
+            ),
+        2 => 
+            array(
+                array('permision' => 'access_user_module',      'value' => '1'),
+                array('permision' => 'view_list_user',          'value' => '1'),
+                array('permision' => 'view_specific_user',      'value' => '0'),
+                array('permision' => 'create_any_user',         'value' => '0'),
+                array('permision' => 'update_any_user',         'value' => '0'),
+                array('permision' => 'update_current_user',     'value' => '1'),
+                array('permision' => 'update_status_user',      'value' => '0'),
+                array('permision' => 'delete_any_user',         'value' => '0'),
+                array('permision' => 'update_user_permision',   'value' => '0'),
+            )
+	);
+	
     const LEVEL_ROOT    = 0;
     const LEVEL_ADMIN   = 1;
-    const LEVEL_STANDAR = 2;
+	const LEVEL_STANDAR = 2;
+	
+	static $user_groups = array(
+		1 => array(
+			'name' => 'Root',
+			'level' => 0,
+			'description' => 'All configurations allowed'
+		),
+		2 => array(
+			'name' => 'Admin',
+			'level' => 1,
+			'description' => 'All permisions allowed'
+
+		),
+		3 => array(
+			'name' => 'Standar',
+			'level' => 2,
+			'description' => 'Not delete permisions allowed'
+		)
+	);
 
 	public function __construct()
 	{
@@ -25,11 +83,11 @@ class User_Group_model extends MY_model {
 			return FALSE;
         }
         
-        $this->id = $id;
-        $this->name = $user_group['name'];
-        $this->level    = $user_group['level'];
-        $this->description  = $user_group['description'];
-        $this->status   = $user_group['status'];
+        $this->id 				= $id;
+        $this->name 			= $user_group['name'];
+        $this->level    		= $user_group['level'];
+        $this->description  	= $user_group['description'];
+        $this->status   		= $user_group['status'];
 
         return $this;
 

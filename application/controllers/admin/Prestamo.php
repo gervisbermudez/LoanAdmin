@@ -104,12 +104,19 @@ class Prestamo extends MY_Controller {
         'datatableini' => fnAddScript(JSPATH.'datatableini.js')
       ];
       
-      if ($this->session->userdata('user')['level'] < 3) {
-        $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 1"); 
-        $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 0"); 
-      }else{
-        $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 1 AND loans.id_prestamista=".$this->session->userdata('user')['id']); 
-        $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND id_cliente = $id AND loans.status = 0 AND loans.id_prestamista=".$this->session->userdata('user')['id']); 
+      $curuser = $this->session->userdata('user');
+
+      switch ($curuser['level']) {
+        case '0':
+        case '1':
+          $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1"); 
+          $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0"); 
+        break;
+        default:
+        $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1 AND `loans`.`id_prestamista`=".$curuser['id']); 
+        $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0 AND `loans`.`id_prestamista`=".$curuser['id']); 
+        
+        break;
       }
 
       //Load the views

@@ -39,6 +39,15 @@ class User extends MY_Controller {
   {
     parent::__construct();
     $this->load->model('User_model');
+    $user = $this->session->userdata('user');
+    $uri = $this->uri->uri_string();
+    switch ($uri) {
+      case 'admin/user/add':
+       if(!$user['create_any_user']){
+         redirect('admin');
+       }
+      break;
+    }
   }
 
   public function index()
@@ -54,18 +63,28 @@ class User extends MY_Controller {
     $limit = $this->input->get('limit') ?: '10';
 
     $user = $this->session->userdata('user');
-
-    if ($user['level'] <= 2) {
-      $users = $this->User_model->get_user(array('user_group.level >= ' => $user['level']), $limit, array("`user`.`$orderby`", $short));
-    }else{
-      $users = $this->User_model->get_user(array('user_group.level > '=> $user['level']), $limit, array("`user`.`$orderby`", $short));
+   
+    switch ($user['level']) {
+      case '0':
+        $users = $this->User_model->get_user('all', $limit, array("`user`.`$orderby`", $short));      # code...
+      break;
+      case '1':
+        $users = $this->User_model->get_user(array('`user_group`.`level` >=' => $user['level']), $limit, array("`user`.`$orderby`", $short));      # code...
+      break;
+      
+      default:
+        $users = $this->User_model->get_user(array('`user_group`.`level` > ' => $user['level'], '`user`.`status`' => '1'), $limit, array("`user`.`$orderby`", $short));      # code...
+      break;
     }
 
-		$data['users'] = array();
-		foreach($users as $key => $value){
-			$user_model = new User_model();
-			array_push($data['users'], $user_model->map($value['id']));
-		}
+    $data['users'] = array();
+    if($users){
+      foreach($users as $key => $value){
+        $user_model = new User_model();
+        array_push($data['users'], $user_model->map($value['id']));
+		  }
+    }
+		
 		//print_r($data['users']);
     //Load the views
     $data['page'] = $this->load->view('/admin/user/all_user_page', $data, TRUE);
@@ -138,10 +157,16 @@ class User extends MY_Controller {
     $user = new User_model();
     $level = $this->session->userdata('user')['level'];
 
-    if ($level <= 2) {
-      $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >' => 1));
-    }else{
-      $data['usergroups'] = $this->User_model->get_user_group(array('status'=>'1', 'level >' => $level));
+    switch ($level) {
+      case '0':
+        $data['usergroups'] = $this->User_model->get_user_group();
+      break;
+      case '1':
+        $data['usergroups'] = $this->User_model->get_user_group(array('`status`'=>'1', '`level` >' => 1));
+      break;
+      default:
+        $data['usergroups'] = $this->User_model->get_user_group(array('`status`'=>'1', '`level` >' => $level));
+      break;
     }
 
     $data['user'] = (array)$user;
@@ -176,31 +201,20 @@ class User extends MY_Controller {
         'create by'       => $curuser['nombre'].' '.$curuser['apellido'],
         'avatar'          => 'avatar.png'
       );
+
+      $date = new DateTime();
+
       if($user->set_userdata($user_data)){
-          if ($this->input->post('usergroup') === '1') {
-          $datauserpermisions = array(
-            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'create_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_status_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'delete_any_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
-          );
-        }else{
-          $datauserpermisions = array(
-            array('permision' => 'access_user_module', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_list_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'view_specific_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'create_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_current_user', 'value' => '1', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'update_status_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id),
-            array('permision' => 'delete_any_user', 'value' => '0', 'module' => 'User', 'status' => '1', 'id_user' => $user->id)
-          );
-        }
-        $user->set_user_permisions($datauserpermisions);
+        $this->load->model('User_Group_model');
+        $user_groups = $this->User_Group_model::$user_groups[$this->input->post('usergroup')];
+        $permisions = $this->User_Group_model::$user_roles[$user_groups['level']];
+        $permisions['id_user'] = $user->id;
+        $permisions['module'] = 'User';
+        $permisions['created_from_ip'] = $this->input->ip_address();
+        $permisions['updated_from_ip'] = $this->input->ip_address();
+        $permisions['date_created'] = $date->format('Y-m-d H:i:s');
+        $permisions['date_updated'] = $date->format('Y-m-d H:i:s');  
+        $user->set_user_permisions($permisions);
         $this->load->model('ModRelations');
         $relations = array('id_user' => $curuser['id'], 'tablename' => 'user', 'id_row' => $user->id, 'action' => 'crear');
         $this->ModRelations->set_relation($relations);
