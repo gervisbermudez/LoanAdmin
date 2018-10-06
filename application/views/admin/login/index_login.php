@@ -6,6 +6,7 @@
   <title><?php echo $this->config->item('sitename'); ?> | <?php echo $title ?></title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="shortcut icon" href="<?= base_url(IMGPATH); ?>favicon.ico" type="image/x-icon">
   <!-- Bootstrap 3.3.7 -->
   <?php echo link_tag(JSPATH.'bootstrap/dist/css/bootstrap.min.css'); ?>
   <!-- Font Awesome -->
