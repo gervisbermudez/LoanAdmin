@@ -97,5 +97,26 @@ class Client_model extends MY_model {
 		$where = array('id' => $this->id);
 		$this->delete_data($where, $this->table);
 	}
+
+	public function get_loan_balance($id = false){
+		$id_cliente = $id;
+		if(!$id){
+			$id_cliente = $this->id;
+		}
+
+		$data['monto_total_prestado'] = $this->get_query("SELECT SUM(`loans`.`monto`) AS `monto_total_prestado` FROM `loans` WHERE `loans`.`status`=1 AND `loans`.`id_cliente`=$id_cliente")[0]['monto_total_prestado'];
+
+		$data['monto_gobal_prestado'] = $this->get_query("SELECT SUM(`loans`.`monto_total`) AS `monto_gobal_prestado` FROM `loans` WHERE `loans`.`status`=1 AND `loans`.`id_cliente`=$id_cliente")[0]['monto_gobal_prestado'];
+
+		$data['monto_total_ganado'] = $this->get_query("SELECT SUM(`loans`.`subtotal`) AS `monto_total_ganado` FROM `loans` WHERE `loans`.`status`=1 AND `loans`.`id_cliente`=$id_cliente")[0]['monto_total_ganado'];
+
+		$data['monto_total_pagado'] = $this->get_query("SELECT SUM(`loans_dues`.`monto_pagado`) AS `monto_total_pagado` FROM `loans_dues`, loans WHERE `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`status`=1 AND `loans`.`id_cliente`=$id_cliente")[0]['monto_total_pagado'];
+
+		$data['monto_deuda_total'] = $data['monto_gobal_prestado'] - $data['monto_total_pagado'];
+		
+		$data['porcentaje_total_pagado'] = (($data['monto_total_pagado'])*100)/$data['monto_gobal_prestado'];
+
+		return $data;
+	}
 }
 ?>

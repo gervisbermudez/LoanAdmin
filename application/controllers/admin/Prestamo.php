@@ -105,23 +105,26 @@ class Prestamo extends MY_Controller {
       ];
       
       $curuser = $this->session->userdata('user');
-
+      $data['prestamos'] = false;
       switch ($curuser['level']) {
         case '0':
         case '1':
-          $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1"); 
-          $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0"); 
+          $data['prestamos'] = $this->Loan_model->get_prestamos_extended(); 
+          $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `loans`.`status` = 0"); 
         break;
         default:
-        $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1 AND `loans`.`id_prestamista`=".$curuser['id']); 
-        $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0 AND `loans`.`id_prestamista`=".$curuser['id']); 
+        //$data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1 AND `loans`.`id_prestamista`=".$curuser['id']); 
+        //$data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0 AND `loans`.`id_prestamista`=".$curuser['id']); 
         
         break;
       }
+      $this->load->model('admin/loan/Client_model');
+      $data['balance'] = $this->Client_model->get_loan_balance($id);
 
       //Load the views
       $data['page'] = $this->load->view('admin/prestamo/cliente_page', $data, TRUE);
       $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
+    
       $this->load->view('admin/master_template', $data);
 
     }else{
@@ -190,13 +193,7 @@ class Prestamo extends MY_Controller {
           $this->showError();
       }
     }else{
-        //Set the relation 
-        $this->load->model('ModRelations');
-        $relations = array('id_user' => $this->session->userdata('user')['id'], 'tablename' => 'prestamos_clientes', 'id_row' => $cliente[0]['id'] , 'action' => 'crear');
-        $this->ModRelations->set_relation($relations);
-        $this->MY_model->set_data(array('id_user' => $this->session->userdata('user')['id'], 'id_client' =>$cliente[0]['id']), 'loans_user_client');
-
-        redirect('admin/prestamo/clientes/');
+      $this->showError('El cliente ya se encuentra registrado por otro cobrador');
     }
   }
 

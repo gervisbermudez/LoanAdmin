@@ -76,10 +76,10 @@ $query_builder = TRUE;
 //production
 $db['production'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'myloanadmin',
+	'hostname' => 'http://myloanadmin.site/',
+	'username' => 'c1400230',
+	'password' => 'wi74ZOgifa',
+	'database' => 'c1400230_myloans',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

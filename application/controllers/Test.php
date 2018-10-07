@@ -21,4 +21,9 @@ class Test extends CI_Controller {
 		$seeder = new UserSeeder();
 		$seeder->run();
 	}
+
+	public function phpinfo()
+	{
+		phpinfo();
+	}
 }

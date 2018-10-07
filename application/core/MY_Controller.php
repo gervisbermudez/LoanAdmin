@@ -9,10 +9,10 @@ class MY_Controller extends CI_Controller {
     parent::__construct();
     $user = $this->session->userdata('user');
     if (!$user['is_logged_in']) {
-        redirect('admin/login');
+        //redirect('admin/login');
     }
-    $this->Notifications = $this->get_notifications($user['id']);
-    $this->Loan_model->update_estados();
+    //$this->Notifications = $this->get_notifications($user['id']);
+    //$this->Loan_model->update_estados();
   }
 
   public function showError($errorMsg = 'Ocurrio un error inesperado', $data = array('title' => 'Error', 'h1' => 'Error')){
