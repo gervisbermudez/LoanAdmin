@@ -28,7 +28,7 @@ hr {
   margin-top: 10px;
   margin-bottom: 10px;
   border: 0;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #eee
 }
 
 .wrapper {
@@ -79,7 +79,7 @@ hr {
   min-height: 100%;
   background-color: #ecf0f5;
   z-index: 800;
-  overflow: hidden;
+  overflow: hidden
 }
 
 .main-footer {
@@ -106,6 +106,10 @@ hr {
 @media (max-width: 767px) {
   .content-wrapper,.main-footer {
       margin-left:0
+  }
+
+  .content-wrapper {
+      width: 100%
   }
 
   .sidebar-open .content-wrapper,.sidebar-open .main-footer {
@@ -387,6 +391,12 @@ a:active,a:focus,a:hover {
   .main-header .logo,.main-header .navbar {
       width: 100%;
       float: none
+  }
+
+  .main-header .logo {
+      height: 30px;
+      line-height: 30px;
+      font-size: 17px;
   }
 
   .main-header .navbar {
@@ -2247,7 +2257,6 @@ a:active,a:focus,a:hover {
   font-size: 100px;
   text-align: right;
   opacity: 0;
-  filter: alpha(opacity=0);
   outline: 0;
   background: #fff;
   cursor: inherit;
@@ -2432,13 +2441,11 @@ a:active,a:focus,a:hover {
 
 .alert .close {
   color: #000;
-  opacity: .2;
-  filter: alpha(opacity=20)
+  opacity: .2
 }
 
 .alert .close:hover {
-  opacity: .5;
-  filter: alpha(opacity=50)
+  opacity: .5
 }
 
 .alert a {
@@ -4271,8 +4278,7 @@ a:active,a:focus,a:hover {
 }
 
 [class^=bg-].disabled {
-  opacity: .65;
-  filter: alpha(opacity=65)
+  opacity: .65
 }
 
 .text-red {
@@ -4409,7 +4415,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#39cccc,#7adddd)!important;
   background: -moz-linear-gradient(center bottom,#39cccc 0,#7adddd 100%)!important;
   background: -o-linear-gradient(#7adddd,#39cccc)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#7adddd', endColorstr='#39cccc', GradientType=0)!important;
   color: #fff
 }
 
@@ -4419,7 +4424,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#3c8dbc,#67a8ce)!important;
   background: -moz-linear-gradient(center bottom,#3c8dbc 0,#67a8ce 100%)!important;
   background: -o-linear-gradient(#67a8ce,#3c8dbc)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#67a8ce', endColorstr='#3c8dbc', GradientType=0)!important;
   color: #fff
 }
 
@@ -4429,7 +4433,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#0073b7,#0089db)!important;
   background: -moz-linear-gradient(center bottom,#0073b7 0,#0089db 100%)!important;
   background: -o-linear-gradient(#0089db,#0073b7)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0089db', endColorstr='#0073b7', GradientType=0)!important;
   color: #fff
 }
 
@@ -4439,7 +4442,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#00c0ef,#14d1ff)!important;
   background: -moz-linear-gradient(center bottom,#00c0ef 0,#14d1ff 100%)!important;
   background: -o-linear-gradient(#14d1ff,#00c0ef)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#14d1ff', endColorstr='#00c0ef', GradientType=0)!important;
   color: #fff
 }
 
@@ -4449,7 +4451,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#f39c12,#f7bc60)!important;
   background: -moz-linear-gradient(center bottom,#f39c12 0,#f7bc60 100%)!important;
   background: -o-linear-gradient(#f7bc60,#f39c12)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7bc60', endColorstr='#f39c12', GradientType=0)!important;
   color: #fff
 }
 
@@ -4459,7 +4460,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#605ca8,#9491c4)!important;
   background: -moz-linear-gradient(center bottom,#605ca8 0,#9491c4 100%)!important;
   background: -o-linear-gradient(#9491c4,#605ca8)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9491c4', endColorstr='#605ca8', GradientType=0)!important;
   color: #fff
 }
 
@@ -4469,7 +4469,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#00a65a,#00ca6d)!important;
   background: -moz-linear-gradient(center bottom,#00a65a 0,#00ca6d 100%)!important;
   background: -o-linear-gradient(#00ca6d,#00a65a)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ca6d', endColorstr='#00a65a', GradientType=0)!important;
   color: #fff
 }
 
@@ -4479,7 +4478,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#dd4b39,#e47365)!important;
   background: -moz-linear-gradient(center bottom,#dd4b39 0,#e47365 100%)!important;
   background: -o-linear-gradient(#e47365,#dd4b39)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e47365', endColorstr='#dd4b39', GradientType=0)!important;
   color: #fff
 }
 
@@ -4489,7 +4487,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#111,#2b2b2b)!important;
   background: -moz-linear-gradient(center bottom,#111 0,#2b2b2b 100%)!important;
   background: -o-linear-gradient(#2b2b2b,#111)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2b2b2b', endColorstr='#111111', GradientType=0)!important;
   color: #fff
 }
 
@@ -4499,7 +4496,6 @@ a:active,a:focus,a:hover {
   background: -ms-linear-gradient(bottom,#d81b60,#e73f7c)!important;
   background: -moz-linear-gradient(center bottom,#d81b60 0,#e73f7c 100%)!important;
   background: -o-linear-gradient(#e73f7c,#d81b60)!important;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e73f7c', endColorstr='#d81b60', GradientType=0)!important;
   color: #fff
 }
 
@@ -4658,13 +4654,11 @@ a:active,a:focus,a:hover {
 }
 
 .full-opacity-hover {
-  opacity: .65;
-  filter: alpha(opacity=65)
+  opacity: .65
 }
 
 .full-opacity-hover:hover {
-  opacity: 1;
-  filter: alpha(opacity=100)
+  opacity: 1
 }
 
 .chart {
@@ -5313,3 +5307,5 @@ a:active,a:focus,a:hover {
       transform: translateX(0)
   }
 }
+
+/*# sourceMappingURL=AdminLTE.min.css.map */
