@@ -35,13 +35,12 @@ class Admin extends MY_Controller {
 		$data['pagedescription'] = "Todas las Notificaciones";
 		$data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Notificaciones', 'admin/notificationes')));
 		//Load the Views
-		//$Notifications = new Notifications_model();
-		//$Notifications->id_user = $this->session->userdata('user')['id'];
-		$data['notificacions'] = array();//$Notifications->get_notifications(array('isread'=>'all'));
-		//$data['page'] = $this->load->view('admin/all_notifications', $data, TRUE);
-		//$data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
-		//$this->load->view('admin/master_template', $data);
-		print_r($data);
+		$Notifications = new Notifications_model();
+		$Notifications->id_user = $this->session->userdata('user')['id'];
+		$data['notificacions'] = $Notifications->get_notifications(array('isread'=>'all'));
+		$data['page'] = $this->load->view('admin/all_notifications', $data, TRUE);
+		$data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
+		$this->load->view('admin/master_template', $data);
 	}
 
 	public function ajax_get_dashboard_data()
@@ -86,9 +85,5 @@ class Admin extends MY_Controller {
 		//Cantidad de cuotas pendientes
 		$dashboard['count_dues_down'] = $loans_dues ? count($loans_dues) : 0 ;
 		$this->output->set_content_type('application/json')->set_output(json_encode($dashboard));
-	}
-
-	public function test(){
-		echo 'Hi, there';
 	}
 }
