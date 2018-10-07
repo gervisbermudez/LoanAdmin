@@ -30,3 +30,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 application/config/production/*
 application/config/production/config.php
 application/config/production/database.php
+.vscode/ftp-kr.json
