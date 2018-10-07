@@ -15,7 +15,7 @@
     </style>
     <!-- Bootstrap 3.3.7 -->
     <?= link_tag(JSPATH.'bootstrap/dist/css/bootstrap.min.css'); ?>
-    <?= link_tag(CSSPATH.'AdminLTE.min.css'); ?>
+    <?= link_tag(CSSPATH.'AdminLTE.min.css?v='.SITEVERSION); ?>
     <?php
       if (isset($head_includes)) {
         foreach ($head_includes as $value) {

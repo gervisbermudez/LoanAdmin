@@ -53,9 +53,10 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	$hostanames = array(
-		'dev.myloanadmin.io' => 'development'
-	);
+$hostanames = array(
+	'dev.myloanadmin.io' 	=> 'development',
+	'myloanadmin.site' 	=> 'production',
+);
 
 	define('ENVIRONMENT', $hostanames[$_SERVER['SERVER_NAME']]);
 /*

@@ -9,7 +9,7 @@ class MY_Controller extends CI_Controller {
     parent::__construct();
     $user = $this->session->userdata('user');
     if (!$user['is_logged_in']) {
-        //redirect('admin/login');
+        redirect('admin/login');
     }
     //$this->Notifications = $this->get_notifications($user['id']);
     //$this->Loan_model->update_estados();

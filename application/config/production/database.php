@@ -76,8 +76,8 @@ $query_builder = TRUE;
 //production
 $db['production'] = array(
 	'dsn'	=> '',
-	'hostname' => 'http://myloanadmin.site/',
-	'username' => 'c1400230',
+	'hostname' => 'localhost',
+	'username' => 'c1400230_myloans',
 	'password' => 'wi74ZOgifa',
 	'database' => 'c1400230_myloans',
 	'dbdriver' => 'mysqli',
