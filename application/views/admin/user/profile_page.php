@@ -29,7 +29,7 @@ $modalid_avatar = random_string('alnum', 16);
     <!-- About Me Box -->
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">About Me</h3>
+        <h3 class="box-title">Sobre mi</h3>
       </div>
       <!-- /.box-header -->
       <div class="box-body">

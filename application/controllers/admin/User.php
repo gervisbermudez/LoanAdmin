@@ -108,11 +108,11 @@ class User extends MY_Controller {
 
       $this->load->model('admin/loan/Expenses_model');
       $gastos = new Expenses_model();
-      $data['gastos'] = $gastos->get_data(array('id_user' => $id, 'DATE(fecha)' => 'DATE(CURRENT_DATE)'), $gastos->table);
+      $data['gastos'] = $gastos->get_data(array('id_user' => $id), $gastos->table);
       
       $this->load->model('admin/loan/Income_model');
       $ingresos = new Income_model();
-      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id, 'DATE(fecha)' => 'DATE(CURRENT_DATE)'), $ingresos->table);
+      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id), $ingresos->table);
     
       $data['title'] = $user->username;
       $data['h1'] = $user->username;
