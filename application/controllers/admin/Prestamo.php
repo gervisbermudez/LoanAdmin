@@ -51,6 +51,9 @@ class Prestamo extends MY_Controller {
    */
   public function clients()
   { 
+    
+    $cuser = $this->session->userdata('user');
+    
     //Pages head tags 
     $data['title'] = "Clientes";
     $data['h1'] = "Clientes";
@@ -61,14 +64,16 @@ class Prestamo extends MY_Controller {
     $data['footer_includes'] = [
       'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
       'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
-      'datatableini' => fnAddScript(JSPATH.'datatableini.js')];
+      'datatableini' => fnAddScript(JSPATH.'datatableini.js')
+    ];
 
-    if ($this->session->userdata('user')['level'] < 3) {
-      $data['clientes'] = $this->Loan_model->get_cliente_prestamista();
+    
+    if($cuser['level'] > 1){
+      $data['clientes'] = $this->Loan_model->get_cliente_extended('AND `loans_user_client`.`id_user` = '.$cuser['id']);
     }else{
-      $data['clientes'] = $this->Loan_model->get_cliente_extended('AND user.id='.$this->session->userdata('user')['id']);
+      $data['clientes'] = $this->Loan_model->get_cliente_extended();
     }
-
+    
     //Load the views
     $data['page'] = $this->load->view('admin/prestamo/all_clientes_page', $data, TRUE);
     $data['pagecontent'] = $this->load->view('admin/content_template', $data, TRUE);
@@ -101,25 +106,28 @@ class Prestamo extends MY_Controller {
       $data['footer_includes'] = [
         'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
         'data-tabe-js-bootstrap' => fnAddScript(JSPATH.'datatables.net-bs/js/dataTables.bootstrap.min.js'), 
-        'datatableini' => fnAddScript(JSPATH.'datatableini.js')
+        'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
+        'raphael' => fnAddScript(JSPATH."raphael/raphael.min.js"),
+        'morris' => fnAddScript(JSPATH."morris.js/morris.min.js"),
       ];
       
-      $curuser = $this->session->userdata('user');
+      $cuser = $this->session->userdata('user');
       $data['prestamos'] = false;
-      switch ($curuser['level']) {
+      switch ($cuser['level']) {
         case '0':
         case '1':
-          $data['prestamos'] = $this->Loan_model->get_prestamos_extended(); 
+          $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = $id AND `loans`.`status` = 1"); 
           $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `loans`.`status` = 0"); 
         break;
         default:
-        //$data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 1 AND `loans`.`id_prestamista`=".$curuser['id']); 
-        //$data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = `$id` AND `loans`.`status` = 0 AND `loans`.`id_prestamista`=".$curuser['id']); 
-        
+        $data['prestamos'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = $id AND `loans`.`status` = 1 AND `loans`.`id_prestamista`=".$cuser['id']); 
+        $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = $id AND `loans`.`status` = 0 AND `loans`.`id_prestamista`='".$cuser['id']."'"); 
         break;
       }
       $this->load->model('admin/loan/Client_model');
       $data['balance'] = $this->Client_model->get_loan_balance($id);
+
+      $data['pagos_realizados'] = $this->Loan_model->get_query("SELECT DATE(`loans_dues`.`fecha_pago`) AS `Fecha`, `loans_dues`.`monto_pagado` FROM `loans`, `loans_dues` WHERE `loans`.`id_cliente` = ".$id." ORDER BY `Fecha` ASC"); 
 
       //Load the views
       $data['page'] = $this->load->view('admin/prestamo/cliente_page', $data, TRUE);

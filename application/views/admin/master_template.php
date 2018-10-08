@@ -51,16 +51,13 @@
               <li class="dropdown notifications-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                   <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning"><?php echo count($this->Notifications) ?></span>
+                  <span class="label label-warning notificationscount"></span>
                 </a>
                 <ul class="dropdown-menu">
-                  <li class="header">Tienes <?php echo count($this->Notifications) ?> notificaciones</li>
+                  <li class="header">Tienes <span class="notificationscount"></span> notificaciones</li>
                   <li>
                     <ul class="menu">
-                      <li>
-                        <?php foreach ($this->Notifications as $key => $notification): ?>
-                        <?php echo $notification['description'] ?>
-                        <?php endforeach ?>
+                      <li id="notifications">
                       </li>
                     </ul>
                   </li>

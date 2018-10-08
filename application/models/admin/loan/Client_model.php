@@ -114,7 +114,11 @@ class Client_model extends MY_model {
 
 		$data['monto_deuda_total'] = $data['monto_gobal_prestado'] - $data['monto_total_pagado'];
 		
-		$data['porcentaje_total_pagado'] = (($data['monto_total_pagado'])*100)/$data['monto_gobal_prestado'];
+		if($data['monto_gobal_prestado'] > 0){
+			$data['porcentaje_total_pagado'] = (($data['monto_total_pagado'])*100)/$data['monto_gobal_prestado'];
+		}else{
+			$data['porcentaje_total_pagado'] = 100;
+		}
 
 		return $data;
 	}

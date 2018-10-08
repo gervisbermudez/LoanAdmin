@@ -10,7 +10,7 @@ class Test extends CI_Controller {
 
 	public function index(){
 		echo '<pre>';
-		var_dump($this->session->get_userdata('user'));
+		print_r($this->session->get_userdata('user'));
 		echo '</pre>';
 	}
 

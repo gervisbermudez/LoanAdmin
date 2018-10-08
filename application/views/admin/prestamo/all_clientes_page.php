@@ -9,7 +9,7 @@
         <table id="example1" class="table table-bordered table-striped">
           <thead>
           <tr>
-            <?php if ($this->session->userdata('user')['level'] < 3): ?>
+            <?php if ($this->session->userdata('user')['level'] < 2): ?>
               <th class="hidden-xs">Registrado por</th>
             <?php endif ?>
             <th>Nombre</th>
@@ -22,9 +22,9 @@
           <tbody>
             <?php foreach ($clientes as $key => $cliente): ?>
             <tr>
-              <?php if ($this->session->userdata('user')['level'] < 3): ?>
+              <?php if ($this->session->userdata('user')['level'] < 2): ?>
               <td class="hidden-xs"><a href="<?php echo base_url('admin/user/view/'.$cliente['id_user_register']); ?>"><?php echo $cliente['username'] ?></a></td>
-            <?php endif ?>
+              <?php endif ?>
               <td><a href="<?php echo base_url('admin/prestamo/cliente/'.$cliente['id']); ?>"><?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></a></td>
               <td><?php echo $cliente['direccion'] ?></td>
               <td><?php echo $cliente['telefono'] ?></td>
@@ -35,7 +35,7 @@
           </tbody>
         </table>
         <?php else: ?>
-          No hay clientes registrados, <a href="<?php echo base_url('admin/prestamo/clientes/nuevo') ?>">Registrar nuevo</a>
+          No tienes clientes registrados, <a href="<?php echo base_url('admin/prestamo/clientes/nuevo') ?>">Registrar nuevo</a>
         <?php endif ?>
       </div>
     </div>

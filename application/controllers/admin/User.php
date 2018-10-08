@@ -41,9 +41,22 @@ class User extends MY_Controller {
     $this->load->model('User_model');
     $user = $this->session->userdata('user');
     $uri = $this->uri->uri_string();
+    $arrUri = $this->uri->segment_array();
+    if($arrUri[3] === 'view' && $arrUri[4] !== $user['id']){
+      $uri = 'admin/user/view/another';
+    }
     switch ($uri) {
+      case 'admin/user':
+       if(!$user['access_user_module']){
+         redirect('admin');
+       }
       case 'admin/user/add':
        if(!$user['create_any_user']){
+         redirect('admin');
+       }
+      break;
+      case 'admin/user/view/another':
+       if(!$user['view_specific_user']){
          redirect('admin');
        }
       break;

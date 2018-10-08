@@ -17,10 +17,9 @@ class Admin extends MY_Controller {
 		$data['footer_includes'] = ['chart' => '<script src="'.JSPATH.'chart.js/Chart.js"></script>']; 
 		//Load the Views
 		$user = $this->session->userdata('user');
-		if ($user['level'] > 2) {
-			$data['prestamos'] = $this->Loan_model->get_prestamo('all', '10');
-			$id_user = $user['id'];
-			$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans_dues`.`id_prestamista` = $id_user");
+		if ($user['level'] > 1) {
+			$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $user['id']), '10');
+			$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans`.`id_prestamista` =".$user['id']);
 		}else{
 			$data['prestamos'] = $this->Loan_model->get_prestamo('all', '10');
 			$data['cuotas'] = $this->Loan_model->get_simple_next_dues();
@@ -86,4 +85,16 @@ class Admin extends MY_Controller {
 		$dashboard['count_dues_down'] = $loans_dues ? count($loans_dues) : 0 ;
 		$this->output->set_content_type('application/json')->set_output(json_encode($dashboard));
 	}
+
+	public function ajax_get_notifications(){
+		$user = $this->session->userdata('user');
+		$Notifications = $this->get_notifications($user['id']);
+		$this->output->set_header('HTTP/1.0 200 OK');
+		$this->output->set_status_header(200);
+		$this->output
+        ->set_content_type('application/json')
+        ->set_output(json_encode($Notifications));
+	}
+
+
 }

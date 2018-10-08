@@ -21,7 +21,7 @@ class Notifications_model extends MY_model {
     public $type = 'Primary';
     public $id_user;
     public $icons_class = array('Primary' => 'fa-bullhorn', 'Info' => 'fa-info', 'Success' => 'fa-check', 'Warning' => 'fa-warning', 'Danger' => 'fa-ban');
-    public $template = '<a href="{action}"><i class="fa {icon} {color}"></i> {description}</a>';
+    public $template = '<a href="{action}" class="notification unread"><i class="fa {icon} {color}"></i> {description}</a>';
     public $color_class = array('Primary' => 'text-muted', 'Info' => 'text-aqua', 'Success' => 'text-green', 'Warning' => 'text-yellow', 'Danger' => 'text-red');
     public $description = 'New notification';
     public $fecha = FALSE;
@@ -99,6 +99,9 @@ class Notifications_model extends MY_model {
             break;
             case 'read':
                 $selectData['isread'] = '1';
+            break; 
+            case 'unread':
+                $selectData['isread'] = '0';
             break;            
             default:
                 return $this->get_data($selectData, $this->table_name, $limit, $orderby);

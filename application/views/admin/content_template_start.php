@@ -103,6 +103,10 @@
                   <?php endforeach ?>
                 </tbody>
               </table>
+                <?php else: ?>
+              <p>
+                  <b>No hay prestamos registrados</b>
+              </p>
               <?php endif ?>
             </div>
             <!-- /.table-responsive -->
@@ -162,6 +166,10 @@
                   <?php endforeach ?>
                 </tbody>
               </table>
+              <?php else: ?>
+              <p>
+                  <b>No hay proximas cuotas registradas</b>
+              </p>
               <?php endif ?>
             </div>
           </div>

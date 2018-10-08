@@ -396,7 +396,7 @@ a:active,a:focus,a:hover {
   .main-header .logo {
       height: 30px;
       line-height: 30px;
-      font-size: 17px;
+      font-size: 17px
   }
 
   .main-header .navbar {
@@ -1014,6 +1014,10 @@ a:active,a:focus,a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 10px
+}
+
+a.notifications.unread {
+  font-weight: 800;
 }
 
 .navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.fa,.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.glyphicon,.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a>.ion {

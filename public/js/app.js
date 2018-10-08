@@ -73,6 +73,25 @@ jQuery(document).ready(function($) {
 	
 	$('.sidebar-menu').tree();
 	//$.widget.bridge('uibutton', $.ui.button);
+
+	$.ajax({
+		type: "POST",
+		url: "/admin/ajax_get_norifications",
+		data: {},
+		dataType: "json",
+		success: function (response) {
+			if(response){
+				$('.notificationscount').html(response.length);
+				let html = '';
+				for (let index = 0; index < response.length; index++) {
+					const element = response[index];
+					html += element.description;
+				}
+				$('#notifications').append(html);
+			}
+		}
+	});
+
 	fnCheckValue();
     objDeleteData.fnIni();
     fnChangeUserStatus();
@@ -101,18 +120,40 @@ jQuery(document).ready(function($) {
 		}
 	}
 	setTimeout(function(){ preloader.off(); }, 3000);
-	
-	var area = new Morris.Area({
-		element   : 'revenue-chart',
-		resize    : true,
-		data      : MorrisArea,
-		xkey      : 'y',
-		ykeys     : ['item1'],
-		labels    : ['Pagado'],
-		lineColors: ['#a0d0e0'],
-		hideHover : 'auto'
-	  });
+	if($('#revenue-chart').length){
+		var area = new Morris.Area({
+			element   : 'revenue-chart',
+			resize    : true,
+			data      : MorrisArea,
+			xkey      : 'y',
+			ykeys     : ['item1'],
+			labels    : ['Pagado'],
+			lineColors: ['#a0d0e0'],
+			hideHover : 'auto'
+		});
+	}
 	  $('#tab_3').html($('#dues_chart'));
+	
+	  if($('#line-chart').length > 0){
+	var line = new Morris.Line({
+		element          : 'line-chart',
+		resize           : true,
+		data             : pagos_data,
+		xkey             : 'y',
+		ykeys            : ['item1'],
+		labels           : ['Item 1'],
+		lineColors       : ['#efefef'],
+		lineWidth        : 2,
+		hideHover        : 'auto',
+		gridTextColor    : '#fff',
+		gridStrokeWidth  : 0.4,
+		pointSize        : 4,
+		pointStrokeColors: ['#efefef'],
+		gridLineColor    : '#efefef',
+		gridTextFamily   : 'Open Sans',
+		gridTextSize     : 10
+	  });
+	}
 });
 
 var fn_dasboard_run = function() {
