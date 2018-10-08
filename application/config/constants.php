@@ -93,4 +93,4 @@ defined('IMGPATH')             OR define('IMGPATH', PUBLICPATH.'img/');
 defined('IMGPROFILEPATH')      OR define('IMGPROFILEPATH', IMGPATH.'profile/');
 
 //Define the currente site version 
-defined('SITEVERSION')      OR define('SITEVERSION', '1.0');
+defined('SITEVERSION')      OR define('SITEVERSION', '1.1');
