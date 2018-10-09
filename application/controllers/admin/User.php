@@ -42,8 +42,12 @@ class User extends MY_Controller {
     $user = $this->session->userdata('user');
     $uri = $this->uri->uri_string();
     $arrUri = $this->uri->segment_array();
-    if($arrUri[3] === 'view' && $arrUri[4] !== $user['id']){
-      $uri = 'admin/user/view/another';
+    if(preg_match('/admin\/user\/view\/(\d+)/', $uri)){
+      if($arrUri[4] !== $user['id']){
+        $uri = 'admin/user/view/another';
+      }else{
+        $uri = 'admin/user/view/self';
+      }
     }
     switch ($uri) {
       case 'admin/user':
