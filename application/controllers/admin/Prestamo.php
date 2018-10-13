@@ -101,7 +101,8 @@ class Prestamo extends MY_Controller {
       //Includes
       $data['head_includes'] = [
         'data-table-css' => link_tag(JSPATH.'datatables.net-bs/css/dataTables.bootstrap.min.css'),
-        'morris-chart' => link_tag(JSPATH."morris.js/morris.css")
+        'morris-chart' => link_tag(JSPATH."morris.js/morris.css"),
+        'calendar-css' => link_tag(JSPATH.'fullcalendar/dist/fullcalendar.min.css')
       ];
       $data['footer_includes'] = [
         'data-tabe-js' => fnAddScript(JSPATH.'datatables.net/js/jquery.dataTables.min.js'), 
@@ -109,6 +110,9 @@ class Prestamo extends MY_Controller {
         'datatableini' => fnAddScript(JSPATH.'datatableini.js'),
         'raphael' => fnAddScript(JSPATH."raphael/raphael.min.js"),
         'morris' => fnAddScript(JSPATH."morris.js/morris.min.js"),
+        'moment-js'       => fnAddScript(JSPATH.'moment/min/moment.min.js'),
+        'fullcalendar-js' => fnAddScript(JSPATH.'fullcalendar/dist/fullcalendar.min.js'),
+        'fullcalendarini' => fnAddScript(JSPATH.'calendarini.js')
       ];
       
       $cuser = $this->session->userdata('user');
@@ -124,6 +128,9 @@ class Prestamo extends MY_Controller {
         $data['historial_prestamo'] = $this->Loan_model->get_prestamos_extended("AND `id_cliente` = $id AND `loans`.`status` = 0 AND `loans`.`id_prestamista`='".$cuser['id']."'"); 
         break;
       }
+
+      $data['cuotas'] = $this->MY_model->get_query('SELECT * FROM `loans_dues`, loans, `clients` WHERE `loans`.`id_cliente`=`clients`.`id` AND `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`id_cliente`='.$id);      
+
       $this->load->model('admin/loan/Client_model');
       $data['balance'] = $this->Client_model->get_loan_balance($id);
 

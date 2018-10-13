@@ -17,6 +17,7 @@ $modalid = random_string('alnum', 16);
       <div class="box-body">
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs pull-right">
+              <li class=""><a href="#tab_calendar" data-toggle="tab"><i class="fa fa-fw fa-calendar"></i> Calendario</a></li>
               <li class=""><a href="#tab_1-1" data-toggle="tab"><i class="fa fa-fw fa-history"></i> Historial</a></li>
               <li class=""><a href="#tab_2-2" data-toggle="tab" ><i class="fa fa-fw fa-credit-card"></i> Prestamos</a></li>
               <li class="active"><a href="#tab_3-2" data-toggle="tab" ><i class="fa fa-fw fa-newspaper-o"></i> Resumen</a></li>
@@ -36,6 +37,14 @@ $modalid = random_string('alnum', 16);
               <li class="pull-left header"><i class="fa fa-user"></i> <?php echo $cliente['nombre'] . ' ' . $cliente['apellido'] ?></li>
             </ul>
             <div class="tab-content">
+            <div class="tab-pane" id="tab_calendar">
+                <div class="box-body">
+                <div class="box-body no-padding">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+                </div>
+                </div>
+            </div>
               <div class="tab-pane" id="tab_1-1">
                 
                 <div class="box-body">
@@ -310,24 +319,49 @@ $modalid = random_string('alnum', 16);
         <button type="button" class="btn btn-danger" data-delete-data="run" data-dismiss="modal">Continuar</button>
       </div>
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
-<?php $fechas = array(); foreach ($pagos_realizados as $key => $value):  ?>
+<?php $fechas = array();
+foreach ($pagos_realizados as $key => $value) : ?>
   <?php
-    if(!array_key_exists($value['Fecha'], $fechas)){
-      $fechas[$value['Fecha']] = $value['monto_pagado'];
-    }else{
-      $fechas[$value['Fecha']] = $fechas[$value['Fecha']] + $value['monto_pagado'];
-    }
+  if (!array_key_exists($value['Fecha'], $fechas)) {
+    $fechas[$value['Fecha']] = $value['monto_pagado'];
+  } else {
+    $fechas[$value['Fecha']] = $fechas[$value['Fecha']] + $value['monto_pagado'];
+  }
   ?>
 <?php endforeach; ?>
-
 <script>
   var pagos_data = [
-    <?php foreach ($fechas as $key => $value):  ?>
+    <?php foreach ($fechas as $key => $value) : ?>
     { y: '<?= $key ?>', item1: '<?= $value ?>' },
     <?php endforeach; ?>
 		];
+</script>
+<script>
+  var calendarEvents = [
+    <?php foreach ($cuotas as $key => $cuota) : ?>
+      <?php 
+      $fecha_pago = DateTime::createFromFormat('Y-m-d', $cuota['fecha_pago']);
+      $Eventcolor = '#0073b7'; // Pendiente Azul
+      if ($cuota['estado'] == 'Proximo') {
+        $Eventcolor = '#f39c12'; // Amarillo
+      }
+      if ($cuota['estado'] == 'Caida') {
+        $Eventcolor = '#dd4b39'; // Rojo
+      }
+      if ($cuota['estado'] == 'Pagado') {
+        $Eventcolor = '#00a65a'; // Verde
+      }
+      ?>
+      {
+        title          : 'Cuota de <?php echo $cuota["monto_total"] ?>',
+        start          : new Date(<?php echo $fecha_pago->format('Y') . ', ' . ((int)($fecha_pago->format('m')) - 1) . ', ' . $fecha_pago->format('d') . ',08,00,00' ?>),
+        backgroundColor: '<?php echo $Eventcolor ?>', //red
+        borderColor    : '<?php echo $Eventcolor ?>', //red
+        url            : '<?= base_url() . 'admin/prestamo/cuotas/' . $cuota["id_prestamo"] ?>',
+      },
+    <?php endforeach ?>
+    {}
+  ]
 </script>
