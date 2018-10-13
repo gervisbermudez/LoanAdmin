@@ -26,4 +26,8 @@ class Test extends CI_Controller {
 	{
 		phpinfo();
 	}
+
+	public function profiler(){
+		$this->output->enable_profiler(TRUE);
+	}
 }

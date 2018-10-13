@@ -18,7 +18,9 @@ class MY_Controller extends CI_Controller
     if ($this->input->get('read')) {
       $Notifications->set_read($this->input->get('read'));
     }
-    $this->Loan_model->update_estados();
+    if($this->config->item('enable_profiler')){
+      $this->output->enable_profiler(TRUE);
+    }
   }
 
   public function showError($errorMsg = 'Ocurrio un error inesperado', $data = array('title' => 'Error', 'h1' => 'Error'))
@@ -34,6 +36,9 @@ class MY_Controller extends CI_Controller
 
   public function fn_ajax_delete_data()
   {
+    if($this->config->item('enable_profiler')){
+      $this->output->enable_profiler(FALSE);
+    }
     $array_id = $this->input->post('id');
     $strTable = $this->input->post('table');
     $json = array('result' => false, 'message' => 'Error al eliminar datos');
@@ -61,7 +66,9 @@ class MY_Controller extends CI_Controller
 
   public function fn_ajax_check_value()
   {
-
+    if($this->config->item('enable_profiler')){
+      $this->output->enable_profiler(FALSE);
+    }
     $this->load->model('MY_model');
 
     $table = $this->input->post('table');
@@ -80,7 +87,9 @@ class MY_Controller extends CI_Controller
 
   public function fnChangeState()
   {
-
+    if($this->config->item('enable_profiler')){
+      $this->output->enable_profiler(FALSE);
+    }
     $id = $this->input->post('id');
     $table = $this->input->post('table');
     $status = 0;
@@ -149,7 +158,7 @@ class MY_Controller extends CI_Controller
   {
     $this->load->model('Notifications_model');
     $Notifications = new Notifications_model();
-
+    $this->Loan_model->update_estados();
     if ($this->input->get('read')) {
       $Notifications->set_read($this->input->get('read'));
     }
