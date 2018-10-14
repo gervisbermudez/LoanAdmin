@@ -1,9 +1,6 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="box">
-      <div class="box-header">
-        <h3 class="box-title">Notificaciones</h3>
-      </div><!-- /.box-header -->
       <div class="box-body table-responsive no-padding">
         <?php if ($notificacions): ?>
           <table class="table table-hover">
@@ -38,7 +35,9 @@
           <?php endforeach ?>
         </table>
         <?php else: ?>
-        Aun no se han registrado notificaciones
+        <div class="box-header">
+          <h3 class="box-title">No tienes notificaciones pendientes</h3>
+        </div><!-- /.box-header -->
         <?php endif ?>
       </div>
     </div>
