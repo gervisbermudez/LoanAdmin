@@ -1,6 +1,21 @@
 <?php
 $this->load->helper('string');
 $modalid = random_string('alnum', 16);
+  $badge = 'bg-red';
+  $boxColor = 'box-danger';
+  $progreso_global = $balance['porcentaje_total_pagado'];
+  if ($progreso_global > 50 && $progreso_global < 80) {
+    $badge = 'bg-yellow';
+    $boxColor = 'box-warning';
+  }
+  if ($progreso_global > 80) {
+    $badge = 'bg-light-blue';
+    $boxColor = 'box-primary';
+  }
+  if ($progreso_global == 100) {
+    $badge = 'bg-green';
+    $boxColor = 'box-success';
+  }
 ?>
 <div class="box">
   <div class="box-header with-border">
@@ -159,7 +174,7 @@ $modalid = random_string('alnum', 16);
                   <div class="col-lg-8">
                     <div class="row">
                       <div class="col-lg-4">
-                        <div class="box box-success">
+                        <div class="box <?php echo $boxColor ?>">
                           <div class="box-header with-border">
                             <h3 class="box-title">Información</h3>
                           </div>
@@ -176,7 +191,7 @@ $modalid = random_string('alnum', 16);
                         </div>
                         </div>
                         <div class="col-lg-8">
-                          <div class="box box-primary">
+                          <div class="box <?php echo $boxColor ?>">
                             <div class="box-header with-border">
                               <h3 class="box-title">Prestamos Activos</h3>
                             </div>
@@ -238,19 +253,7 @@ $modalid = random_string('alnum', 16);
                   <div class="col-lg-4">
                   <div class="box box-widget widget-user-2">
                       <!-- Add the bg color to the header using any of the bg-* classes -->
-                      <?php 
-                      $badge = 'bg-red';
-                      $progreso = $balance['porcentaje_total_pagado'];
-                      if ($progreso > 50 && $progreso < 80) {
-                        $badge = 'bg-yellow';
-                      }
-                      if ($progreso > 80) {
-                        $badge = 'bg-light-blue';
-                      }
-                      if ($progreso == 100) {
-                        $badge = 'bg-green';
-                      }
-                      ?>
+                      
                       <div class="widget-user-header <?php echo $badge; ?>">
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">Balance Global</h3>

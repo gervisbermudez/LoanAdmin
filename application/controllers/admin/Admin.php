@@ -20,10 +20,10 @@ class Admin extends MY_Controller
 		//Load the Views
 		$user = $this->session->userdata('user');
 		if ($user['level'] > 1) {
-			$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $user['id']), '10');
+			$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $user['id'],'status' => 1), '10');
 			$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans`.`id_prestamista` =" . $user['id']);
 		} else {
-			$data['prestamos'] = $this->Loan_model->get_prestamo('all', '10');
+			$data['prestamos'] = $this->Loan_model->get_prestamo(array('status' => 1), '10');
 			$data['cuotas'] = $this->Loan_model->get_simple_next_dues();
 		}
 		$data['pagecontent'] = $this->load->view('admin/content_template_start', $data, true);
@@ -54,11 +54,11 @@ class Admin extends MY_Controller
 		$dashboard = array();
 		if ($cuser['level'] < 2) {
 			//Cantidad de usuarios
-			$dashboard['users_count'] = $this->MY_model->get_count('user');
+			$dashboard['users_count'] = $this->MY_model->get_count('user', array('status' => 1));
 			//Cantidad de Clientes
-			$dashboard['clientes_count'] = $this->MY_model->get_count('clients');
+			$dashboard['clientes_count'] = $this->MY_model->get_count('clients', array('status' => 1));
 			//Cantidad de prestamos
-			$dashboard['prestamos_count'] = $this->MY_model->get_count('loans');
+			$dashboard['prestamos_count'] = $this->MY_model->get_count('loans', array('status' => 1));
 			$loans_dues = $this->MY_model->get_data(array('estado' => 'Pendiente'), 'loans_dues');
 			//Cantidad de cuotas pendientes
 			$dashboard['cuotas_count'] = $loans_dues ? count($loans_dues) : 0;
@@ -95,9 +95,9 @@ class Admin extends MY_Controller
 			//Cantidad de usuarios
 			$dashboard['users_count'] = 0;
 			//Cantidad de Clientes
-			$dashboard['clientes_count'] = $this->MY_model->get_count('loans_user_client', array('id_user' => $cuser['id']));
+			$dashboard['clientes_count'] = $this->MY_model->get_count('loans_user_client', array('id_user' => $cuser['id'], 'status' => 1));
 			//Cantidad de prestamos
-			$dashboard['prestamos_count'] = $this->MY_model->get_count('loans', array('id_prestamista' => $cuser['id']));
+			$dashboard['prestamos_count'] = $this->MY_model->get_count('loans', array('id_prestamista' => $cuser['id'], 'status' => 1));
 
 			$loans_dues = $this->MY_model->get_query('SELECT * FROM `loans_dues`, `loans` WHERE `loans_dues`.`id_prestamo`=`loans`.`id` AND `loans`.`id_prestamista`='.$cuser['id']);
 			//Cantidad de cuotas pendientes
