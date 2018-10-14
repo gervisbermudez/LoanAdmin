@@ -18,15 +18,15 @@ class MY_Controller extends CI_Controller
     if ($this->input->get('read')) {
       $Notifications->set_read($this->input->get('read'));
     }
-    if($this->config->item('enable_profiler')){
-      $this->output->enable_profiler(TRUE);
+    if ($this->config->item('enable_profiler')) {
+      $this->output->enable_profiler(true);
     }
   }
 
-  public function showError($errorMsg = 'Ocurrio un error inesperado', $data = array('title' => 'Error', 'h1' => 'Error'))
+  public function showError($errorMsg = 'Ocurrio un error inesperado', $data = array('title' => 'Error', 'h1' => 'Ocurrio un error inesperado'))
   {
     $data['errorMsg'] = $errorMsg;
-    $data['pagedescription'] = "500";
+    $data['pagedescription'] = "";
     $data['breadcrumb'] = '';
     //Load the view
     $data['page'] = $this->load->view('admin/error500_template', $data, true);
@@ -36,8 +36,8 @@ class MY_Controller extends CI_Controller
 
   public function fn_ajax_delete_data()
   {
-    if($this->config->item('enable_profiler')){
-      $this->output->enable_profiler(FALSE);
+    if ($this->config->item('enable_profiler')) {
+      $this->output->enable_profiler(false);
     }
     $array_id = $this->input->post('id');
     $strTable = $this->input->post('table');
@@ -66,8 +66,8 @@ class MY_Controller extends CI_Controller
 
   public function fn_ajax_check_value()
   {
-    if($this->config->item('enable_profiler')){
-      $this->output->enable_profiler(FALSE);
+    if ($this->config->item('enable_profiler')) {
+      $this->output->enable_profiler(false);
     }
     $this->load->model('MY_model');
 
@@ -87,8 +87,8 @@ class MY_Controller extends CI_Controller
 
   public function fnChangeState()
   {
-    if($this->config->item('enable_profiler')){
-      $this->output->enable_profiler(FALSE);
+    if ($this->config->item('enable_profiler')) {
+      $this->output->enable_profiler(false);
     }
     $id = $this->input->post('id');
     $table = $this->input->post('table');

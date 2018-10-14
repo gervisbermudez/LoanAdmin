@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['base_url']	= 'http://dev.myloanadmin.io/';
 $config['sitename'] = 'Development';
-$config['enable_profiler'] = false;
+$config['enable_profiler'] = true;
 
 /*
 |--------------------------------------------------------------------------
