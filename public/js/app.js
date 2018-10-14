@@ -652,7 +652,11 @@ jQuery(document).ready(function ($) {
 			case 'update_profile':
 				objAlert.strAlertTipe = 'alert-success';
 				objAlert.fnGenerate('Perfil actualizado con exito!');
-				break;
+			break;
+			case 'added_due':
+				objAlert.strAlertTipe = 'alert-success';
+				objAlert.fnGenerate('Pago registrado con exito!');
+			break;
 		}
 	}
 	setTimeout(function () {
