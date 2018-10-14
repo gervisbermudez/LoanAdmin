@@ -254,7 +254,11 @@ $modalid = random_string('alnum', 16);
                       <div class="widget-user-header <?php echo $badge; ?>">
                         <!-- /.widget-user-image -->
                         <h3 class="widget-user-username">Balance Global</h3>
+                        <?php if((int)$balance['porcentaje_total_pagado']===100): ?>
+                        <h5 class="widget-user-desc">Sin deuda</h5>
+                        <?php else: ?>
                         <h5 class="widget-user-desc"><?php echo (int)$balance['porcentaje_total_pagado'] ?>% Pagado</h5>
+                        <?php endif; ?>
                       </div>
                       <div class="box-footer no-padding">
                         <ul class="nav nav-stacked">
