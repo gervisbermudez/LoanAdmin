@@ -26,18 +26,39 @@ class Reportes extends MY_Controller
     $data['h1'] = "Reportes";
     $data['pagedescription'] = "Reportes: Todos los Prestamos";
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Reportes', 'admin/prestamo')));
-    $cuser = $this->session->userdata('user');
+    
+    $fecha_seleccionada = $this->input->get('fecha_seleccionada');
+    $where_portion = '';
+    switch ($fecha_seleccionada) {
+      case 'hoy':
+          $where_portion = 'AND DATE(`loans`.`registerdate`) = DATE(CURRENT_DATE)';
+      break;
+      case 'ayer':
+          $where_portion = 'AND DATE(`loans`.`registerdate`) = DATE(NOW() - INTERVAL 1 DAY)';
+      break;
+      
+      default:
+        $fecha_seleccionada;
+      break;
+    }
 
+    $user_selected = $this->input->get('user_selected');
+    $where_portion .= ' ';
+    if($user_selected && $user_selected !== 'Todos' && is_numeric($user_selected)){
+      $where_portion .= ' AND user.id = '.$user_selected;
+    }
+
+    $cuser = $this->session->userdata('user');
     switch ($cuser['level']) {
       case 0:
       case 1:
-        $data['prestamos']    = $this->Loan_model->get_prestamos_extended();
-        $data['cobradores']  = $users = $this->User_model->get_user('all'); 
+        $data['prestamos']    = $this->Loan_model->get_query("SELECT `user`.`username`, CONCAT(`clients`.`nombre`,' ', `clients`.`apellido`) AS 'cliente', `loans`.`monto`, `loans`.`monto_pagado`, `loans`.`porcentaje`, `loans`.`registerdate`, `loans`.`subtotal`, `loans`.`monto_total` FROM `user`, `loans`, `clients`  WHERE `user`.`id` = `loans`.`id_prestamista` AND `loans`.`id_cliente` = `clients`.`id` $where_portion");
+        $data['cobradores']  = $users = $this->User_model->get_user(array('user.status'=> 1, 'id_user_group >'=>'1')); 
       break;
       
       default:
         $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND loans.id_prestamista = ' . $this->session->userdata('user')['id']);
-        $data['cobradores']  = $users = $this->User_model->get_user(array('`user_group`.`level` > ' => $cuser['level']));    
+        $data['cobradores']  = $users = $this->User_model->get_user(array('id' => $cuser['id']));    
       break;
     }
 

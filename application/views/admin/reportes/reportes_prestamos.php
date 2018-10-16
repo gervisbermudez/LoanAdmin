@@ -8,21 +8,21 @@
 				<select class="form-control" name="fecha_seleccionada" id="fecha_seleccionada">
 					<option value="Todas">Todos</option>
 					<option value="hoy">Prestamos de hoy</option>
-					<option value="hoy">Prestamos de ayer</option>
+					<option value="ayer">Prestamos de ayer</option>
 					<option value="semana">Prestamos de la semana</option>
 					<option value="mes">Prestamos del mes</option>
 				</select>
 			</label>
 			</div>
 			<div class="form-group pull-left">
-			<label for="fecha_seleccionada">Cobrador
-				<select class="form-control" name="fecha_seleccionada" id="fecha_seleccionada">
-					<option value="Todas">Todos</option>
+			<label for="user_selected">Cobrador
+				<select class="form-control" name="user_selected" id="user_selected">
+					<option value="Todos">Todos</option>
 					<?php
 						if($cobradores):
 						foreach($cobradores as $key => $cobrador ):
 					?>
-						<option value="hoy"><?php echo $cobrador['username'] ?></option>
+						<option value="<?php echo $cobrador['id'] ?>"><?php echo $cobrador['username'] ?></option>
 					<?php
 						endforeach;
 						endif;
@@ -30,7 +30,7 @@
 				</select>
 			</label>
 			</div>
-			<hr class="clearfix">
+			<hr class="clearfix-left">
 			<button type="submit" class="btn btn-primary pull-right">Aplicar</button>
 		</form>
 	</div>
@@ -49,19 +49,39 @@
 					<thead>
 						<tr>
 						<?php foreach ($prestamos[0] as $key => $prestamo): ?>
-						<th><?php echo ($key) ?></th>
+						<th><?php echo ucfirst($key) ?></th>
 						<?php endforeach ?>
 						</tr>
 					</thead>
 					<tbody>
-						<?php foreach ($prestamos as $key => $prestamo): ?>
+						<?php 
+							$suma_monto = 0;
+							$suma_monto_pagado = 0;
+							$suma_monto_subtotal = 0;
+							$suma_monto_total = 0;
+						foreach ($prestamos as $key => $prestamo): ?>
 						<tr>
 							<?php foreach ($prestamo as $clave => $valor): ?>
-							<th><?php echo $prestamo[$clave] ?></th>
+							<td><?php echo $prestamo[$clave] ?></td>
 							<?php endforeach ?>
 						</tr>
-						<?php endforeach ?>
+						<?php 
+							$suma_monto += $prestamo['monto'];
+							$suma_monto_pagado += $prestamo['monto_pagado'];
+							$suma_monto_subtotal += $prestamo['subtotal'];
+							$suma_monto_total += $prestamo['monto_total'];
+						endforeach ?>
 					</tbody>
+					<tfoot>
+						<th>TOTAL</th>
+						<th></th>
+						<th><?php echo number_format ($suma_monto, 2, ',', '.'); ?> $</th>
+						<th><?php echo number_format ($suma_monto_pagado, 2, ',', '.'); ?> $</th>
+						<th></th>
+						<th></th>
+						<th><?php echo number_format ($suma_monto_subtotal, 2, ',', '.'); ?> $</th>
+						<th><?php echo number_format ($suma_monto_total, 2, ',', '.'); ?> $</th>
+					</tfoot>
 				</table>
 				<br><br>
 				<hr>
