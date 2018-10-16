@@ -26,7 +26,7 @@ class Prestamo extends MY_Controller
     $data['pagedescription'] = "Todos los Prestamos";
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamos', 'admin/prestamo')));
 
-    if ($this->session->userdata('user')['level'] > 2) {
+    if ($this->session->userdata('user')['level'] > 1) {
       $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND loans.id_prestamista = ' . $this->session->userdata('user')['id']);
     } else {
       $data['prestamos'] = $this->Loan_model->get_prestamos_extended();
@@ -280,7 +280,7 @@ class Prestamo extends MY_Controller
    */
   public function form_new_loan()
   {
-    if ($this->session->userdata('user')['level'] < 2) {
+    if ($this->session->userdata('user')['level'] < 1) {
       $data['clientes'] = $this->Loan_model->get_cliente_extended();
     } else {
       $data['clientes'] = $this->Loan_model->get_cliente_extended('AND user.id=' . $this->session->userdata('user')['id']);
