@@ -1,7 +1,7 @@
 <div class="box">
   <div class="box-header with-border">
-    <h3 class="box-title">Herramientas</h3> <br/>
-    	<a href="<?php echo base_url('admin/prestamo/nuevo'); ?>" class="" data-toggle="tooltip" data-original-title="Nuevo prestamo"><i class="fa fa-plus-circle"></i> Nuevo</a>
+    <h3 class="box-title">Herramientas</h3> <hr/>
+    	<a href="<?php echo base_url('admin/prestamo/nuevo'); ?>" class="btn btn-success" data-toggle="tooltip" data-original-title="Nuevo prestamo"><i class="fa fa-plus-circle"></i> Nuevo</a>
   </div>
 <!-- /.box-footer-->
 </div>

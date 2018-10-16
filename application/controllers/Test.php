@@ -8,6 +8,11 @@ class Test extends CI_Controller {
 		parent::__construct();
 	}
 
+	public function FunctionName()
+	{
+		
+	}
+
 	public function index(){
 		echo '<pre>';
 		print_r($this->session->get_userdata('user'));

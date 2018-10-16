@@ -5311,5 +5311,10 @@ a.notifications.unread {
       transform: translateX(0)
   }
 }
-
+div#example1_wrapper {
+  overflow-x: scroll;
+}
+.clearfix-left {
+  clear: left;
+}
 /*# sourceMappingURL=AdminLTE.min.css.map */
