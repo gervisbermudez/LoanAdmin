@@ -380,7 +380,7 @@ class Prestamo extends MY_Controller
     $Prestamo->porcentaje = $this->input->post('porcentaje');
     $Prestamo->ciclo_pago = $this->input->post('ciclo_pago');
     $Prestamo->cant_cuotas = $this->input->post('cant_cuotas');
-    $Prestamo->fecha_inicio = DateTime::createFromFormat('m/d/Y', $this->input->post('fecha_inicio'));
+    $Prestamo->fecha_inicio = new DateTime();
     if ($Prestamo->create()) {
       redirect('admin/prestamo/cuotas/' . $Prestamo->id);
     } else {

@@ -628,6 +628,13 @@ jQuery(document).ready(function ($) {
 		}
 	});
 
+	$('select#id_cliente').change(function (e) { 
+		$this = $(this);
+		if($this.val()==='Nuevo'){
+			window.location = BASEURL+'admin/prestamo/clientes/nuevo';
+		}
+	});
+
 	fnCheckValue();
 	objDeleteData.fnIni();
 	fnChangeUserStatus();
