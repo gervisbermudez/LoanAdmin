@@ -9,8 +9,6 @@
 					<option value="Todas">Todos</option>
 					<option value="hoy">Prestamos de hoy</option>
 					<option value="ayer">Prestamos de ayer</option>
-					<option value="semana">Prestamos de la semana</option>
-					<option value="mes">Prestamos del mes</option>
 				</select>
 			</label>
 			</div>
@@ -30,6 +28,33 @@
 				</select>
 			</label>
 			</div>
+			<div class="form-group pull-left">
+			<label for="client_selected">Cliente
+				<select class="form-control" name="client_selected" id="client_selected">
+					<option value="Todos">Todos</option>
+					<?php
+						if($clientes):
+						foreach($clientes as $key => $cliente ):
+					?>
+						<option value="<?php echo $cliente['id'] ?>"><?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></option>
+					<?php
+						endforeach;
+						endif;
+					?>
+				</select>
+			</label>
+			</div>
+			<div class="clearfix-left"></div>
+			<div class="form-group">
+                <label>Date range:</label>
+                <div class="input-group">
+                  <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <input type="text" class="form-control pull-right" value="<?php echo $date_range; ?>" name="date_range" id="date_range">
+                </div>
+                <!-- /.input group -->
+              </div>
 			<hr class="clearfix-left">
 			<button type="submit" class="btn btn-primary pull-right">Aplicar</button>
 		</form>
