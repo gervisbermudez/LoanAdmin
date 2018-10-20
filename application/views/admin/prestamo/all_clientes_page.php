@@ -34,12 +34,12 @@
 						<tr>
 							<?php if ($this->session->userdata('user')['level'] < 2): ?>
 							<td class="hidden-xs"><a href="<?php echo base_url('admin/user/view/'.$cliente['id_user_register']); ?>">
-									<?php echo $cliente['username'] ?></a></td>
+									<?php echo ucwords($cliente['username']) ?></a></td>
 							<?php endif ?>
 							<td><a href="<?php echo base_url('admin/prestamo/cliente/'.$cliente['id']); ?>">
-									<?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></a></td>
+									<?php echo ucwords($cliente['nombre'].' '.$cliente['apellido']) ?></a></td>
 							<td>
-								<?php echo $cliente['direccion'] ?>
+							<a href="https://www.google.com.ar/maps/search/<?php echo ucwords($cliente['direccion']) ?>" target="_blank"><?php echo ucwords($cliente['direccion']) ?></a>
 							</td>
 							<td>
 								<?php echo $cliente['telefono'] ?>

@@ -34,8 +34,8 @@
       </div>
     </div>
     <div class="box-footer">
-      <a href="<?php echo base_url('admin/prestamos/'); ?>" type="submit" class="btn btn-default">Cancel</a>
-      <button type="submit" class="btn btn-info pull-right">Enviar</button>
+      <a href="<?php echo base_url('admin/prestamo/'); ?>" type="submit" class="btn btn-danger"><i class="fa fa-fw fa-close"></i> Cancel</a>
+      <button type="submit" class="btn btn-success pull-right"><i class="fa fa-fw fa-save"></i> Guardar</button>
     </div>
   </form>
 </div>
