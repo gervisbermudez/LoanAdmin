@@ -27,8 +27,8 @@
                 <tbody>
                  <?php foreach ($prestamos as $key => $prestamo): ?>
                    <tr>
-                     <td><a href="<?php echo base_url('admin/user/view/'.$prestamo['id_prestamista']) ?>"><?php echo $prestamo['username'] ?></a></td>
-                     <td><a href="<?php echo base_url('admin/prestamo/cliente/'.$prestamo['id_cliente']) ?>"><?php echo $prestamo['nombre'].' '.$prestamo['apellido'] ?></a></td>
+                     <td><a href="<?php echo base_url('admin/user/view/'.$prestamo['id_prestamista']) ?>"><?php echo ucwords($prestamo['username']) ?></a></td>
+                     <td><a href="<?php echo base_url('admin/prestamo/cliente/'.$prestamo['id_cliente']) ?>"><?php echo ucwords($prestamo['nombre'].' '.$prestamo['apellido']) ?></a></td>
                      <td><?php echo number_format ($prestamo['monto'], 2, ',', '.') ?> $</td>
                      <td class="hidden-xs"><?php echo $prestamo['cant_cuotas'] ?>&nbsp;<a title='Ver Cuotas' href="<?php echo base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
                      <td class="hidden-xs"><?php echo number_format ($prestamo['monto_total'], 2, ',', '.') ?> $</td>

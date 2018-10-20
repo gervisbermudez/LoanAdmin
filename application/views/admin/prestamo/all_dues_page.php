@@ -18,9 +18,8 @@ $modalid = random_string('alnum', 16);
 <div class="box">
   <div class="box-header with-border">
     <h3 class="box-title">Herramientas</h3>
-    <div class="box-tools pull-right">
-    	<button class="btn btn-box-tool"><i class="fa fa-table"></i></button>
-    </div>
+    <hr>
+    <a role="menuitem" class="btn btn-success" tabindex="-1" href="<?php echo base_url('admin/prestamo/prestamo/editar/' . $prestamo['id']); ?>">Editar</a>
   </div>
 <!-- /.box-footer-->
 </div>
@@ -32,7 +31,7 @@ $modalid = random_string('alnum', 16);
   </div>
   <div class="box-footer no-padding">
       <ul class="nav nav-stacked">
-      <li><a href="<?php echo base_url('admin/prestamo/cliente/' . $prestamo['id_cliente']); ?>"><b>Cliente:</b> <?php echo $prestamo['nombre'] . ' ' . $prestamo['apellido'] ?><br/></a></li>
+      <li><a href="<?php echo base_url('admin/prestamo/cliente/' . $prestamo['id_cliente']); ?>"><b>Cliente:</b> <?php echo ucwords($prestamo['nombre'] . ' ' . $prestamo['apellido']) ?><br/></a></li>
       <li><a href="#!"><b>Monto prestado:</b> <?php echo number_format($prestamo['monto'], 2, ',', '.'); ?> $<br/></a></li>
       <li><a href="#!"><b>Porcentaje:</b> <?php echo $prestamo['porcentaje'] ?>%<br/></a></li>
       <li><a href="#!"><b>Monto total:</b> <?php echo number_format($prestamo['monto_total'], 2, ',', '.'); ?> $<br/></a></li>

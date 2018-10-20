@@ -211,12 +211,12 @@ class User extends MY_Controller
     if ($user->create()) {
       $curuser = $this->session->userdata('user');
       $user_data = array(
-        'nombre' => $this->input->post('nombre'),
-        'apellido' => $this->input->post('apellido'),
-        'direccion' => $this->input->post('direccion'),
+        'nombre' => ucwords($this->input->post('nombre')),
+        'apellido' => ucwords($this->input->post('apellido')),
+        'direccion' => ucwords($this->input->post('direccion')),
         'telefono' => $this->input->post('telefono'),
         'identificacion' => $this->input->post('identificacion'),
-        'create by' => $curuser['nombre'] . ' ' . $curuser['apellido'],
+        'create by' => ucwords($curuser['nombre'] . ' ' . $curuser['apellido']),
         'avatar' => 'avatar.png'
       );
 

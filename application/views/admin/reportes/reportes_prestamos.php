@@ -36,7 +36,7 @@
 						if($clientes):
 						foreach($clientes as $key => $cliente ):
 					?>
-						<option value="<?php echo $cliente['id'] ?>"><?php echo $cliente['nombre'].' '.$cliente['apellido'] ?></option>
+						<option value="<?php echo $cliente['id'] ?>"><?php echo ucwords($cliente['nombre'].' '.$cliente['apellido']) ?></option>
 					<?php
 						endforeach;
 						endif;
