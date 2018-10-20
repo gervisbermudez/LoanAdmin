@@ -18,15 +18,51 @@ class Admin extends MY_Controller
 		//$data['head_includes'] = ['morris-chart' => '<link rel="stylesheet" href="public/chart.js/Chart.js">'];
 		$data['footer_includes'] = ['chart' => '<script src="' . JSPATH . 'chart.js/Chart.js"></script>']; 
 		//Load the Views
-		$user = $this->session->userdata('user');
-		if ($user['level'] > 1) {
-			$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $user['id'],'status' => 1), '10');
-			$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans`.`id_prestamista` =" . $user['id']);
-		} else {
-			$data['prestamos'] = $this->Loan_model->get_prestamo(array('status' => 1), '10');
-			$data['cuotas'] = $this->Loan_model->get_simple_next_dues();
+		$cuser = $this->session->userdata('user');
+		$this->load->model('admin/loan/Client_model');
+		$data['users'] = array();
+		switch($cuser['level']){
+			case 0:
+			case 1:
+				$data['prestamos'] = $this->Loan_model->get_prestamo(array('status' => 1), '5');
+				$data['cuotas'] = $this->Loan_model->get_simple_next_dues();
+				$data['clientes'] = $this->Loan_model->get_query('SELECT * FROM `clients` ORDER BY `clients`.`registerdate` ASC LIMIT 5');
+				$users = $this->User_model->get_user(array('user.status' => '1'), '5');  
+				if ($users) {
+					foreach ($users as $key => $value) {
+						$user_model = new User_model();
+						array_push($data['users'], $user_model->map($value['id']));
+					}
+				}
+			break;
+			case 2:
+				$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $cuser['id'],'status' => 1), '5');
+				$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans`.`id_prestamista` =" . $cuser['id']);
+				$data['clientes'] = $this->Loan_model->get_query('SELECT * FROM `clients` ORDER BY `clients`.`registerdate` ASC WHERE `id_user_register`= '. $cuser['id'].' LIMIT 5');
+				$users = $this->User_model->get_user(array('`user_group`.`level` >=' => $cuser['level'], 'user.status' => '1'), '5'); 
+				if ($users) {
+					foreach ($users as $key => $value) {
+						$user_model = new User_model();
+						array_push($data['users'], $user_model->map($value['id']));
+					}
+				}
+			break;
+			default:
+				$data['prestamos'] = $this->Loan_model->get_prestamo(array('id_prestamista' => $cuser['id'],'status' => 1), '10');
+				$data['cuotas'] = $this->Loan_model->get_simple_next_dues("AND `loans`.`id_prestamista` =" . $cuser['id']);
+				$data['clientes'] = $this->Loan_model->get_query('SELECT * FROM `clients` ORDER BY `clients`.`registerdate` ASC WHERE `id_user_register`= '. $cuser['id'].' LIMIT 5');
+				$users = $this->User_model->get_user(array('`user_group`.`level` >=' => $cuser['level'], 'user.status' => '1'), '5'); 
+				if ($users) {
+					foreach ($users as $key => $value) {
+						$user_model = new User_model();
+						array_push($data['users'], $user_model->map($value['id']));
+					}
+				}
+			break;
 		}
-		$data['pagecontent'] = $this->load->view('admin/content_template_start', $data, true);
+
+		//Load the views
+		$data['pagecontent'] = $this->load->view('admin/dashboard', $data, true);
 		$this->load->view('admin/master_template', $data);
 	}
 
@@ -141,8 +177,8 @@ class Admin extends MY_Controller
 		if($this->config->item('enable_profiler')){
 			$this->output->enable_profiler(FALSE);
 		}
-		$user = $this->session->userdata('user');
-		$Notifications = $this->get_notifications($user['id']);
+		$cuser = $this->session->userdata('user');
+		$Notifications = $this->get_notifications($cuser['id']);
 		$this->output->set_header('HTTP/1.0 200 OK');
 		$this->output->set_status_header(200);
 		$this->output
