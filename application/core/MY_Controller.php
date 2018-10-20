@@ -150,7 +150,7 @@ class MY_Controller extends CI_Controller
     foreach ($segs as $key => $value) {
       $segs[$key] = '<a href="' . base_url($value[1]) . '">' . $value[0] . '</a>';
     }
-    $segs[0] = '<a href="' . base_url('admin') . '"><i class="fa fa-dashboard"></i> Home</a>';
+    $segs[0] = '<a href="' . base_url('admin') . '"><i class="fa fa-home"></i> Home</a>';
     return ol($segs, $attributes);
   }
 
