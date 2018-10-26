@@ -60,8 +60,8 @@
       </div>
     </div>
     <div class="box-footer">
-      <a href="<?php echo base_url('admin/user/'); ?>" type="submit" class="btn btn-default">Cancel</a>
-      <button type="submit" class="btn btn-info pull-right">Enviar</button>
+      <a href="<?php echo base_url('admin/user/'); ?>" type="submit" class="btn btn-danger"><i class="fa fa-remove"></i> Cancel</a>
+      <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i> Guardar</button>
     </div>
   </form>
 </div>

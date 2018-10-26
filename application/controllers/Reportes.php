@@ -72,12 +72,12 @@ class Reportes extends MY_Controller
       case 0:
       case 1:
         $data['prestamos']    = $this->Loan_model->get_query("SELECT `user`.`username`, CONCAT(`clients`.`nombre`,' ', `clients`.`apellido`) AS 'cliente', `loans`.`monto`, `loans`.`monto_pagado`, `loans`.`porcentaje`, `loans`.`registerdate`, `loans`.`subtotal`, `loans`.`monto_total` FROM `user`, `loans`, `clients`  WHERE `user`.`id` = `loans`.`id_prestamista` AND `loans`.`id_cliente` = `clients`.`id` $where_portion");
-        $data['cobradores']  = $users = $this->User_model->get_user(array('user.status'=> 1, 'id_user_group >'=>'1')); 
+        $data['cobradores']  = $users = $this->User_model->get_user(array('user.status'=> 1, 'id_user_group >'=>'1'), '', array('user.id', 'ASC')); 
         $data['clientes'] = $this->Loan_model->get_cliente_extended();
       break;
       default:
-        $data['prestamos'] = $this->Loan_model->get_query("SELECT `user`.`username`, CONCAT(`clients`.`nombre`,' ', `clients`.`apellido`) AS 'cliente', `loans`.`monto`, `loans`.`monto_pagado`, `loans`.`porcentaje`, `loans`.`registerdate`, `loans`.`subtotal`, `loans`.`monto_total` FROM `user`, `loans`, `clients`  WHERE `user`.`id` = `loans`.`id_prestamista` AND `loans`.`id_cliente` = `clients`.`id` AND `user`.`id`".$cuser['id']." $where_portion");
-        $data['cobradores']  = $users = $this->User_model->get_user(array('id' => $cuser['id']));    
+        $data['prestamos'] = $this->Loan_model->get_query("SELECT `user`.`username`, CONCAT(`clients`.`nombre`,' ', `clients`.`apellido`) AS 'cliente', `loans`.`monto`, `loans`.`monto_pagado`, `loans`.`porcentaje`, `loans`.`registerdate`, `loans`.`subtotal`, `loans`.`monto_total` FROM `user`, `loans`, `clients`  WHERE `user`.`id` = `loans`.`id_prestamista` AND `loans`.`id_cliente` = `clients`.`id` AND `user`.`id` = ".$cuser['id']." $where_portion");
+        $data['cobradores']  = $users = $this->User_model->get_user(array('user.id' => $cuser['id']), '', array('user.id', 'ASC'));    
         $data['clientes'] = $this->Loan_model->get_cliente_extended(' AND `loans_user_client`.`id_user` = ' . $cuser['id']);   
       break;
     }
@@ -93,7 +93,7 @@ class Reportes extends MY_Controller
       'datatableini' => fnAddScript(JSPATH . 'datatableini.js'),
       'moment-js' => fnAddScript(JSPATH . 'moment/min/moment.min.js'),
       'daterangepicker' => fnAddScript(JSPATH . 'bootstrap-daterangepicker/daterangepicker.js'),
-      'daterangepicker-ini' => fnAddScript(JSPATH . 'bootstrap-daterangepicker/daterangepicker-ini.js'),
+      'daterangepicker-ini' => fnAddScript(JSPATH . 'bootstrap-daterangepicker/daterangepicker-ini.js')
     ];
 
     //Load the views

@@ -14,6 +14,7 @@ class Loan_model extends MY_model
     public $monto_total = 0;
     public $monto_pagado = 0;
     public $progreso = 0;
+    public $deuda = 0;
 
     public $ciclo_pago = 'Diario';
     public $fecha_inicio;
@@ -52,17 +53,6 @@ class Loan_model extends MY_model
         $this->cliente = $client;
         $this->id_cliente = $loan['id_cliente'];
 
-        $cuotas = $this->get_data(array('id_prestamo' => $id), 'loans_dues');
-
-        if ($cuotas) {
-            $this->load->model('admin/loan/Due_model');
-            foreach ($cuotas as $key => $cuota) {
-                $Due = new Due_model();
-                $Due->map_from_array($cuota);
-                array_push($this->cuotas, $Due);
-            }
-        }
-
         $this->id = $id;
         $this->monto = $loan['monto'];
         $this->porcentaje = $loan['porcentaje'];
@@ -71,14 +61,30 @@ class Loan_model extends MY_model
         $this->monto_pagado = $loan['monto_pagado'];
         $this->ciclo_pago = $loan['ciclo_pago'];
         $this->cant_cuotas = $loan['cant_cuotas'];
+        $this->deuda = $loan['monto_total'] - $loan['monto_pagado'];
         $this->fecha_inicio = DateTime::createFromFormat('Y-m-d', $loan['fecha_inicio']);
         $this->progreso = $loan['progreso'];
         $this->registerdate = DateTime::createFromFormat('Y-m-d H:i:s', $loan['registerdate']);
         $this->status = $loan['status'];
-
+        $this->get_dues();
         $this->is_map = true;
 
         return true;
+    }
+
+    public function get_dues()
+    {
+        $this->cuotas = array();
+        $cuotas = $this->get_data(array('id_prestamo' => $this->id), 'loans_dues');
+        if ($cuotas) {
+            $this->load->model('admin/loan/Due_model');
+            foreach ($cuotas as $key => $cuota) {
+                $Due = new Due_model();
+                $Due->map_from_array($cuota);
+                array_push($this->cuotas, $Due);
+            }
+        }
+        return $this->cuotas;
     }
 
     public function create()
@@ -299,88 +305,71 @@ class Loan_model extends MY_model
         if (!$this->is_map) {
             return false;
         }
-
+        $abono_real = $abono;
         $abono = (float)$abono;
 
+        //Si el monto a ingresar es mayor que el monto total debido
+        if ($abono > ($this->monto_total-$this->monto_pagado)) {
+            $abono = $this->monto_total - $this->monto_pagado;
+        }
+
+        echo $abono;
+
         // The next obj due to pay 
-        $index = $this->get_index_due_to_pay();
-        if ($index === -1) {
-            return false;
-        }
-        $Cuota = $this->cuotas[$index];
-        $fecha_pagado = new DateTime();
+        $due = $this->get_index_due_to_pay();
+        $today = new DateTime();
 
-        $abono = $abono + $Cuota->monto_pagado;
+        //No hay una cuota para hoy, entonces procedo a crearla
+        if ($due === -1) {
+            $cuota = array(
+                'id_prestamo' => $this->id,
+                'numero_cuota' => 0,
+                'fecha_pago' => $today->format('Y-m-d'),
+                'monto_total' => 0,
+                'monto_pagado' => $abono,
+                'estado' => 'Pagado',
+                'fecha_pagado' => $today->format('Y-m-d'),
+                'status' => '1'
+            );
+            $this->set_data($cuota, 'loans_dues');
 
-        if ((float)$Cuota->monto_total < $abono) {
-            $stop = true;
-            while ($stop) {
-                $Cuota->monto_pagado = (float)$Cuota->monto_total;
-                if ($Cuota->estado === 'Pendiente' || $Cuota->estado === 'Proximo') {
-                    $Cuota->estado = 'Pagado';
-                }
-                $Cuota->fecha_pagado = $fecha_pagado;
-                $this->cuotas[$index] = $Cuota;
-                $Cuota->update();
-                $index = $this->get_index_due_to_pay();
-                if ($index === -1) {
-                    return false;
-                }
-                $Cuota = $this->cuotas[$index];
+        }else{
 
-                if (0 > ($abono - (float)$Cuota->monto_total)) {
-                    $stop = false;
-                } else {
-                    $abono = $abono - (float)$Cuota->monto_total;
-                }
-
-                if ((float)$Cuota->monto_total > $abono) {
-                    $stop = false;
-                }
+            $due->monto_pagado += $abono;
+            $due->fecha_pagado = $today;
+            if($due->monto_pagado >= $due->monto_total){
+                $due->estado = 'Pagado';
+            }else{
+                $due->estado = 'Pendiente';
             }
+            
+            $due->update();
         }
+        $this->update_progress();
+        return $abono_real - $abono;
+    }
 
-        if (((float)$Cuota->monto_total > $abono) || ((float)$Cuota->monto_total === $abono)) {
-            $Cuota->monto_pagado = $abono;
-            if ($Cuota->estado === 'Pendiente' || $Cuota->estado === 'Proximo') {
-                $Cuota->estado = 'Pagado';
-            }
-            if ((float)$Cuota->monto_total > $abono) {
-                $Cuota->estado = 'Caida';
-            }
-            $Cuota->fecha_pagado = $fecha_pagado;
-            $this->cuotas[$index] = $Cuota;
-            $Cuota->update();
-        }
-        $this->map($this->id);
+    public function update_progress()
+    {
         $this->monto_pagado = $this->get_pay_progress();
-        
         $progreso = ($this->monto_pagado * 100) / $this->monto_total;
+        
         $this->progreso = $progreso;
         if($this->progreso >= 100){
             $this->status = 0;
         }
-       
+        $this->deuda = $this->monto_total - $this->monto_pagado;
         $this->update();
-
-        $index = $this->get_index_due_to_pay();
-        if ($index === -1) {
-            return false;
-        }
-        $Cuota = $this->cuotas[$index];
-        $Cuota->estado = 'Proximo';
-        $Cuota->update();
-
-        //Update the progress field 
-        return true;
-
+        $this->get_dues();
     }
 
-    private function get_index_due_to_pay()
+    public function get_index_due_to_pay()
     {
+        $today = new DateTime();
+        $today = $today->format('Y-m-d');
         foreach ($this->cuotas as $key => $cuota) {
-            if ($cuota->monto_total > $cuota->monto_pagado) {
-                return $key;
+            if ($cuota->fecha_pago->format('Y-m-d') === $today) {
+                return $this->cuotas[$key];
             }
         }
         return -1;

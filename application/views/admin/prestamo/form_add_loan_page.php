@@ -19,7 +19,7 @@
 				<select name="id_cliente" id="id_cliente" class="form-control">
 					<?php foreach ($clientes as $key => $cliente): ?>
 					<option value="<?= $cliente['id'] ?>">
-						<?= $cliente['nombre'].' '.$cliente['apellido'] ?>
+						<?= ucwords($cliente['nombre'].' '.$cliente['apellido']) ?>
 					</option>
 					<?php endforeach ?>
 					<option value="Nuevo">Nuevo</option>
@@ -55,6 +55,16 @@
 				<input maxlength="200" class="form-control" type="number" id="cant_cuotas" name="cant_cuotas" value="<?php echo element('cant_cuotas', $prestamo, ''); ?>"
 				 required="required">
 			</div>
+      </div>
+       <div class="form-group">
+          <label for="datepicker">Fecha de primera cuota:</label>
+          <div class="input-group date">
+            <div class="input-group-addon">
+              <i class="fa fa-calendar"></i>
+            </div>
+            <input type="text" class="form-control pull-right" name="fecha_inicio" id="datepicker">
+          </div>
+          <!-- /.input group -->
 		</div>
 		<div class="box-footer">
 			<a href="<?= base_url('admin/prestamos/'); ?>" type="submit" class="btn btn-danger"><i class="fa fa-fw fa-close"></i> Cancel</a>

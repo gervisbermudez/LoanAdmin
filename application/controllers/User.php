@@ -123,14 +123,33 @@ class User extends MY_Controller
         $relations = $this->ModRelations->get_relation(array('id_user' => $id), '25', array('date', 'DESC'));
       }
       $data['relations'] = $this->get_datarelations($relations);
-
-      $this->load->model('admin/loan/Expenses_model');
-      $gastos = new Expenses_model();
-      $data['gastos'] = $gastos->get_data(array('id_user' => $id), $gastos->table);
-
-      $this->load->model('admin/loan/Income_model');
-      $ingresos = new Income_model();
-      $data['ingresos'] = $ingresos->get_data(array('id_user' => $id), $ingresos->table);
+      $end = $this->input->get('date_end');
+      $start = $this->input->get('date_start');
+      $date = $this->input->get('date') ? $this->input->get('date') : 'today';
+      $whereLoans = '';
+      switch ($date) {
+        case 'today':
+          $data['date_label'] = 'hoy';
+          $data['date_label_recaudo'] = 'Recaudo de hoy';
+        break;
+        case 'yesterday':
+          $data['date_label'] = 'ayer';
+          $data['date_label_recaudo'] = 'Recaudo de ayer';
+          $whereLoans = ' AND DATE(`loans`.`registerdate`) '." BETWEEN '$start' AND '$end'";
+        break;
+        case 'range':
+          $date = "BETWEEN '$start' AND '$end'";
+          $whereLoans = ' AND DATE(`loans`.`registerdate`) '.$date;
+          $data['date_label'] = 'Rango';
+          $data['date_label_recaudo'] = "Recaudo entre el $start y el $end";
+        break;
+        default:
+          $date = "BETWEEN '$start' AND '$end'";
+          $whereLoans = ' AND DATE(`loans`.`registerdate`) '.$date;
+          $data['date_label'] = 'Rango';
+          $data['date_label_recaudo'] = "Recaudo entre el $start y el $end";
+        break;
+      }
 
       $data['title'] = $user->username;
       $data['h1'] = $user->username;
@@ -140,7 +159,27 @@ class User extends MY_Controller
       $this->load->model('Loan_model');
 
       $data['user'] = $user;
-      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND user.id =' . $id . ' ');
+      $data['prestamos'] = $this->Loan_model->get_prestamos_extended($whereLoans.' AND `user`.`id` =' . $id . ' ');
+      $data['dues'] = $user->get_dues($date);
+      $data['balance'] = array_map("format", $user->get_balance($date));
+      $income_expenses = $user->get_income_expenses($date);
+      $data['ingresos'] = $income_expenses['income'];
+      $data['gastos'] = $income_expenses['expenses'];
+
+      //Includes Pages
+      $data['head_includes'] = [
+        'data-table-css' => link_tag(JSPATH . 'datatables.net-bs/css/dataTables.bootstrap.min.css'),
+        'date-range-picker' => link_tag(JSPATH . 'bootstrap-daterangepicker/daterangepicker.css')
+      ];
+      $data['footer_includes'] = [
+       
+        'data-tabe-js' => fnAddScript(JSPATH . 'datatables.net/js/jquery.dataTables.min.js'),
+        'data-tabe-js-bootstrap' => fnAddScript(JSPATH . 'datatables.net-bs/js/dataTables.bootstrap.min.js'),
+        'datatableini' => fnAddScript(JSPATH . 'datatableini.js'),
+        'moment-js' => fnAddScript(JSPATH . 'moment/min/moment.min.js'),
+        'daterangepicker' => fnAddScript(JSPATH . 'bootstrap-daterangepicker/daterangepicker.js'),
+        'daterangepicker-ini' => fnAddScript(JSPATH . 'bootstrap-daterangepicker/daterangepicker-ini.js'),
+      ];
 
       // Load the views
       $data['timeline'] = $this->load->view('/admin/user/timeline', $data, true);
@@ -226,12 +265,14 @@ class User extends MY_Controller
         $this->load->model('User_Group_model');
         $user_groups = $this->User_Group_model::$user_groups[$this->input->post('usergroup')];
         $permisions = $this->User_Group_model::$user_roles[$user_groups['level']];
-        $permisions['id_user'] = $user->id;
-        $permisions['module'] = 'User';
-        $permisions['created_from_ip'] = $this->input->ip_address();
-        $permisions['updated_from_ip'] = $this->input->ip_address();
-        $permisions['date_created'] = $date->format('Y-m-d H:i:s');
-        $permisions['date_updated'] = $date->format('Y-m-d H:i:s');
+        foreach ($permisions as $key => $value) {
+          $permisions[$key]['id_user'] = $user->id;
+          $permisions[$key]['module'] = 'User';
+          $permisions[$key]['created_from_ip'] = $this->input->ip_address();
+          $permisions[$key]['updated_from_ip'] = $this->input->ip_address();
+          $permisions[$key]['date_created'] = $date->format('Y-m-d H:i:s');
+          $permisions[$key]['date_updated'] = $date->format('Y-m-d H:i:s');
+        }
         $user->set_user_permisions($permisions);
         $this->load->model('ModRelations');
         $relations = array('id_user' => $curuser['id'], 'tablename' => 'user', 'id_row' => $user->id, 'action' => 'crear');

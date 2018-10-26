@@ -86,7 +86,7 @@
 									?>
 									<tr>
 										<td>
-											<?= number_format ($prestamo['monto_total'], 2, ',', '.'); ?> $</td>
+											<?= number_format ($prestamo['monto'], 2, ',', '.'); ?> $</td>
 											<td>
 											<?= $prestamo['fecha_inicio']; ?></td>
 										<td class="hidden-xs">
@@ -169,10 +169,11 @@
 							</p>
 							<?php endif ?>
 						</div>
-						<div class="box-footer clearfix">
-						<a href="<?= base_url('admin/user/calendar') ?>" class="btn btn-sm btn-primary pull-right"><i class="fa fa-calendar"></i> Ver todos</a>
+						
 					</div>
-					</div>
+					<div class="box-footer clearfix">
+							<a href="<?= base_url('admin/user/calendar') ?>" class="btn btn-sm btn-primary pull-right"><i class="fa fa-calendar"></i> Ver todos</a>
+						</div>
 				</div>
 			</div>
 		</div>
@@ -197,7 +198,7 @@
                     <li>
 					<a class="users-list-name" href="<?= base_url('admin/user/view/'.$usuario->id) ?>"><img src="<?= IMGPROFILEPATH.$usuario->avatar; ?>" alt="User Image"></a>
                       <a class="users-list-name" href="<?= base_url('admin/user/view/'.$usuario->id) ?>"><?= $usuario->nombre.' '.$usuario->apellido ?></a>
-                      <span class="users-list-date"><?= $usuario->lastseen->format('d M Y H:i') ?></span>
+                      <span class="users-list-date"><?= time_to_string($usuario->lastseen->format('d M Y H:i')) ?></span>
 					</li>
 					<?php endforeach; ?>
 				<?php endif; ?>
@@ -253,6 +254,9 @@
                       <span class="label <?= $badge; ?> pull-right"><?= number_format ($balance['monto_deuda_total'], 2, ',', '.') ?> $ </span></a>
                     <span class="product-description">
 					<?= ucwords($cliente['direccion']); ?>
+                        </span>
+						<span class="product-description">
+					<?= time_to_string($cliente['registerdate']); ?>
                         </span>
                   </div>
 				</li>

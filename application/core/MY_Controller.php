@@ -64,6 +64,38 @@ class MY_Controller extends CI_Controller
     $this->output->set_content_type('application/json')->set_output(json_encode($json));
   }
 
+  public function fn_ajax_update_data()
+  {
+    if ($this->config->item('enable_profiler')) {
+      $this->output->enable_profiler(false);
+    }
+
+    $field = $this->input->post('field');
+    $id = $this->input->post('id');
+    $update = $this->input->post('data_update');
+    $strTable = $this->input->post('table');
+    $outpu = $update;
+    switch ($this->input->post('map_as')) {
+      case 'money':
+      $outpu = format($outpu);
+      break;
+      
+      default:
+      break;
+    }
+
+    if ($this->MY_model->update_data(array('id' => $id), array($field => $update), $strTable)) {
+      $json = array(
+        'result' => true, 
+        'message' => 'Datos actualizados con exito!', 
+        'data_update' => array($field => $outpu)
+      );
+    }else{
+      $json = array('result' => false, 'message' => 'Error al actualizar datos');
+    }
+    $this->output->set_content_type('application/json')->set_output(json_encode($json));
+  }
+
   public function fn_ajax_check_value()
   {
     if ($this->config->item('enable_profiler')) {

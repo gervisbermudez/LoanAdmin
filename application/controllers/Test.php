@@ -8,14 +8,17 @@ class Test extends CI_Controller {
 		parent::__construct();
 	}
 
-	public function FunctionName()
-	{
-		
-	}
-
 	public function index(){
+		$prestamo = new Loan_model();
+		$prestamo->map(79);
 		echo '<pre>';
-		print_r($this->session->get_userdata('user'));
+		print_r($prestamo->get_index_due_to_pay());
+		echo '</pre>';
+		echo '<pre>';
+		print_r($prestamo->set_payment(4000));
+		echo '</pre>';
+		echo '<pre>';
+		print_r($prestamo);
 		echo '</pre>';
 	}
 

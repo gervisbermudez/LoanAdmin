@@ -1,6 +1,7 @@
 <?php
 $this->load->helper('string');
 $modalid = random_string('alnum', 16);
+$edit_modalid = random_string('alnum', 16);
 ?>
 <?php 
   $badge = 'bg-red';
@@ -19,7 +20,6 @@ $modalid = random_string('alnum', 16);
   <div class="box-header with-border">
     <h3 class="box-title">Herramientas</h3>
     <hr>
-    <a role="menuitem" class="btn btn-success" tabindex="-1" href="<?php echo base_url('admin/prestamo/prestamo/editar/' . $prestamo['id']); ?>">Editar</a>
   </div>
 <!-- /.box-footer-->
 </div>
@@ -32,12 +32,12 @@ $modalid = random_string('alnum', 16);
   <div class="box-footer no-padding">
       <ul class="nav nav-stacked">
       <li><a href="<?php echo base_url('admin/prestamo/cliente/' . $prestamo['id_cliente']); ?>"><b>Cliente:</b> <?php echo ucwords($prestamo['nombre'] . ' ' . $prestamo['apellido']) ?><br/></a></li>
-      <li><a href="#!"><b>Monto prestado:</b> <?php echo number_format($prestamo['monto'], 2, ',', '.'); ?> $<br/></a></li>
+      <li><a href="#!"><b>Monto prestado:</b> <?php echo format($prestamo['monto']); ?> <br/></a></li>
       <li><a href="#!"><b>Porcentaje:</b> <?php echo $prestamo['porcentaje'] ?>%<br/></a></li>
-      <li><a href="#!"><b>Monto total:</b> <?php echo number_format($prestamo['monto_total'], 2, ',', '.'); ?> $<br/></a></li>
+      <li><a href="#!"><b>Monto total:</b> <?php echo format($prestamo['monto_total']); ?> <br/></a></li>
       <li><a href="#!"><b>Ciclo de pago:</b> <?php echo $prestamo['ciclo_pago'] ?><br/></a></li>
       <li><a href="#!"><b>Cantidad de cuotas:</b> <?php echo $prestamo['cant_cuotas']; ?><br/></a></li>
-      <li><a href="#!"><b>Cuota a pagar:</b> <?php echo number_format(((int)$prestamo['monto_total']) / ((int)$prestamo['cant_cuotas']), 2, ',', '.'); ?> $</a></li>
+      <li><a href="#!"><b>Cuota a pagar:</b> <?php echo format(((int)$prestamo['monto_total']) / ((int)$prestamo['cant_cuotas'])); ?> </a></li>
     </ul>
   </div>
 </div>
@@ -98,8 +98,8 @@ $modalid = random_string('alnum', 16);
                   <th>Fecha de pago</th>
                   <th>Monto a pagar</th>
                   <th>Monto pagado</th>
-                  <th class="hidden-xs">Fecha pagado</th>
-                  <th class="hidden-xs">Estado</th>
+                  <th>Fecha pagado</th>
+                  <th>Estado</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -118,13 +118,30 @@ $modalid = random_string('alnum', 16);
                 if ($cuota['estado'] === 'Pagado') {
                   $badge = 'label-success';
                 }
+                $cuser = $this->session->userdata('user');
+                if($cuser['level'] < 2){
+                  $dataedit = array(
+                    'table'     => 'loans_dues',
+                    'field'      => 'monto_pagado',
+                    'real_data' => $cuota['monto_pagado'],
+                    'id'        => $cuota['id'],
+                    'map_as' => 'money',
+                    'redirect' => 'reload'
+                  );
+                  $dataedit = json_encode($dataedit);
+                }
+                
                 ?>
-                <tr>
+                <tr id="<?php echo random_string('alnum', 16); ?>">
                      <td><?php echo $cuota['fecha_pago'] ?></td>
-                     <td><?php echo number_format($cuota['monto_total'], 2, ',', '.'); ?> $</td>
-                     <td><?php echo number_format($cuota['monto_pagado'], 2, ',', '.'); ?> $</td>
-                     <td class="hidden-xs"><?php echo $cuota['fecha_pagado'] ?></td>
-                     <td class="hidden-xs"><span class="label <?php echo $badge ?>"><?php echo $cuota['estado'] ?></span></td>
+                     <td><?php echo format($cuota['monto_total']); ?></td>
+                     <td><span class="update-value"><?php echo format($cuota['monto_pagado']); ?></span> &nbsp;
+                     <?php if($cuser['level'] < 2): ?>
+                     <a title='Editar cuota' href="#<?php echo $edit_modalid; ?>" data-toggle="modal" data-edit='<?php echo $dataedit; ?>' data-run="set_cuota" class="update-data"><i class="fa fa-pencil"></i></a>
+                    <?php endif; ?>
+                     </td>
+                     <td><?php echo $cuota['fecha_pagado'] ?></td>
+                     <td><span class="label <?php echo $badge ?>"><?php echo $cuota['estado'] ?></span></td>
                    </tr>
                 <?php
                 $monto_total_pagado = $cuota['monto_pagado'] + $monto_total_pagado;
@@ -136,8 +153,8 @@ $modalid = random_string('alnum', 16);
                   <th>Fecha de pago</th>
                   <th>Monto a pagar</th>
                   <th>Monto pagado</th>
-                  <th class="hidden-xs">Fecha pagado</th>
-                  <th class="hidden-xs">Estado</th>
+                  <th>Fecha pagado</th>
+                  <th>Estado</th>
                 </tr>
                 </tfoot>
               </table>
@@ -145,10 +162,10 @@ $modalid = random_string('alnum', 16);
               <?php else : ?>
               No hay cuotas para este prestamo
               <?php endif ?>
-              <b>Monto total pagado hasta el momento: </b> <?php echo number_format($monto_total_pagado, 2, ',', '.'); ?> $
+              <b>Monto total pagado hasta el momento: </b> <?php echo format($monto_total_pagado); ?> $
               <br>
               <b>Deuda total hasta el momento: </b>
-					    <?php echo number_format($prestamo['monto_total'] - $monto_total_pagado, 2, ',', '.'); ?> $
+					    <?php echo format($prestamo['monto_total'] - $monto_total_pagado); ?> $
             </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="tab_2">
@@ -170,7 +187,7 @@ $modalid = random_string('alnum', 16);
 </div>
 </div>
                 
-<div class="modal fade" id="<?php echo $modalid; ?>" style="display: none;">
+<div class="modal fade" id="<?php echo $modalid; ?>">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -191,6 +208,26 @@ $modalid = random_string('alnum', 16);
   <!-- /.modal-dialog -->
 </div>
 
+<div class="modal fade" id="<?php echo $edit_modalid; ?>">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Editar cuota</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label for="">Cuota</label>
+					<input type="number" class="form-control" name="cuota" id="data-to-edit" placeholder="Cuota" min="0" required="required" title="cuota">
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+				<button type="button" class="btn btn-primary" data-update-data="run" data-dismiss="modal">Guardar</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
   var calendarEvents = [
     <?php foreach ($cuotas as $key => $cuota) : ?>

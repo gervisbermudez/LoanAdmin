@@ -11,8 +11,7 @@ class User_model extends MY_model {
     public $is_logged_in = false;
     public $user_group;
     public $level;
-    public $date_created; 
-
+    public $date_created;
     public $is_map = false;
     private $field = ['id', 'username', 'password', 'email', 'lastseen', 'id_user_group', 'status'];
 	private $table_name = 'user';
@@ -334,6 +333,131 @@ class User_model extends MY_model {
     public function get_access($strPermisionName)
 	{
 		return $this->arrPermisions[$strPermisionName];
-	}
+    }
+    
+    public function get_balance($date = 'all')
+    {
+        $data = array(
+            'income' => 0,
+            'expenses' => 0,
+            'collections' => 0,
+            'loans' => 0,
+            'loans_sub' => 0,
+            'loans_total' => 0
+        );
+
+        if(!$this->is_map){
+            return $data;
+        }
+
+        switch ($date) {
+            case 'today':
+
+                $income = $this->get_query('SELECT SUM(`income`.`monto`) AS `income` FROM `income` WHERE DATE(fecha) = CURRENT_DATE AND `id_user`='.$this->id)[0];
+
+                $expenses = $this->get_query('SELECT SUM(`expenses`.`monto`) AS `expenses` FROM `expenses` WHERE DATE(fecha) = CURRENT_DATE AND `id_user`='.$this->id)[0];
+
+                $collections = $this->get_query('SELECT SUM(`loans_dues`.`monto_pagado`) AS `collections` FROM `loans_dues`, loans WHERE `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`fecha_pagado`=CURRENT_DATE AND `loans`.`id_prestamista`= '.$this->id)[0];
+
+                $loans = $this->get_query('SELECT SUM(`loans`.`monto`) as `loans` FROM `loans` WHERE DATE(`registerdate`)= CURRENT_DATE AND `id_prestamista`='.$this->id)[0];
+
+                $loans_sub = $this->get_query('SELECT SUM(`loans`.`subtotal`) as `loans_sub` FROM `loans` WHERE DATE(`registerdate`)= CURRENT_DATE AND `id_prestamista`='.$this->id)[0];
+
+                $loans_total = $this->get_query('SELECT SUM(`loans`.`monto_total`) as `loans_total` FROM `loans` WHERE DATE(`registerdate`)= CURRENT_DATE AND `id_prestamista`='.$this->id)[0];
+
+            break;
+
+            case 'yesterday':
+                $income = $this->get_query('SELECT SUM(`income`.`monto`) AS `income` FROM `income` WHERE DATE(fecha) = DATE(NOW() - INTERVAL 1 DAY) AND `id_user`='.$this->id)[0];
+
+                $expenses = $this->get_query('SELECT SUM(`expenses`.`monto`) AS `expenses` FROM `expenses` WHERE DATE(fecha) = DATE(NOW() - INTERVAL 1 DAY) AND `id_user`='.$this->id)[0];
+
+                $collections = $this->get_query('SELECT SUM(`loans_dues`.`monto_pagado`) AS `collections` FROM `loans_dues`, loans WHERE `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`fecha_pagado`=DATE(NOW() - INTERVAL 1 DAY) AND `loans`.`id_prestamista`= '.$this->id)[0];
+
+                $loans = $this->get_query('SELECT SUM(`loans`.`monto`) as `loans` FROM `loans` WHERE DATE(`registerdate`)= DATE(NOW() - INTERVAL 1 DAY) AND `id_prestamista`='.$this->id)[0];
+
+                $loans_sub = $this->get_query('SELECT SUM(`loans`.`subtotal`) as `loans_sub` FROM `loans` WHERE DATE(`registerdate`)= DATE(NOW() - INTERVAL 1 DAY) AND `id_prestamista`='.$this->id)[0];
+
+                $loans_total = $this->get_query('SELECT SUM(`loans`.`monto_total`) as `loans_total` FROM `loans` WHERE DATE(`registerdate`)= DATE(NOW() - INTERVAL 1 DAY) AND `id_prestamista`='.$this->id)[0];
+
+            break;
+            
+            default:
+                $income = $this->get_query("SELECT SUM(`income`.`monto`) AS `income` FROM `income` WHERE  DATE(fecha) $date AND `id_user`=".$this->id)[0];
+
+                $expenses = $this->get_query("SELECT SUM(`expenses`.`monto`) AS `expenses` FROM `expenses` WHERE DATE(fecha)  $date AND `id_user`=".$this->id)[0];
+
+                $collections = $this->get_query("SELECT SUM(`loans_dues`.`monto_pagado`) AS `collections` FROM `loans_dues`, loans WHERE DATE(`loans_dues`.`fecha_pagado`) $date AND `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans`.`id_prestamista`= ".$this->id)[0];
+
+                $loans = $this->get_query("SELECT SUM(`loans`.`monto`) as `loans` FROM `loans` WHERE DATE(`registerdate`) $date AND `id_prestamista`=".$this->id)[0];
+
+                $loans_sub = $this->get_query("SELECT SUM(`loans`.`subtotal`) as `loans_sub` FROM `loans` WHERE DATE(`registerdate`) $date AND `id_prestamista`=".$this->id)[0];
+
+                $loans_total = $this->get_query("SELECT SUM(`loans`.`monto_total`) as `loans_total` FROM `loans` WHERE DATE(`registerdate`) $date  AND `id_prestamista`=".$this->id)[0];
+                
+            break;
+        }
+        $data['income'] = $income['income'] ? $income['income'] :  0;
+        $data['expenses'] = $expenses['expenses'] ? $expenses['expenses'] : 0;
+        $data['collections'] = $collections['collections'] ? $collections['collections'] : 0;
+        $data['loans'] = $loans['loans'] ? $loans['loans'] : 0;
+        $data['loans_sub'] = $loans_sub['loans_sub'] ? $loans_sub['loans_sub'] : 0;
+        $data['loans_total'] = $loans_total['loans_total'] ? $loans_total['loans_total'] : 0;
+        
+
+        $data['total'] = ($data['income'] + $data['collections']) - ($data['expenses'] + $data['loans']);
+
+        return $data;
+    }
+
+    public function get_dues($date, $where = '')
+    {
+        
+        switch ($date) {
+            case 'today':
+            $dues = $this->get_query("SELECT SUM(loans_dues.monto_pagado) AS 'recaudo', `clients`.`id` as 'id_cliente', `clients`.*, `loans_dues`.* FROM `loans_dues`, `loans`, `clients` WHERE $where `clients`.`id`=`loans`.`id_cliente` AND `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`fecha_pagado`=CURRENT_DATE AND `loans_dues`.`monto_pagado`>0 AND `loans`.`id_prestamista` = ".$this->id. ' GROUP BY `clients`.`id`');
+                break;
+            case 'yesterday':
+                $dues = $this->get_query("SELECT SUM(loans_dues.monto_pagado) AS 'recaudo', `clients`.`id` as 'id_cliente', `clients`.*, `loans_dues`.* FROM `loans_dues`, `loans`, `clients` WHERE $where `clients`.`id`=`loans`.`id_cliente` AND `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`fecha_pagado`=DATE(NOW() - INTERVAL 1 DAY) AND `loans_dues`.`monto_pagado`>0 AND `loans`.`id_prestamista` = ".$this->id. ' GROUP BY `clients`.`id`');
+            break;
+            default:
+                $dues = $this->get_query("SELECT SUM(loans_dues.monto_pagado) AS 'recaudo', `clients`.`id` as 'id_cliente', `clients`.*, `loans_dues`.* FROM `loans_dues`, `loans`, `clients` WHERE DATE(`loans_dues`.`fecha_pagado`) $date AND $where `clients`.`id`=`loans`.`id_cliente` AND `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans_dues`.`monto_pagado`>0 AND `loans`.`id_prestamista` = ".$this->id. ' GROUP BY `clients`.`id`');
+                break;
+        }
+        return $dues;
+    }
+
+    public function get_income_expenses($date = 'all')
+    {
+        $data = array(
+            'income' => array(),
+            'expenses' => array()
+        );
+
+        if(!$this->is_map){
+            return $data;
+        }
+
+        switch ($date) {
+            case 'today':
+                $gastos = $this->get_query('SELECT * FROM `expenses` WHERE DATE(fecha) = CURRENT_DATE AND `id_user` ='.$this->id);
+                $ingresos = $this->get_query('SELECT * FROM `income` WHERE DATE(fecha) = CURRENT_DATE AND `id_user` ='.$this->id);
+
+            break;
+            case 'yesterday':
+                $gastos = $this->get_query('SELECT * FROM `expenses` WHERE DATE(fecha) = DATE(NOW() - INTERVAL 1 DAY) AND `id_user` ='.$this->id);
+                $ingresos = $this->get_query('SELECT * FROM `income` WHERE DATE(fecha) = DATE(NOW() - INTERVAL 1 DAY) AND `id_user` ='.$this->id);
+
+            break;
+            default:
+                $gastos = $this->get_query("SELECT * FROM `expenses` WHERE DATE(fecha) $date AND `id_user` =".$this->id);
+                $ingresos = $this->get_query("SELECT * FROM `income` WHERE DATE(fecha) $date AND `id_user` =".$this->id);
+                
+            break;
+        }
+        $data['expenses'] = $gastos;
+        $data['income'] = $ingresos;
+        return $data;
+    }
 }
 ?>

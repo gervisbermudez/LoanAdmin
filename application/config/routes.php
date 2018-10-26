@@ -14,6 +14,7 @@ $route['admin/user/calendar'] = 'User/calendar';
 $route['admin/fnChangeState'] = 'Admin/fnChangeState';
 $route['admin/fn_ajax_check_value'] = 'Admin/fn_ajax_check_value';
 $route['admin/fn_ajax_delete_data'] = 'Admin/fn_ajax_delete_data';
+$route['admin/fn_ajax_update_data'] = 'Admin/fn_ajax_update_data';
 
 //Login Module Routes
 $route['login'] = 'Login';

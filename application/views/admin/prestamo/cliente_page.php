@@ -78,7 +78,7 @@ $modalid = random_string('alnum', 16);
                   <th>Total</th>
                   <th>Coutas</th>
                   <th>Ciclo de pago</th>
-                  <th>Fecha de inicio</th>
+                  <th>Fecha</th>
                   <th>Progreso</th>
                 </tr>
                 </thead>
@@ -93,7 +93,7 @@ $modalid = random_string('alnum', 16);
                      <td><?= $prestamo['monto_total'] ?> $</td>
                      <td><?= $prestamo['cant_cuotas'] ?></td>
                      <td><?= $prestamo['ciclo_pago'] ?></td>
-                     <td><?= $prestamo['fecha_inicio'] ?></td>
+                     <td><?= $prestamo['registerdate'] ?></td>
                      <td><span class="badge bg-green"><?= $prestamo['progreso'] ?>%</span></td>
                    </tr>
                  <?php endforeach ?>
@@ -108,7 +108,7 @@ $modalid = random_string('alnum', 16);
                   <th>Total</th>
                   <th>Coutas</th>
                   <th>Ciclo de pago</th>
-                  <th>Fecha de inicio</th>
+                  <th>Fecha</th>
                   <th>Progreso</th>
                 </tr>
                 </tfoot>
@@ -134,7 +134,7 @@ $modalid = random_string('alnum', 16);
                   <th>Total</th>
                   <th>Coutas</th>
                   <th>Ciclo de pago</th>
-                  <th>Fecha de inicio</th>
+                  <th>Fecha</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -148,7 +148,7 @@ $modalid = random_string('alnum', 16);
                      <td><?= $prestamo['monto_total'] ?> $</td>
                      <td><?= $prestamo['cant_cuotas'] ?></td>
                      <td><?= $prestamo['ciclo_pago'] ?></td>
-                     <td><?= $prestamo['fecha_inicio'] ?></td>
+                     <td><?= $prestamo['registerdate'] ?></td>
                    </tr>
                  <?php endforeach ?>
                 </tbody>
@@ -162,7 +162,7 @@ $modalid = random_string('alnum', 16);
                   <th>Total</th>
                   <th>Coutas</th>
                   <th>Ciclo de pago</th>
-                  <th>Fecha de inicio</th>
+                  <th>Fecha</th>
                 </tr>
                 </tfoot>
               </table>
@@ -284,7 +284,7 @@ $modalid = random_string('alnum', 16);
                       <div class="box-header ui-sortable-handle" style="cursor: move;">
                         <i class="fa fa-th"></i>
 
-                        <h3 class="box-title">Sales Graph</h3>
+                        <h3 class="box-title">Pagos realizados</h3>
 
                         <div class="box-tools pull-right">
                           <button type="button" class="btn bg-teal btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>

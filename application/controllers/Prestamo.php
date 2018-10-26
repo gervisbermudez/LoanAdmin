@@ -27,9 +27,9 @@ class Prestamo extends MY_Controller
     $data['breadcrumb'] = $this->fn_get_BreadcrumbPage(array(array('Admin', 'admin'), array('Prestamos', 'admin/prestamo')));
 
     if ($this->session->userdata('user')['level'] > 1) {
-      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND loans.id_prestamista = ' . $this->session->userdata('user')['id']);
+      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('AND loans.id_prestamista = ' . $this->session->userdata('user')['id'], '', array('`loans`.`registerdate`', 'DESC'));
     } else {
-      $data['prestamos'] = $this->Loan_model->get_prestamos_extended();
+      $data['prestamos'] = $this->Loan_model->get_prestamos_extended('', '', array('`loans`.`registerdate`', 'DESC'));
 
     }
 
@@ -137,7 +137,7 @@ class Prestamo extends MY_Controller
       $this->load->model('admin/loan/Client_model');
       $data['balance'] = $this->Client_model->get_loan_balance($id);
 
-      $data['pagos_realizados'] = $this->Loan_model->get_query("SELECT DATE(`loans_dues`.`fecha_pago`) AS `Fecha`, `loans_dues`.`monto_pagado` FROM `loans`, `loans_dues` WHERE `loans`.`id_cliente` = " . $id . " ORDER BY `Fecha` ASC"); 
+      $data['pagos_realizados'] = $this->Loan_model->get_query("SELECT DATE(`loans_dues`.`fecha_pago`) AS `Fecha`, `loans_dues`.`monto_pagado` FROM `loans`, `loans_dues` WHERE `loans`.`id`=`loans_dues`.`id_prestamo` AND `loans`.`id_cliente` = " . $id . " ORDER BY `Fecha` ASC"); 
 
       //Load the views
       $data['page'] = $this->load->view('admin/prestamo/cliente_page', $data, true);
@@ -316,7 +316,7 @@ class Prestamo extends MY_Controller
       $data['pagecontent'] = $this->load->view('admin/content_template', $data, true);
       $this->load->view('admin/master_template', $data);
     } else {
-      redirect('admin/prestamo/cliente/nuevo');
+      redirect('admin/prestamo/clientes/nuevo');
     }
   }
 
@@ -380,7 +380,7 @@ class Prestamo extends MY_Controller
     $Prestamo->porcentaje = $this->input->post('porcentaje');
     $Prestamo->ciclo_pago = $this->input->post('ciclo_pago');
     $Prestamo->cant_cuotas = $this->input->post('cant_cuotas');
-    $Prestamo->fecha_inicio = new DateTime();
+    $Prestamo->fecha_inicio = DateTime::createFromFormat('m/d/Y', $this->input->post('fecha_inicio'));
     if ($Prestamo->create()) {
       redirect('admin/prestamo/cuotas/' . $Prestamo->id);
     } else {

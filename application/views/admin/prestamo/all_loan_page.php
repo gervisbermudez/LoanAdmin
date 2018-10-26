@@ -19,9 +19,10 @@
                 <tr>
                   <th>Prestamista</th>
                   <th>Cliente</th>
-                  <th  class="hidden-xs">Monto</th>
-                  <th  class="hidden-xs">Cuotas</th>
+                  <th >Monto</th>
+                  <th >Cuotas</th>
                   <th>Total</th>
+                  <th>Fecha</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,8 +31,9 @@
                      <td><a href="<?php echo base_url('admin/user/view/'.$prestamo['id_prestamista']) ?>"><?php echo ucwords($prestamo['username']) ?></a></td>
                      <td><a href="<?php echo base_url('admin/prestamo/cliente/'.$prestamo['id_cliente']) ?>"><?php echo ucwords($prestamo['nombre'].' '.$prestamo['apellido']) ?></a></td>
                      <td><?php echo number_format ($prestamo['monto'], 2, ',', '.') ?> $</td>
-                     <td class="hidden-xs"><?php echo $prestamo['cant_cuotas'] ?>&nbsp;<a title='Ver Cuotas' href="<?php echo base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
-                     <td class="hidden-xs"><?php echo number_format ($prestamo['monto_total'], 2, ',', '.') ?> $</td>
+                     <td ><?php echo $prestamo['cant_cuotas'] ?>&nbsp;<a title='Ver Cuotas' href="<?php echo base_url('admin/prestamo/cuotas/'.$prestamo['id']); ?>"><i class="fa fa-fw fa-search-plus"></i></a></td>
+                     <td ><?php echo number_format ($prestamo['monto_total'], 2, ',', '.') ?> $</td>
+                     <td ><?php echo $prestamo['registerdate'] ?> $</td>
                    </tr>
                  <?php endforeach ?>
                 </tbody>
@@ -40,8 +42,9 @@
                   <th>Prestamista</th>
                   <th>Cliente</th>
                   <th>Prestamo</th>
-                  <th class="hidden-xs">Cuotas</th>
-                  <th class="hidden-xs">Total</th>
+                  <th>Cuotas</th>
+                  <th>Total</th>
+                  <th>Fecha</th>
                 </tr>
                 </tfoot>
               </table>

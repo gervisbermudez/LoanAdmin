@@ -637,6 +637,7 @@ jQuery(document).ready(function ($) {
 
 	fnCheckValue();
 	objDeleteData.fnIni();
+	objUpdateData.fnIni();
 	fnChangeUserStatus();
 	if ($('[data-run-dashboard]').length) {
 		fn_dasboard_run();
@@ -649,7 +650,7 @@ jQuery(document).ready(function ($) {
 	$.each(arrJavaScriptload, function (index, element) {
 		loadScript(element);
 	});
-
+	routeFunctionListener.run('[data-run]');
 	let params = getQueryParams(window.location.search);
 	if (params) {
 		switch (params['alert']) {
@@ -1136,4 +1137,103 @@ var getQueryParams = function getQueryParams(qs) {
 	}
 
 	return params;
+}
+
+routeFunctionListener = {
+    selector: 'data-run',
+    run: function run(selector) {
+        $(selector).click(function (e) {
+            e.preventDefault();
+            $element = $(this);
+            dataparams = $element.attr(routeFunctionListener.selector);
+            params = dataparams.split(",");
+            if (params) {
+                myFunction = params[0];
+				params.shift();
+				params.push($element);
+                app[myFunction].apply(this, params);
+            }
+        });
+    }
+}
+
+var app = {
+	set_cuota : function($element) {
+		let params = JSON.parse($element.attr('data-edit'));
+		console.log(params);
+		objUpdateData.arrParamData = params;
+		objUpdateData.arrSelectorsTarget.push($element.parents(objUpdateData.strContentTarget).attr('id'));
+		/* $('#data-to-edit').removeAttr('value');		
+		$('#data-to-edit').attr('value', params.real_data); */
+		$('#data-to-edit').val(params.real_data);
+	}
+}
+
+var objUpdateData = {
+	blnRedirect: false,
+	strUrl: BASEURL+'admin/fn_ajax_update_data/',
+	arrParamData:{
+		'table': "", 
+		'field': "", 
+		'real_data': "", 
+		'id': "",
+		'data_update' : ""
+	},
+	arrSelectorsTarget: [],
+	strIniSelector: '.update-data',
+	strContentTarget: 'tr',
+	fnIni: function () {
+		$(this.strIniSelector).click(function (event) {
+			objUpdateData.fnReset();
+		});
+		$('[data-update-data="run"]').click(function (event) {
+			objUpdateData.arrParamData['data_update'] = $('#data-to-edit').val();
+			objUpdateData.fnRun();
+		});
+	},
+	fnRun: function () {
+		$.ajax({
+				url: objUpdateData.strUrl,
+				type: 'POST',
+				dataType: 'json',
+				data: objUpdateData.arrParamData,
+			})
+			.done(function (objResponseData) {
+				if (objResponseData.result) {
+					objAlert.strAlertTipe = 'alert-success';
+					objAlert.fnGenerate(objResponseData.message);
+					for (var i = 0; i < objUpdateData.arrSelectorsTarget.length; i++) {
+						$('#' + objUpdateData.arrSelectorsTarget[i]).find('.update-value').html(objResponseData.data_update[objUpdateData.arrParamData.field]);
+					};
+					if (objUpdateData.arrParamData['redirect']) {
+						window.location = window.location.origin + '/' + objDeleteData.arrParamData['redirectto'];
+					};
+					if (objUpdateData.arrParamData['redirect'] === 'reload') {
+						location.reload();
+					};
+					
+				} else {
+					objAlert.strAlertTipe = 'alert-danger';
+					objAlert.fnGenerate(objResponseData.message);
+				}
+			})
+			.fail(function (objResponseData) {
+				objAlert.strAlertTipe = 'alert-danger';
+				objAlert.fnGenerate(objResponseData.message);
+			})
+			.always(function () {
+				console.log("complete");
+				objUpdateData.fnReset();
+			});
+	},
+	fnReset: function () {
+		objUpdateData.arrParamData = {
+			'table': "", 
+			'field': "", 
+			'real_data': "", 
+			'id': "",
+			'data_update' : ""
+		};
+		objUpdateData.arrSelectorsTarget = [];
+	}
 }
