@@ -1,5 +1,4 @@
 <?php echo doctype('html5'); ?><html><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title><?php echo $this->config->item('sitename'); ?> | <?php echo $title ?></title><meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
-<link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="application-name" content="MyLoanAdmin">
@@ -22,7 +21,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="<?= base_url(IMGPATH); ?>favicon/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="96x96" href="<?= base_url(IMGPATH); ?>favicon/favicon-96x96.png">
 <link rel="icon" type="image/png" sizes="16x16" href="<?= base_url(IMGPATH); ?>favicon/favicon-16x16.png">
-<link rel="manifest" href="/manifest.json">
+<link rel="manifest" href="<?=base_url(PUBLICPATH);?>manifest.json">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="<?= base_url(IMGPATH); ?>favicon/ms-icon-144x144.png">
 <meta name="theme-color" content="#3c8dbc">
