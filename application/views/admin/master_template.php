@@ -252,8 +252,7 @@
         const CSSPATH = '<?=CSSPATH?>';
         const FONTSPATH = '<?=FONTSPATH?>';
         const BASEURL = '<?=base_url()?>';</script>
-    <script src="<?php echo base_url() . JSPATH . 'jquery/dist/jquery-3.3.1.min.js?v=' . SITEVERSION; ?>"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="<?php echo base_url() . JSPATH . 'jquery/dist/jquery.min.js?v=' . SITEVERSION; ?>"></script>
     <script src="<?php echo base_url() . JSPATH . 'bootstrap/dist/js/bootstrap.min.js?v=' . SITEVERSION; ?>"></script>
     <?php if (isset($footer_includes)) {foreach ($footer_includes as $key => $value) {echo $value;}}?>
     <script src="<?php echo base_url() . JSPATH . 'app.min.js?v=' . SITEVERSION; ?>"></script>
