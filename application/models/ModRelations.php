@@ -20,7 +20,7 @@ class ModRelations extends CI_Model {
 	{
 		$this->db->join('user', 'relations.id_user=user.id');
 		$this->db->select('relations.*, user.username, user.id_user_group');
-		$this->db->limit($limit);
+		$limit ? $this->db->limit($limit) : null;
 		if ($order!=='') {
 			$this->db->order_by($order[0], $order[1]);
 		}

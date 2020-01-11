@@ -389,7 +389,7 @@ class Loan_model extends MY_model
 
     public function get_cliente($data = 'all', $limit = '', $order = array('id', 'ASC'))
     {
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
         }
@@ -414,7 +414,7 @@ class Loan_model extends MY_model
         $this->db->from('`user`, `clients`, `loans_user_client`');
         $this->db->where("user`.`id`=`loans_user_client`.`id_user` AND `clients`.`id`=`loans_user_client`.`id_client` $where");
 
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
 
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
@@ -434,7 +434,7 @@ class Loan_model extends MY_model
         $this->db->from('`user`, `clients`');
         $this->db->where("user`.`id`=`clients`.`id_user_register` $where");
 
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
 
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
@@ -466,7 +466,7 @@ class Loan_model extends MY_model
 
     public function get_prestamo($data = 'all', $limit = '', $order = array('id', 'ASC'))
     {
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
         }
@@ -491,7 +491,7 @@ class Loan_model extends MY_model
         $this->db->from('`user`, `loans`, `clients`');
         $this->db->where("`user`.`id`=loans.id_prestamista AND `loans`.`id_cliente`=`clients`.`id` $where");
 
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
 
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
@@ -512,7 +512,7 @@ class Loan_model extends MY_model
 
     public function get_cuota_prestamo($where = '', $limit = '', $order = array('`loans_dues`.`id`', 'ASC'))
     {
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
         if ($order !== '') {
             $this->db->order_by($order[0], $order[1]);
         }

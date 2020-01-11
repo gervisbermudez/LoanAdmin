@@ -217,7 +217,7 @@ class User_model extends MY_model {
     {
         $this->db->select('user.*, user_group.name, user_group.level');
         $this->db->join('user_group', 'user.id_user_group = user_group.id');
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
         if ($order!=='') {
             $this->db->order_by($order[0], $order[1]);
         }
@@ -311,7 +311,7 @@ class User_model extends MY_model {
 
     public function get_user_group($data = 'all', $limit = '', $order = array('id', 'ASC'))
     {
-        $this->db->limit($limit);
+        $limit ? $this->db->limit($limit) : null;
         if ($order!=='') {
             $this->db->order_by($order[0], $order[1]);
         }
