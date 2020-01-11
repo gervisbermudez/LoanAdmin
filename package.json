@@ -1,0 +1,26 @@
+{
+  "name": "loanadmin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gervisbermudez/LoanAdmin.git"
+  },
+  "keywords": [
+    "php",
+    "react"
+  ],
+  "author": "Gervis Bermudez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gervisbermudez/LoanAdmin/issues"
+  },
+  "homepage": "https://github.com/gervisbermudez/LoanAdmin#readme",
+  "dependencies": {
+    "gulp": "^4.0.2"
+  }
+}
