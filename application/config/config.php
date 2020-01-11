@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 $config['base_url']	= 'http://dev.myloanadmin.io/';
-$config['sitename'] = 'My Loan Admin';
+$config['sitename'] = 'Loan Admin';
 $config['enable_googletagmanager'] = FALSE;
 
 /*
