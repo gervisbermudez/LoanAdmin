@@ -22,7 +22,7 @@ if (!function_exists('print_r_this')) {
 	function print_r_this($var)
 	{
 		echo '<pre>';
-		print_r($var);
+		var_dump($var);
 		echo '</pre>';
 	}
 }
