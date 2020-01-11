@@ -1,0 +1,155 @@
+@import "vars.scss";
+@import "font.scss";
+
+body,
+html {
+	height: 100%;
+}
+
+body {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.btn:focus {
+	outline: 0;
+}
+
+a {
+	&:active,
+	&:focus,
+	&:hover {
+		outline: 0;
+	}
+}
+
+body {
+	font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+}
+
+a {
+	color: #3c8dbc;
+
+	&:active,
+	&:focus,
+	&:hover {
+		text-decoration: none;
+		color: #72afd2;
+	}
+}
+
+.form-control {
+	border-radius: 0;
+	box-shadow: none;
+	border-color: #d2d6de;
+
+	&:focus {
+		border-color: #3c8dbc;
+		box-shadow: none;
+	}
+
+	&:-ms-input-placeholder,
+	&::-moz-placeholder,
+	&::-webkit-input-placeholder {
+		color: #bbb;
+		opacity: 1;
+	}
+
+	&:not(select) {
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+	}
+}
+
+.brand-name {
+	font-family: "Averia Serif Libre";
+	color: $primary;
+}
+
+.icheck > label {
+	padding-left: 0;
+}
+
+.btn {
+	border-radius: 3px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border: 1px solid transparent;
+
+	&.btn-flat {
+		border-radius: 0;
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+		border-width: 1px;
+	}
+
+	&:active {
+		-webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+		-moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+		box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+	}
+}
+
+.btn-primary {
+	background-color: #3c8dbc;
+	border-color: #367fa9;
+
+	&:active,
+	&:hover {
+		background-color: #367fa9;
+	}
+}
+
+.login-logo {
+	font-size: 35px;
+	text-align: center;
+	margin-top: 40px;
+	font-weight: 300;
+
+	.login-page {
+		background: $white;
+	}
+}
+
+.login-box {
+	width: 360px;
+	margin: 2% auto;
+}
+
+@media (max-width: 768px) {
+	.login-box {
+		width: 90%;
+		margin-top: 20px;
+	}
+}
+
+.login-box-body {
+	background: $white;
+	padding: 20px;
+	border-top: 0;
+	color: #666;
+
+	.form-control-feedback {
+		color: #777;
+	}
+}
+
+.login-box-msg {
+	margin: 0;
+	text-align: center;
+	padding: 0 20px 20px;
+}
+
+@font-face {
+	font-family: Ionicons;
+	src: url(../fonts/ionicons.eot?v=2.0.0);
+	src: url(../fonts/ionicons.eot?v=2.0.0#iefix) format("embedded-opentype"),
+		url(../fonts/ionicons.ttf?v=2.0.0) format("truetype"),
+		url(../fonts/ionicons.woff?v=2.0.0) format("woff"),
+		url(../fonts/ionicons.svg?v=2.0.0#Ionicons) format("svg");
+	font-weight: 400;
+	font-style: normal;
+}

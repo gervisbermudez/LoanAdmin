@@ -25,7 +25,7 @@ const AUTOPREFIXER_BROWSERS = [
 
 // Gulp task to minify CSS files
 gulp.task('styles', function () {
-	return gulp.src('./resources/scss/AdminLTE.scss')
+	return gulp.src('./resources/scss/**.scss')
 	  // Compile SASS files
 	  .pipe(sass({
 		outputStyle: 'nested',

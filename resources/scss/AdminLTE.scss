@@ -1,3 +1,5 @@
+@import "vars.scss";
+
 .layout-boxed {
     body, html {
       height: 100%;
@@ -228,7 +230,7 @@
   }
   
   a {
-    color: #3c8dbc;
+    color: $primary;
   
     &.dropdown-toggle.description-text {
       color: #fff;
@@ -1552,7 +1554,7 @@
     border-color: #d2d6de;
   
     &:focus {
-      border-color: #3c8dbc;
+      border-color: $primary;
       box-shadow: none;
     }
   
@@ -1718,7 +1720,7 @@
   }
   
   .progress-bar-light-blue, .progress-bar-primary {
-    background-color: #3c8dbc;
+    background-color: $primary;
   }
   
   .progress-striped {
@@ -1871,7 +1873,7 @@
     width: 100%;
   
     &.box-primary {
-      border-top-color: #3c8dbc;
+      border-top-color: $primary;
     }
   
     &.box-info {
@@ -1955,11 +1957,11 @@
       }
   
       &.box-primary {
-        border: 1px solid #3c8dbc;
+        border: 1px solid $primary;
   
         > .box-header {
           color: #fff;
-          background: #3c8dbc;
+          background: $primary;
   
           .btn, a {
             color: #fff;
@@ -2365,7 +2367,7 @@
     }
   
     .primary {
-      border-left-color: #3c8dbc;
+      border-left-color: $primary;
     }
   
     .handle {
@@ -2693,7 +2695,7 @@
   }
   
   .btn-primary {
-    background-color: #3c8dbc;
+    background-color: $primary;
     border-color: #367fa9;
   
     &.hover, &:active, &:hover {
@@ -2909,10 +2911,10 @@
     }
   
     &.active > a {
-      border-top-color: #3c8dbc;
+      border-top-color: $primary;
   
       &:focus, &:hover {
-        border-top-color: #3c8dbc;
+        border-top-color: $primary;
       }
     }
   }
@@ -2929,13 +2931,13 @@
       background: 0 0;
       color: #444;
       border-top: 0;
-      border-left-color: #3c8dbc;
+      border-left-color: $primary;
   
       &:hover {
         background: 0 0;
         color: #444;
         border-top: 0;
-        border-left-color: #3c8dbc;
+        border-left-color: $primary;
       }
     }
   
@@ -2994,7 +2996,7 @@
           }
   
           &.active {
-            border-top-color: #3c8dbc;
+            border-top-color: $primary;
   
             &:hover > a {
               background-color: #fff;
@@ -3070,7 +3072,7 @@
     }
   
     &.tab-primary > .nav-tabs > li.active {
-      border-top-color: #3c8dbc;
+      border-top-color: $primary;
     }
   
     &.tab-info > .nav-tabs > li.active {
@@ -3422,12 +3424,12 @@
   }
   
   .direct-chat-primary .right > .direct-chat-text {
-    background: #3c8dbc;
-    border-color: #3c8dbc;
+    background: $primary;
+    border-color: $primary;
     color: #fff;
   
     &:after, &:before {
-      border-left-color: #3c8dbc;
+      border-left-color: $primary;
     }
   }
   
@@ -4788,7 +4790,7 @@
   }
   
   .select2-container--default.select2-container--open {
-    border-color: #3c8dbc;
+    border-color: $primary;
   }
   
   .select2-dropdown {
@@ -4797,7 +4799,7 @@
   }
   
   .select2-container--default .select2-results__option--highlighted[aria-selected] {
-    background-color: #3c8dbc;
+    background-color: $primary;
     color: #fff;
   }
   
@@ -4835,7 +4837,7 @@
   
   .select2-container--default {
     .select2-search--dropdown .select2-search__field, &.select2-container--focus .select2-selection--multiple {
-      border-color: #3c8dbc !important;
+      border-color: $primary !important;
     }
   
     .select2-results__option {
@@ -4858,7 +4860,7 @@
       border-radius: 0;
   
       &:focus {
-        border-color: #3c8dbc;
+        border-color: $primary;
       }
     }
   
@@ -4868,7 +4870,7 @@
   
     .select2-selection--multiple {
       .select2-selection__choice {
-        background-color: #3c8dbc;
+        background-color: $primary;
         border-color: #367fa9;
         padding: 1px 10px;
         color: #fff;
@@ -5056,7 +5058,7 @@
   }
   
   .bg-light-blue, .label-primary, .modal-primary .modal-body {
-    background-color: #3c8dbc !important;
+    background-color: $primary !important;
   }
   
   .alert-success, .bg-green, .callout.callout-success, .label-success, .modal-success .modal-body {
@@ -5215,7 +5217,7 @@
   }
   
   .text-light-blue {
-    color: #3c8dbc !important;
+    color: $primary !important;
   }
   
   .text-green {
@@ -5332,11 +5334,11 @@
   }
   
   .bg-light-blue-gradient {
-    background: #3c8dbc !important;
-    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #3c8dbc), color-stop(1, #67a8ce)) !important;
-    background: -ms-linear-gradient(bottom, #3c8dbc, #67a8ce) !important;
-    background: -moz-linear-gradient(center bottom, #3c8dbc 0, #67a8ce 100%) !important;
-    background: -o-linear-gradient(#67a8ce, #3c8dbc) !important;
+    background: $primary !important;
+    background: -webkit-gradient(linear, left bottom, left top, color-stop(0, $primary), color-stop(1, #67a8ce)) !important;
+    background: -ms-linear-gradient(bottom, $primary, #67a8ce) !important;
+    background: -moz-linear-gradient(center bottom, $primary 0, #67a8ce 100%) !important;
+    background: -o-linear-gradient(#67a8ce, $primary) !important;
     color: #fff;
   }
   
@@ -5666,7 +5668,7 @@
   .skin-blue-light {
     .main-header {
       .navbar {
-        background-color: #3c8dbc;
+        background-color: $primary;
   
         .nav {
           > li > a {
@@ -5710,7 +5712,7 @@
       }
   
       .logo {
-        background-color: #3c8dbc;
+        background-color: $primary;
         color: #fff;
         border-bottom: 0 solid transparent;
   
@@ -5720,7 +5722,7 @@
       }
   
       li.user-header {
-        background-color: #3c8dbc;
+        background-color: $primary;
       }
     }
   
@@ -5765,7 +5767,7 @@
       }
   
       &.active {
-        border-left-color: #3c8dbc;
+        border-left-color: $primary;
       }
   
       > .treeview-menu {
@@ -5857,7 +5859,7 @@
   }
   
   .skin-blue.layout-top-nav .main-header > .logo {
-    background-color: #3c8dbc;
+    background-color: $primary;
     color: #fff;
     border-bottom: 0 solid transparent;
   

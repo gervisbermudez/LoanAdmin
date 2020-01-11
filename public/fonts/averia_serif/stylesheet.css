@@ -1,0 +1,60 @@
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-Regular.eot');
+    src: url('AveriaSerifLibre-Regular.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-Regular.woff2') format('woff2'),
+        url('AveriaSerifLibre-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-Light.eot');
+    src: url('AveriaSerifLibre-Light.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-Light.woff2') format('woff2'),
+        url('AveriaSerifLibre-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-Bold.eot');
+    src: url('AveriaSerifLibre-Bold.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-Bold.woff2') format('woff2'),
+        url('AveriaSerifLibre-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-Italic.eot');
+    src: url('AveriaSerifLibre-Italic.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-Italic.woff2') format('woff2'),
+        url('AveriaSerifLibre-Italic.woff') format('woff');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-LightItalic.eot');
+    src: url('AveriaSerifLibre-LightItalic.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-LightItalic.woff2') format('woff2'),
+        url('AveriaSerifLibre-LightItalic.woff') format('woff');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Averia Serif Libre';
+    src: url('AveriaSerifLibre-BoldItalic.eot');
+    src: url('AveriaSerifLibre-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('AveriaSerifLibre-BoldItalic.woff2') format('woff2'),
+        url('AveriaSerifLibre-BoldItalic.woff') format('woff');
+    font-weight: bold;
+    font-style: italic;
+}
+
